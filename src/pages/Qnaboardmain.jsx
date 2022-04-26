@@ -1,7 +1,15 @@
-export default function Qnaboardmain(){
+export default function Qnaboardmain(props){
 
-   
+
+    const searchParams = props.location.search
+
+    console.log(searchParams)
+
+    const obj = new URLSearchParams(searchParams)
+
+    // 반드시 key 값을 알아야 value에 접근할 수 있습니다.
     
+    console.log(obj.get('startpage'))
 
     return(
     <div>
