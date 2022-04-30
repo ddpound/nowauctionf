@@ -68,6 +68,11 @@ export default function Header() {
               <li class="nav-item">
                 <a class="nav-link disabled">Disabled</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  로그인하기
+                </a>
+              </li>
             </ul>
             <form class="d-flex">
               <input

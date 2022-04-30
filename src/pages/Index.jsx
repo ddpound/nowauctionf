@@ -1,4 +1,10 @@
 import "bootstrap/dist/js/bootstrap.bundle";
+
+// 백엔드 쪽에 요청한다. 보드 리스트를 axios 사용예정
+function requestBoardList() {
+  return null;
+}
+
 export default function Index() {
   return (
     <table class="table">
@@ -13,7 +19,9 @@ export default function Index() {
       <tbody>
         <tr>
           <th scope="row">1</th>
-          <td>Mark</td>
+          <td>
+            <a href="/">Mark</a>
+          </td>
           <td>Otto</td>
           <td>@mdo</td>
         </tr>
@@ -25,7 +33,8 @@ export default function Index() {
         </tr>
         <tr>
           <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
+          <td>테스트 방송</td>
+          <td>admin</td>
           <td>@twitter</td>
         </tr>
       </tbody>

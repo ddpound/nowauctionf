@@ -6,6 +6,7 @@ import Qnaboardmain from './pages/Qnaboardmain';
 import BoardPage from './pages/BoardPage'
 import Footer from './components/footerandheader/Footer';
 import Header from './components/footerandheader/Header';
+import ChatRoom from './pages/ChatRoom';
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
     <Route path="/profile" exact component = {Profile} />
     <Route path="/qnaboardmain" exact component = {Qnaboardmain} />
     <Route path="/board/:id" exact component = {BoardPage} />
-
+    <Route path="/chat-room/:id" exact component={ChatRoom} />
 
     <Route path="/" component = {Footer} />
 
