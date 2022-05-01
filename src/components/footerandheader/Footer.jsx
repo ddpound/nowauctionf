@@ -3,7 +3,7 @@ import "bootstrap/dist/js/bootstrap.bundle";
 
 export default function Footer() {
   return (
-    <div class="bd-footer container">
+    <div class="bd-footer container-fluid">
       <footer class="py-3 my-4 bg-white">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3 ">
           <li class="nav-item">
