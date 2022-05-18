@@ -7,6 +7,7 @@ import BoardPage from './pages/BoardPage'
 import Footer from './components/footerandheader/Footer';
 import Header from './components/footerandheader/Header';
 import ChatRoom from './pages/ChatRoom';
+import LoginTryPage from './pages/LoginTryPage';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
     <Route path="/qnaboardmain" exact component = {Qnaboardmain} />
     <Route path="/board/:id" exact component = {BoardPage} />
     <Route path="/chat-room/:id" exact component={ChatRoom} />
+
+    <Route path="/login-page" exact component={LoginTryPage}/>
 
     <Route path="/" component = {Footer} />
 
