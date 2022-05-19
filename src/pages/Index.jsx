@@ -7,11 +7,11 @@ function requestBoardList() {
 
 export default function Index() {
   return (
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-10">
-          <div class="row">
-            <table class="table">
+    <div className="container">
+      <div className="row">
+        <div className="col-sm-10">
+          <div className="row">
+            <table className="table">
               <thead>
                 <tr>
                   <th scope="col">방번호</th>
@@ -44,31 +44,31 @@ export default function Index() {
               </tbody>
             </table>
           </div>
-          <div class="row">
+          <div className="row">
             <nav aria-label="Page navigation">
-              <ul class="pagination justify-content-center">
-                <li class="page-item">
-                  <a class="page-link" href="#">
+              <ul className="pagination justify-content-center">
+                <li className="page-item">
+                  <a className="page-link" href="#">
                     Previous
                   </a>
                 </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">
+                <li className="page-item">
+                  <a className="page-link" href="#">
                     1
                   </a>
                 </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">
+                <li className="page-item">
+                  <a className="page-link" href="#">
                     2
                   </a>
                 </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">
+                <li className="page-item">
+                  <a className="page-link" href="#">
                     3
                   </a>
                 </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">
+                <li className="page-item">
+                  <a className="page-link" href="#">
                     Next
                   </a>
                 </li>
@@ -76,9 +76,9 @@ export default function Index() {
             </nav>
           </div>
         </div>
-        <div class="col-sm-2 position-relative">
-          <div class="row position-absolute bottom-0 end-0">
-            <button type="button" class="btn btn-success">
+        <div className="col-sm-2 position-relative">
+          <div className="row position-absolute bottom-0 end-0">
+            <button type="button" className="btn btn-success">
               방만들기
             </button>
           </div>

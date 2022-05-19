@@ -9,6 +9,8 @@ import Header from './components/footerandheader/Header';
 import ChatRoom from './pages/ChatRoom';
 import LoginTryPage from './pages/LoginTryPage';
 
+import GoogleLoginP from './pages/GoogleLoginP';
+
 function App() {
   return (
     <BrowserRouter>
@@ -21,6 +23,7 @@ function App() {
     <Route path="/chat-room/:id" exact component={ChatRoom} />
 
     <Route path="/login-page" exact component={LoginTryPage}/>
+    <Route path="/google-login-try" exact component={GoogleLoginP}/>
 
     <Route path="/" component = {Footer} />
 
