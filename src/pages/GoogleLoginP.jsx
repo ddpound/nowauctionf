@@ -12,7 +12,17 @@ export default function GoogleLoginP() {
           // 현재 암호화된 토큰을 받아온걸 이걸 그대로 전해주면 될듯 백엔드쪽에
           console.log(credentialResponse);
 
-          axios.get("http://localhost:5000/test/try-login-google?i=12");
+          console.log(credentialResponse.credential);
+
+          axios
+            .get("http://localhost:5000/try-login-google", {
+              headers: {
+                Authorization: "Bearer " + credentialResponse.credential, //the token is a variable which holds the token
+              },
+            })
+            .then((responese) => {
+              console.log(responese);
+            });
         }}
         onError={() => {
           console.log("Login Failed");
