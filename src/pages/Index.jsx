@@ -78,7 +78,7 @@ export default function Index() {
         </div>
         <div className="col-sm-2 position-relative">
           <div className="row position-absolute bottom-0 end-0">
-            <button type="button" className="btn btn-success">
+            <button type="button" className="btn btn-outline-dark">
               방만들기
             </button>
           </div>

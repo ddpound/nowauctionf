@@ -1,11 +1,12 @@
 // 이런식의 css 임포트도 가능
 import "./Header.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
+import GoogleLoginP from "../buttons/GoogleLoginP";
 
 export default function Header() {
   return (
     <header>
-      <nav className="navbar navbar-expand-lg navbar-light bg-green">
+      <nav className="navbar navbar-expand-lg navbar-dark">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
             NowAuction
@@ -21,6 +22,7 @@ export default function Header() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
+
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
@@ -28,11 +30,7 @@ export default function Header() {
                   Home
                 </a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Link
-                </a>
-              </li>
+              <li className="nav-item"></li>
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
@@ -68,9 +66,7 @@ export default function Header() {
               <li className="nav-item">
                 <a className="nav-link disabled">Disabled</a>
               </li>
-              <a className="nav-link active" href="/login-page">
-                로그인하기
-              </a>
+              <GoogleLoginP></GoogleLoginP>
             </ul>
             <form className="d-flex">
               <input
@@ -79,7 +75,7 @@ export default function Header() {
                 placeholder="Search"
                 aria-label="Search"
               />
-              <button className="btn btn-outline-success" type="submit">
+              <button className="btn btn-outline-light" type="submit">
                 Search
               </button>
             </form>
