@@ -21,8 +21,12 @@ export default function GoogleLoginP() {
           console.log(credentialResponse.credential);
 
           axios
-            .get("http://localhost:5000/login/token/google", {
+            .get("/login/token/google", {
               headers: {
+                "x-apikey": "59a7ad19f5a9fa0808f11931",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods":
+                  "GET,PUT,POST,DELETE,PATCH,OPTIONS",
                 Authorization: "Bearer " + credentialResponse.credential, //the token is a variable which holds the token
               },
             })
@@ -30,6 +34,7 @@ export default function GoogleLoginP() {
               // 자동로그인인데 만약 해당 쿠키가 없다면 값받아서 쿠키에 추가
               // 이미 있는 쿠키값이라면 문제없음
               console.log(responese);
+              console.log(responese.headers);
             });
         }}
         onError={() => {
