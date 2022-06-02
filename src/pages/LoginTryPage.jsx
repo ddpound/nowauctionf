@@ -1,5 +1,6 @@
 import "./LoginTryPage.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
+import GoogleLoginP from "../components/buttons/GoogleLoginP";
 
 export default function LoginTryPage() {
   return (
@@ -12,10 +13,10 @@ export default function LoginTryPage() {
             사용하시던 유튜브, 구글 아이디를 이용해서 편리하게 사이트를
             이용하세요!
           </p>
-
-          <a className="btn" href="/google-login-try">
+          <GoogleLoginP></GoogleLoginP>
+          {/* <a className="btn" href="/google-login-try">
             <img src="./buttonimg/googleLogin.png" alt="" />
-          </a>
+          </a> */}
         </div>
         <div className="card-footer text-muted">google login</div>
       </div>

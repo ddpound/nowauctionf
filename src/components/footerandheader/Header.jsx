@@ -1,7 +1,6 @@
 // 이런식의 css 임포트도 가능
 import "./Header.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
-import GoogleLoginP from "../buttons/GoogleLoginP";
 
 export default function Header() {
   return (
@@ -9,7 +8,7 @@ export default function Header() {
       <nav className="navbar navbar-expand-lg navbar-dark">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
-            NowAuction
+            지금옥션
           </a>
           <button
             className="navbar-toggler"
@@ -30,7 +29,15 @@ export default function Header() {
                   Home
                 </a>
               </li>
-              <li className="nav-item"></li>
+              <li className="nav-item">
+                <a
+                  className="nav-link active"
+                  aria-current="page"
+                  href="/login-page"
+                >
+                  로그인하기
+                </a>
+              </li>
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
@@ -66,7 +73,6 @@ export default function Header() {
               <li className="nav-item">
                 <a className="nav-link disabled">Disabled</a>
               </li>
-              <GoogleLoginP></GoogleLoginP>
             </ul>
             <form className="d-flex">
               <input
