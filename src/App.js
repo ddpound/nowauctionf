@@ -23,10 +23,8 @@ function App() {
     <Route path="/chat-room/:id" exact component={ChatRoom} />
 
     <Route path="/login-page" exact component={LoginTryPage}/>
-
+    
     <Route path="/" component = {Footer} />
-
-
     
     </BrowserRouter>
   );

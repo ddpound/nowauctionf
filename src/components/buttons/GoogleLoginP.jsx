@@ -18,6 +18,7 @@ export default function GoogleLoginP() {
         type="standard"
         isSignedIn={true}
         onSuccess={(credentialResponse) => {
+          const SuccessToken = credentialResponse.credential;
           // 현재 암호화된 토큰을 받아온걸 이걸 그대로 전해주면 될듯 백엔드쪽에
           console.log(credentialResponse);
 
@@ -26,7 +27,7 @@ export default function GoogleLoginP() {
           axios
             .get("/login/token/google", {
               headers: {
-                Authorization: "Bearer " + credentialResponse.credential, //the token is a variable which holds the token
+                Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
               },
             })
             .then((responese) => {
@@ -35,7 +36,43 @@ export default function GoogleLoginP() {
               console.log(responese);
               console.log(responese.headers);
 
+              localStorage.setItem(
+                "google-login-success",
+                responese.headers.authorization
+              );
+
               document.location.href = "/";
+            })
+            .catch((Error) => {
+              if (Error.response.status == "401") {
+                console.log("전송전송할 토큰" + SuccessToken);
+                // 주의 Post 요청일때는 반드시 중간에 null넣어줘야함
+                // 요청 url, body, header 이렇게 되기 때문!!!
+                axios
+                  .post("/join/googletoken", null, {
+                    headers: {
+                      Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
+                    },
+                  })
+                  .then((responese) => {
+                    console.log("회원가입요청후 반환갑 : " + responese);
+                    axios
+                      .get("/login/token/google", {
+                        headers: {
+                          Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
+                        },
+                      })
+                      .then((responese) => {
+                        localStorage.setItem(
+                          "google-login-success",
+                          responese.headers.authorization
+                        );
+
+                        document.location.href = "/";
+                      });
+                    alert("회원가입및 로그인 완료.");
+                  });
+              }
             });
         }}
         onError={() => {

@@ -1,6 +1,7 @@
 // 이런식의 css 임포트도 가능
 import "./Header.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
+import GoogleLogoutButton from "../buttons/GoogleLogInOutButton";
 
 export default function Header() {
   return (
@@ -29,19 +30,13 @@ export default function Header() {
                   Home
                 </a>
               </li>
-              <li className="nav-item">
-                <a
-                  className="nav-link active"
-                  aria-current="page"
-                  href="/login-page"
-                >
-                  로그인하기
-                </a>
-              </li>
+
+              <GoogleLogoutButton></GoogleLogoutButton>
+
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
-                  href="#"
+                  href="test"
                   id="navbarDropdown"
                   role="button"
                   data-bs-toggle="dropdown"
