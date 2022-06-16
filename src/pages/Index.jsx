@@ -5,6 +5,8 @@ function requestBoardList() {
   return null;
 }
 
+// 글이 없을때는 열린 장이 없습니다.
+
 export default function Index() {
   return (
     <div className="container">

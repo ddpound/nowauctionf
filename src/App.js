@@ -8,6 +8,7 @@ import Footer from './components/footerandheader/Footer';
 import Header from './components/footerandheader/Header';
 import ChatRoom from './pages/ChatRoom';
 import LoginTryPage from './pages/LoginTryPage';
+import UserInfoPage from './pages/UserInfo/UserInfoPage';
 
 
 
@@ -23,6 +24,8 @@ function App() {
     <Route path="/chat-room/:id" exact component={ChatRoom} />
 
     <Route path="/login-page" exact component={LoginTryPage}/>
+
+    <Route path="/user-info" exact component={UserInfoPage}/>
     
     <Route path="/" component = {Footer} />
     

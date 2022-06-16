@@ -13,6 +13,7 @@ export default function LoginTryPage() {
             사용하시던 유튜브, 구글 아이디를 이용해서 편리하게 사이트를
             이용하세요!
           </p>
+
           {/* 로그인과 회원가입을 동시에 진행시킨다 */}
           <GoogleLoginP></GoogleLoginP>
 

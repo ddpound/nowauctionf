@@ -2,6 +2,8 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 import axios from "axios";
 
+import cookies from "react-cookies";
+
 // 현재 어플리케이션 api 2번 아이디를 따르고있음
 // 쿠키를 받아 냈을 때, 쿠키검사는 계속 하면서 아래 로그인 버튼은 뜨지 않는다.
 // 즉 메인에서 쿠키 검사
@@ -20,9 +22,9 @@ export default function GoogleLoginP() {
         onSuccess={(credentialResponse) => {
           const SuccessToken = credentialResponse.credential;
           // 현재 암호화된 토큰을 받아온걸 이걸 그대로 전해주면 될듯 백엔드쪽에
-          console.log(credentialResponse);
+          //console.log(credentialResponse);
 
-          console.log(credentialResponse.credential);
+          //console.log(credentialResponse.credential);
 
           axios
             .get("/login/token/google", {
@@ -33,17 +35,45 @@ export default function GoogleLoginP() {
             .then((responese) => {
               // 자동로그인인데 만약 해당 쿠키가 없다면 값받아서 쿠키에 추가
               // 이미 있는 쿠키값이라면 문제없음
-              console.log(responese);
-              console.log(responese.headers);
+              //console.log(responese);
+              //console.log(responese.headers);
 
-              localStorage.setItem(
-                "google-login-success",
-                responese.headers.authorization
-              );
+              const retrunAuthHeaders = responese.headers.authorization;
+              const retrunAuthRefreshHeaders = responese.headers.refreshtoken;
 
-              document.location.href = "/";
+              if (
+                retrunAuthHeaders != null &&
+                retrunAuthRefreshHeaders != null
+              ) {
+                // expires.setFullYear(expires.getFullYear() + 2); // 2년
+                // cookies.save(
+                //   "google-login-success",
+                //   retrunAuthHeaders.replace("Bearer ", ""),
+                //   {
+                //     path: "/", // 모든 경로 접근가능
+                //     expires,
+                //   }
+                // );
+
+                localStorage.setItem(
+                  "google-login-success",
+                  retrunAuthHeaders.replace("Bearer ", "")
+                );
+                localStorage.setItem(
+                  "google-login-success-re",
+                  retrunAuthRefreshHeaders.replace("Bearer ", "")
+                );
+                console.log(responese.data);
+                alert("로그인 완료.");
+                document.location.href = "/";
+              } else {
+                alert("로그인 실패");
+              }
             })
             .catch((Error) => {
+              if (Error.response.status == "500") {
+                alert("서버에 문제 발생했습니다 죄송합니다!");
+              }
               if (Error.response.status == "401") {
                 console.log("전송전송할 토큰" + SuccessToken);
                 // 주의 Post 요청일때는 반드시 중간에 null넣어줘야함
@@ -55,7 +85,7 @@ export default function GoogleLoginP() {
                     },
                   })
                   .then((responese) => {
-                    console.log("회원가입요청후 반환갑 : " + responese);
+                    console.log(responese);
                     axios
                       .get("/login/token/google", {
                         headers: {
@@ -63,14 +93,40 @@ export default function GoogleLoginP() {
                         },
                       })
                       .then((responese) => {
-                        localStorage.setItem(
-                          "google-login-success",
-                          responese.headers.authorization
-                        );
+                        const retrunAuthHeaders =
+                          responese.headers.authorization;
+                        const retrunAuthRefreshHeaders =
+                          responese.headers.refreshtoken;
 
-                        document.location.href = "/";
+                        if (
+                          retrunAuthHeaders != null &&
+                          retrunAuthRefreshHeaders != null
+                        ) {
+                          // expires.setFullYear(expires.getFullYear() + 2); // 2년
+                          // cookies.save(
+                          //   "google-login-success",
+                          //   retrunAuthHeaders.replace("Bearer ", ""),
+                          //   {
+                          //     path: "/", // 모든 경로 접근가능
+                          //     expires,
+                          //   }
+                          // );
+
+                          localStorage.setItem(
+                            "google-login-success",
+                            retrunAuthHeaders.replace("Bearer ", "")
+                          );
+                          localStorage.setItem(
+                            "google-login-success-re",
+                            retrunAuthRefreshHeaders.replace("Bearer ", "")
+                          );
+                          //console.log(responese);
+                          alert("회원가입및 로그인 완료.");
+                          document.location.href = "/";
+                        } else {
+                          alert("로그인 실패");
+                        }
                       });
-                    alert("회원가입및 로그인 완료.");
                   });
               }
             });
