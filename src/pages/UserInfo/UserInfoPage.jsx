@@ -5,6 +5,19 @@ import "./UserInfoPage.scss";
 const loginInfo = localStorage.getItem("google-login-success");
 const loginInfoRefresh = localStorage.getItem("google-login-success-re");
 
+function deleteUser() {
+  axios
+    .get("/user/test1", {
+      headers: {
+        Authorization: "Bearer " + loginInfo,
+        Refreshtoken: "Bearer " + loginInfoRefresh,
+      },
+    })
+    .then((responese) => {
+      console.log(responese.data);
+    });
+}
+
 export default function UserInfoPage() {
   const [userobject, setUserOb] = useState({
     userName: "",
@@ -45,7 +58,6 @@ export default function UserInfoPage() {
               "google-login-success-re",
               retrunAuthRefreshHeaders.replace("Bearer ", "")
             );
-            localStorage.setItem("zzz", "aaaaa");
           }
 
           if (userobject.userName == "") {
@@ -63,7 +75,7 @@ export default function UserInfoPage() {
           if (Error.response.status == undefined) {
             console.log(Error);
           } else if (Error.response.status == "403") {
-            alert("권한이 없습니다! 다시 회원가입하시거나 문의해주세요");
+            alert("권한이 없습니다! 다시 로그인하거나 문의해주세요");
             document.location.href = "/";
           } else {
             console.log(Error);
@@ -87,7 +99,24 @@ export default function UserInfoPage() {
           <h5 className="card-title">{userobject.userName}</h5>
           <p className="card-text">{userobject.nickName}</p>
           <p className="card-text">
-            회원등급 : {userobject.role == "USER" && "일반유저"}
+            {userobject.role == "USER" && "회원등급 : 일반유저"}
+            {userobject.role == "SELLER" && "회원등급 : 판매자 "}
+            {userobject.role == "ADMIN" && "회원등급 : 관리자 "}
+          </p>
+          <p>
+            <a href="/give-seller" className="btn btn-dark">
+              판매자 권한 신청하기
+            </a>
+          </p>
+          <p>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                deleteUser();
+              }}
+            >
+              회원탈퇴하기
+            </button>
           </p>
         </div>
       </div>

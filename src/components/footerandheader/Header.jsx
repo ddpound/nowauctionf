@@ -58,11 +58,6 @@ export default function Header() {
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/user-info">
-                        방만들기 권한 받기
-                      </a>
-                    </li>
-                    <li>
                       <hr className="dropdown-divider" />
                     </li>
                     <GoogleLogoutButton type="dropdown-item"></GoogleLogoutButton>

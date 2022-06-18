@@ -2,7 +2,11 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 import axios from "axios";
 
-import cookies from "react-cookies";
+import {
+  makeCookie,
+  makeLocalStorageToken,
+  makeLocalStorageReToken,
+} from "../../commonFuntions/makeCookiesToken";
 
 // 현재 어플리케이션 api 2번 아이디를 따르고있음
 // 쿠키를 받아 냈을 때, 쿠키검사는 계속 하면서 아래 로그인 버튼은 뜨지 않는다.
@@ -13,6 +17,7 @@ const login_key = process.env.REACT_APP_google_login_API_KEY;
 // 로그인상태 유지를 위한 부울 값 , 로그인 성공시 로그인을 유지하겠다는 true를 넣어주면됨
 
 export default function GoogleLoginP() {
+  const expires = new Date();
   return (
     <GoogleOAuthProvider clientId={login_key}>
       <GoogleLogin
@@ -45,24 +50,18 @@ export default function GoogleLoginP() {
                 retrunAuthHeaders != null &&
                 retrunAuthRefreshHeaders != null
               ) {
-                // expires.setFullYear(expires.getFullYear() + 2); // 2년
-                // cookies.save(
-                //   "google-login-success",
-                //   retrunAuthHeaders.replace("Bearer ", ""),
-                //   {
-                //     path: "/", // 모든 경로 접근가능
-                //     expires,
-                //   }
-                // );
+                makeCookie(7, retrunAuthHeaders);
 
-                localStorage.setItem(
+                makeLocalStorageToken(
                   "google-login-success",
-                  retrunAuthHeaders.replace("Bearer ", "")
+                  retrunAuthHeaders
                 );
-                localStorage.setItem(
+
+                makeLocalStorageReToken(
                   "google-login-success-re",
-                  retrunAuthRefreshHeaders.replace("Bearer ", "")
+                  retrunAuthRefreshHeaders
                 );
+
                 console.log(responese.data);
                 alert("로그인 완료.");
                 document.location.href = "/";
@@ -102,24 +101,18 @@ export default function GoogleLoginP() {
                           retrunAuthHeaders != null &&
                           retrunAuthRefreshHeaders != null
                         ) {
-                          // expires.setFullYear(expires.getFullYear() + 2); // 2년
-                          // cookies.save(
-                          //   "google-login-success",
-                          //   retrunAuthHeaders.replace("Bearer ", ""),
-                          //   {
-                          //     path: "/", // 모든 경로 접근가능
-                          //     expires,
-                          //   }
-                          // );
+                          makeCookie(7, retrunAuthHeaders);
 
-                          localStorage.setItem(
+                          makeLocalStorageToken(
                             "google-login-success",
-                            retrunAuthHeaders.replace("Bearer ", "")
+                            retrunAuthHeaders
                           );
-                          localStorage.setItem(
+
+                          makeLocalStorageReToken(
                             "google-login-success-re",
-                            retrunAuthRefreshHeaders.replace("Bearer ", "")
+                            retrunAuthRefreshHeaders
                           );
+
                           //console.log(responese);
                           alert("회원가입및 로그인 완료.");
                           document.location.href = "/";

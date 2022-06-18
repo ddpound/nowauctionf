@@ -7,7 +7,7 @@ import cookies from "react-cookies";
 function googleTokenClear() {
   localStorage.removeItem("google-login-success");
   localStorage.removeItem("google-login-success-re");
-  cookies.remove("google-login-success");
+  cookies.remove("login-check");
   document.location.href = "/";
   //localStorage.clear();
 }
