@@ -2,8 +2,13 @@
 import "./Header.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
 import GoogleLogoutButton from "../buttons/GoogleLogInOutButton";
+import { useContext } from "react";
+import ReduxContext from "../../context/ReduxContext";
+import { connect } from "react-redux/es/exports";
 
-export default function Header() {
+function Header({ userdata }) {
+  console.log("헤더동작확인");
+  console.log(userdata);
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-dark">
@@ -41,7 +46,8 @@ export default function Header() {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    내정보
+                    {userdata.nickName != "" && userdata.nickName}
+                    {userdata.nickName == "" && "공지"}
                   </a>
                   <ul
                     className="dropdown-menu"
@@ -83,3 +89,18 @@ export default function Header() {
     </header>
   );
 }
+
+// 인자로 들어옴
+const StateToprops = (state) => {
+  return {
+    userdata: state,
+  };
+};
+
+const DispatchtoPrps = (dispatch) => {
+  return {};
+};
+
+const StoreInHeader = connect(StateToprops, DispatchtoPrps)(Header);
+
+export default StoreInHeader;

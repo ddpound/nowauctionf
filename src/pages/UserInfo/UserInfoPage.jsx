@@ -2,6 +2,9 @@ import axios from "axios";
 import { React, useState, useEffect } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 import "./UserInfoPage.scss";
+
+import store from "../../reduxstore/store";
+
 const loginInfo = localStorage.getItem("google-login-success");
 const loginInfoRefresh = localStorage.getItem("google-login-success-re");
 
