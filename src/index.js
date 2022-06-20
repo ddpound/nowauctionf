@@ -3,13 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
 import store from './reduxstore/store'
-import ReduxContext from './context/ReduxContext';
 
 import { Provider } from 'react-redux';
-
-
 
 // <React.StrictMode> 사용하는 이유는 개발자 모드에서의 생명주기 체크등의
 // 다양한 에러방지를 사전방지를위해 두었습니다.

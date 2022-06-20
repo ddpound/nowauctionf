@@ -27,7 +27,7 @@ function setUserModel(userName, role, nickName, picture) {
     picture: picture,
   };
 }
-function GoogleLoginP({ set }) {
+function GoogleLoginP({ set, props }) {
   return (
     <GoogleOAuthProvider clientId={login_key}>
       <GoogleLogin
@@ -81,9 +81,22 @@ function GoogleLoginP({ set }) {
                   )
                 );
 
+                localStorage.setItem(
+                  "userdata",
+                  JSON.stringify(
+                    setUserModel(
+                      responese.data.userName,
+                      responese.data.role,
+                      responese.data.nickName,
+                      responese.data.picture
+                    )
+                  )
+                );
+
                 console.log(responese.data);
                 alert("로그인 완료.");
-                document.location.href = "/";
+
+                props.history.push("/");
               } else {
                 alert("로그인 실패");
               }
@@ -133,9 +146,21 @@ function GoogleLoginP({ set }) {
                             retrunAuthRefreshHeaders
                           );
 
+                          localStorage.setItem(
+                            "userdata",
+                            JSON.stringify(
+                              setUserModel(
+                                responese.data.userName,
+                                responese.data.role,
+                                responese.data.nickName,
+                                responese.data.picture
+                              )
+                            )
+                          );
+
                           //console.log(responese);
                           alert("회원가입및 로그인 완료.");
-                          document.location.href = "/";
+                          props.history.push("/");
                         } else {
                           alert("로그인 실패");
                         }

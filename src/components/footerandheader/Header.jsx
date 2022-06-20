@@ -5,17 +5,21 @@ import GoogleLogoutButton from "../buttons/GoogleLogInOutButton";
 import { useContext } from "react";
 import ReduxContext from "../../context/ReduxContext";
 import { connect } from "react-redux/es/exports";
+import { Link } from "react-router-dom";
 
-function Header({ userdata }) {
-  console.log("헤더동작확인");
-  console.log(userdata);
+function checkUserName() {
+  const userModel = JSON.parse(localStorage.getItem("userdata"));
+  return userModel;
+}
+
+export default function Header(props) {
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-dark">
         <div className="container-fluid">
-          <a className="navbar-brand" href="/">
+          <Link className="navbar-brand" to="/">
             <h2>장</h2>
-          </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -46,17 +50,17 @@ function Header({ userdata }) {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    {userdata.nickName != "" && userdata.nickName}
-                    {userdata.nickName == "" && "공지"}
+                    {checkUserName() != null && checkUserName().nickName}
+                    {checkUserName() == null && "공지"}
                   </a>
                   <ul
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="/user-info">
+                      <Link className="dropdown-item" to="/user-info">
                         내정보
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <a className="dropdown-item" href="/user-info">
@@ -66,11 +70,14 @@ function Header({ userdata }) {
                     <li>
                       <hr className="dropdown-divider" />
                     </li>
-                    <GoogleLogoutButton type="dropdown-item"></GoogleLogoutButton>
+                    <GoogleLogoutButton
+                      histo={props}
+                      type="dropdown-item"
+                    ></GoogleLogoutButton>
                   </ul>
                 </li>
               )}
-              <GoogleLogoutButton></GoogleLogoutButton>
+              <GoogleLogoutButton histo={props}></GoogleLogoutButton>
             </ul>
             <form className="d-flex">
               <input
@@ -89,18 +96,3 @@ function Header({ userdata }) {
     </header>
   );
 }
-
-// 인자로 들어옴
-const StateToprops = (state) => {
-  return {
-    userdata: state,
-  };
-};
-
-const DispatchtoPrps = (dispatch) => {
-  return {};
-};
-
-const StoreInHeader = connect(StateToprops, DispatchtoPrps)(Header);
-
-export default StoreInHeader;

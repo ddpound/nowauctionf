@@ -3,25 +3,34 @@ import { React, useState, useEffect } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 import "./UserInfoPage.scss";
 
-import store from "../../reduxstore/store";
-
-const loginInfo = localStorage.getItem("google-login-success");
-const loginInfoRefresh = localStorage.getItem("google-login-success-re");
-
-function deleteUser() {
-  axios
-    .get("/user/test1", {
-      headers: {
-        Authorization: "Bearer " + loginInfo,
-        Refreshtoken: "Bearer " + loginInfoRefresh,
-      },
-    })
-    .then((responese) => {
-      console.log(responese.data);
-    });
+function readdataLoginInfo() {
+  return localStorage.getItem("google-login-success");
 }
 
-export default function UserInfoPage() {
+function readdataLoginInfoRe() {
+  return localStorage.getItem("google-login-success-re");
+}
+
+function deleteUser(props) {
+  const userdata = JSON.parse(localStorage.getItem("userdata"));
+
+  if (userdata != null) {
+    axios
+      .delete("/user/delete/" + userdata.userName, {
+        headers: {
+          Authorization: "Bearer " + readdataLoginInfo(),
+          Refreshtoken: "Bearer " + readdataLoginInfoRe(),
+        },
+      })
+      .then((responese) => {
+        console.log(responese.data);
+        alert("삭제가 완료되었습니다.");
+        props.history.push("/");
+      });
+  }
+}
+
+export default function UserInfoPage(props) {
   const [userobject, setUserOb] = useState({
     userName: "",
     nickName: "",
@@ -30,12 +39,12 @@ export default function UserInfoPage() {
   });
 
   useEffect(() => {
-    if (loginInfo != null) {
+    if (readdataLoginInfo() != null) {
       axios
         .get("/user/info", {
           headers: {
-            Authorization: "Bearer " + loginInfo,
-            Refreshtoken: "Bearer " + loginInfoRefresh,
+            Authorization: "Bearer " + readdataLoginInfo(),
+            Refreshtoken: "Bearer " + readdataLoginInfoRe(),
           },
         })
         .then((responese) => {
@@ -113,14 +122,61 @@ export default function UserInfoPage() {
           </p>
           <p>
             <button
+              type="button"
               className="btn btn-danger"
-              onClick={() => {
-                deleteUser();
-              }}
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
             >
-              회원탈퇴하기
+              탈퇴하기
             </button>
           </p>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                탈퇴하기
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              정말 탈퇴하시겠습니까? <br />
+              언제든지 다시 가입이 가능하지만 저장된 정보들이 날아갈수 있습니다.
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                취소
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  deleteUser(props);
+                }}
+                className="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                탈퇴하기
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

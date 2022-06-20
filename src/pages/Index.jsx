@@ -1,4 +1,5 @@
 import "bootstrap/dist/js/bootstrap.bundle";
+import { Link } from "react-router-dom";
 
 // 백엔드 쪽에 요청한다. 보드 리스트를 axios 사용예정
 function requestBoardList() {
@@ -12,7 +13,7 @@ export default function Index() {
     <div className="container">
       <div className="row mt-5">
         <div className="col">
-          <a href="/chat-room/1">
+          <Link to="/chat-room/1">
             <div
               className="card"
               style={{ width: "18rem", margin: "18px auto" }}
@@ -29,10 +30,10 @@ export default function Index() {
                 <p className="card-text">시청자수</p>
               </div>
             </div>
-          </a>
+          </Link>
         </div>
         <div className="col">
-          <a href="/chat-room/1">
+          <Link to="/chat-room/1">
             <div
               className="card"
               style={{ width: "18rem", margin: "18px auto" }}
@@ -49,10 +50,10 @@ export default function Index() {
                 <p className="card-text">시청자수</p>
               </div>
             </div>
-          </a>
+          </Link>
         </div>
         <div className="col">
-          <a href="/chat-room/2">
+          <Link to="/chat-room/1">
             <div
               className="card"
               style={{ width: "18rem", margin: "18px auto" }}
@@ -69,7 +70,7 @@ export default function Index() {
                 <p className="card-text">시청자수</p>
               </div>
             </div>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
