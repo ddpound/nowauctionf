@@ -1,7 +1,7 @@
 import './App.css';
 import Index from './pages/Index';
 import Profile from './pages/Profile';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Qnaboardmain from './pages/Qnaboardmain';
 import BoardPage from './pages/BoardPage'
 import Footer from './components/footerandheader/Footer';
@@ -9,32 +9,57 @@ import Header from './components/footerandheader/Header';
 import ChatRoom from './pages/ChatRoom';
 import LoginTryPage from './pages/LoginTryPage';
 import UserInfoPage from './pages/UserInfo/UserInfoPage';
+import AdminInPage from './pages/AdminPages/AdminInPage';
 
+
+import PrivateRoute from './components/authorizeRoute/PrivateRoute';
+import PublicRoute from './components/authorizeRoute/PublicRoute';
+
+import NotFoundPage from './pages/notFound/NotFoundPage';
+import MainAdminPage from './pages/AdminPages/MainAdminPage';
 
 
 function App() {
+  
+
   return (
     <BrowserRouter>
+
+    
     <Route path="/" component = {Header} />
 
-    <Route path="/" exact component = {Index} />
-    <Route path="/profile" exact component = {Profile} />
-    <Route path="/qnaboardmain" exact component = {Qnaboardmain} />
-    <Route path="/board/:id" exact component = {BoardPage} />
-    <Route path="/chat-room/:id" exact component={ChatRoom} />
+    <Switch>
 
-    <Route path="/login-page" exact component={LoginTryPage}/>
-
-    <Route path="/user-info" exact component={UserInfoPage}/>
+    <PrivateRoute  path="/user-info" exact component={UserInfoPage}/>
     
+    <PrivateRoute  path="/admin-page-try/:password" exact component={AdminInPage}/>
+    
+    <PrivateRoute  path="/admin-page/" exact component={MainAdminPage}/>
+
+
+    <PublicRoute path="/profile" exact component={Profile} />
+    
+    <PublicRoute path="/qnaboardmain" exact component={Qnaboardmain} />
+    
+    <PublicRoute path="/board/:id" exact component={BoardPage} />
+    
+    <PublicRoute path="/chat-room/:id" exact component={ChatRoom} />
+    
+    <PublicRoute restricted  path="/login-page" exact component={LoginTryPage} />
+    
+   
+    
+    
+    <PublicRoute path="/" exact component={Index} />
+
+    <PublicRoute component={NotFoundPage} />
+    
+    </Switch>
+
     <Route path="/" component = {Footer} />
     
     </BrowserRouter>
   );
 }
-
-
-
-
 
 export default App;

@@ -2,11 +2,9 @@
 import "./Header.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
 import GoogleLogoutButton from "../buttons/GoogleLogInOutButton";
-import { useContext } from "react";
-import ReduxContext from "../../context/ReduxContext";
-import { connect } from "react-redux/es/exports";
 import { Link } from "react-router-dom";
 
+// 여기서 로컬 정보 찾기
 function checkUserName() {
   const userModel = JSON.parse(localStorage.getItem("userdata"));
   return userModel;
