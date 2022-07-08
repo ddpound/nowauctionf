@@ -14,28 +14,29 @@ import AdminInPage from './pages/AdminPages/AdminInPage';
 
 import PrivateRoute from './components/authorizeRoute/PrivateRoute';
 import PublicRoute from './components/authorizeRoute/PublicRoute';
+import AdminRoute from './components/authorizeRoute/AdminRoute';
+import SellerRoute from './components/authorizeRoute/SellerRoute';
 
 import NotFoundPage from './pages/notFound/NotFoundPage';
 import MainAdminPage from './pages/AdminPages/MainAdminPage';
 
+import MainShoppingMallPage from './pages/ShoppingMalls/MainShoppingMallPage';
 
 function App() {
   
 
   return (
     <BrowserRouter>
-
-    
     <Route path="/" component = {Header} />
-
     <Switch>
-
+    
     <PrivateRoute  path="/user-info" exact component={UserInfoPage}/>
     
     <PrivateRoute  path="/admin-page-try/:password" exact component={AdminInPage}/>
     
-    <PrivateRoute  path="/admin-page/" exact component={MainAdminPage}/>
+    <AdminRoute  path="/admin-page/" exact component={MainAdminPage}/>
 
+    <SellerRoute  path="/my-shoppingmall-page" exact component={MainShoppingMallPage}/>
 
     <PublicRoute path="/profile" exact component={Profile} />
     
@@ -47,12 +48,12 @@ function App() {
     
     <PublicRoute restricted  path="/login-page" exact component={LoginTryPage} />
     
-   
-    
     
     <PublicRoute path="/" exact component={Index} />
 
     <PublicRoute component={NotFoundPage} />
+    
+    
     
     </Switch>
 

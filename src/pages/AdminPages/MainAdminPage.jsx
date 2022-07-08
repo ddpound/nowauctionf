@@ -1,34 +1,19 @@
 import axios from "axios";
 import "bootstrap/dist/js/bootstrap.bundle";
 
-function makeCouponRequest() {
-  axios
-    .get("/admin/info", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("google-login-success"),
-        Refreshtoken:
-          "Bearer " + localStorage.getItem("google-login-success-re"),
-      },
-    })
-    .then((response) => {
-      console.log(response);
-    });
-}
+import CouponComponent from "../../components/CouponComponents/CouponComponent";
 
 export default function MainAdminPage() {
   return (
-    <div className="container">
+    <div className="container mt-5">
       <div>
-        <p>관리자</p>
-        <button
-          onClick={() => {
-            makeCouponRequest();
-          }}
-          className="button btn-primary"
-        >
-          쿠폰생성
-        </button>
+        <p>환영합니다 관리자님</p>
+
+        <a href="/coupon-page" className="btn btn-dark">
+          쿠폰관리 페이지
+        </a>
       </div>
+      <CouponComponent />
     </div>
   );
 }

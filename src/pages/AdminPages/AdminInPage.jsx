@@ -2,6 +2,10 @@ import "bootstrap/dist/js/bootstrap.bundle";
 import "./AdminInPage.scss";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import {
+  resetTokens,
+  returnHeaderTokens,
+} from "../../commonFuntions/TokenRelatedFunctions";
 
 const login_key = process.env.REACT_APP_admin_page_login_key;
 
@@ -20,8 +24,12 @@ function adminGet(inputValue, props) {
       }
     )
     .then((responese) => {
+      resetTokens(responese);
       // 여기서 값을받아서 또 관리자 local값을 저장해주자
       console.log(responese);
+
+      localStorage.setItem("adminSuccess", "imadmin");
+
       alert("권한을 받아오는데 성공했습니다!");
       props.history.push("/");
     })

@@ -3,6 +3,11 @@ import { React, useState, useEffect } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 import "./UserInfoPage.scss";
 import { deleteUserDataToken } from "../../commonFuntions/deleteUserDataToken";
+import { Link } from "react-router-dom";
+import {
+  returnHeaderTokens,
+  resetTokens,
+} from "../../commonFuntions/TokenRelatedFunctions";
 
 function readdataLoginInfo() {
   return localStorage.getItem("google-login-success");
@@ -19,8 +24,10 @@ function deleteUser(props) {
     axios
       .delete("/user/delete/" + userdata.userName, {
         headers: {
-          Authorization: "Bearer " + readdataLoginInfo(),
-          Refreshtoken: "Bearer " + readdataLoginInfoRe(),
+          Authorization:
+            "Bearer " + localStorage.getItem("google-login-success"),
+          Refreshtoken:
+            "Bearer " + localStorage.getItem("google-login-success-re"),
         },
       })
       .then((responese) => {
@@ -30,6 +37,32 @@ function deleteUser(props) {
         props.history.push("/");
       });
   }
+}
+
+function giveSeller(props, inputid, inputcode) {
+  axios
+    .post(
+      "/give-seller",
+      { id: inputid, code: inputcode },
+      {
+        headers: {
+          Authorization:
+            "Bearer " + localStorage.getItem("google-login-success"),
+          Refreshtoken:
+            "Bearer " + localStorage.getItem("google-login-success-re"),
+        },
+      }
+    )
+    .then((res) => {
+      resetTokens(res);
+      localStorage.setItem("sellerSuccess", "sellerSuccess");
+      alert("등록에 성공하셨습니다.");
+      props.history.push("/");
+    })
+    .catch((res) => {
+      console.log(res);
+      alert("등록 실패, 관리자에게 문의해주세요");
+    });
 }
 
 export default function UserInfoPage(props) {
@@ -44,14 +77,19 @@ export default function UserInfoPage(props) {
     axios
       .get("/user/info", {
         headers: {
-          Authorization: "Bearer " + readdataLoginInfo(),
-          Refreshtoken: "Bearer " + readdataLoginInfoRe(),
+          Authorization:
+            "Bearer " + localStorage.getItem("google-login-success"),
+          Refreshtoken:
+            "Bearer " + localStorage.getItem("google-login-success-re"),
         },
       })
       .then((responese) => {
         console.log(responese);
         console.log(responese.data);
 
+        if (responese.data.role == "SELLER") {
+          localStorage.setItem("sellerSuccess", "sellerSuccess");
+        }
         //let [userData, userDataFuntion] = responese.data;
         // this.setState({
         //   userName: responese.data.userName,
@@ -59,19 +97,7 @@ export default function UserInfoPage(props) {
         //   role: responese.data.role,
         // });
 
-        const retrunAuthHeaders = responese.headers.authorization;
-        const retrunAuthRefreshHeaders = responese.headers.refreshtoken;
-
-        if (retrunAuthHeaders != null && retrunAuthRefreshHeaders != null) {
-          localStorage.setItem(
-            "google-login-success",
-            retrunAuthHeaders.replace("Bearer ", "")
-          );
-          localStorage.setItem(
-            "google-login-success-re",
-            retrunAuthRefreshHeaders.replace("Bearer ", "")
-          );
-        }
+        resetTokens(responese);
 
         if (userobject.userName == "") {
           setUserOb((userobject) => {
@@ -113,11 +139,35 @@ export default function UserInfoPage(props) {
             {userobject.role == "SELLER" && "회원등급 : 판매자 "}
             {userobject.role == "ADMIN" && "회원등급 : 관리자 "}
           </p>
-          <p>
-            <a href="/give-seller" className="btn btn-dark">
-              판매자 권한 신청하기
-            </a>
-          </p>
+          {userobject.role == "ADMIN" && (
+            <p>
+              <Link to="/admin-page" className="btn btn-dark">
+                어드민 페이지
+              </Link>
+            </p>
+          )}
+
+          {userobject.role == "USER" && (
+            <p>
+              <button
+                type="button"
+                className="btn btn-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#sellerModalLabel"
+              >
+                판매자 등록하기
+              </button>
+            </p>
+          )}
+
+          {userobject.role == "SELLER" && (
+            <p>
+              <Link className="btn btn-dark" to="/my-shoppingmall-page">
+                내 간이 쇼핑몰
+              </Link>
+            </p>
+          )}
+
           <p>
             <button
               type="button"
@@ -134,7 +184,7 @@ export default function UserInfoPage(props) {
       <div
         className="modal fade"
         id="exampleModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
@@ -172,6 +222,77 @@ export default function UserInfoPage(props) {
                 data-bs-dismiss="modal"
               >
                 탈퇴하기
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="sellerModalLabel"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                판매자 등록하기
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">번호를 입력해주세요</div>
+            <div className="input-group input-group-sm mb-3">
+              <span className="input-group-text" id="inputGroup-sizing-sm">
+                1번
+              </span>
+              <input
+                id="inputId"
+                type="text"
+                className="form-control"
+                aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm"
+              />
+            </div>
+            <div className="input-group input-group-sm mb-3">
+              <span className="input-group-text" id="inputGroup-sizing-sm">
+                2번
+              </span>
+              <input
+                id="inputCode"
+                type="text"
+                className="form-control"
+                aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm"
+              />
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                닫기
+              </button>
+              <button
+                onClick={() => {
+                  const idInput = document.getElementById("inputId").value;
+                  const idcodoeInput =
+                    document.getElementById("inputCode").value;
+                  giveSeller(props, idInput, idcodoeInput);
+                }}
+                type="button"
+                className="btn btn-primary"
+                data-bs-dismiss="modal"
+              >
+                등록하기
               </button>
             </div>
           </div>
