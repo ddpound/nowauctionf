@@ -5,17 +5,14 @@ import "./UserInfoPage.scss";
 import { deleteUserDataToken } from "../../commonFuntions/deleteUserDataToken";
 import { Link } from "react-router-dom";
 import {
+  requestGetHaveToken,
+  requestPostHaveToken,
+} from "../../commonFuntions/requestHaveToken";
+
+import {
   returnHeaderTokens,
   resetTokens,
 } from "../../commonFuntions/TokenRelatedFunctions";
-
-function readdataLoginInfo() {
-  return localStorage.getItem("google-login-success");
-}
-
-function readdataLoginInfoRe() {
-  return localStorage.getItem("google-login-success-re");
-}
 
 function deleteUser(props) {
   const userdata = JSON.parse(localStorage.getItem("userdata"));
@@ -40,19 +37,7 @@ function deleteUser(props) {
 }
 
 function giveSeller(props, inputid, inputcode) {
-  axios
-    .post(
-      "/give-seller",
-      { id: inputid, code: inputcode },
-      {
-        headers: {
-          Authorization:
-            "Bearer " + localStorage.getItem("google-login-success"),
-          Refreshtoken:
-            "Bearer " + localStorage.getItem("google-login-success-re"),
-        },
-      }
-    )
+  requestPostHaveToken("/give-seller", props, { id: inputid, code: inputcode })
     .then((res) => {
       resetTokens(res);
       localStorage.setItem("sellerSuccess", "sellerSuccess");
@@ -63,6 +48,30 @@ function giveSeller(props, inputid, inputcode) {
       console.log(res);
       alert("등록 실패, 관리자에게 문의해주세요");
     });
+
+  // axios
+  //   .post(
+  //     "/give-seller",
+  //     { id: inputid, code: inputcode },
+  //     {
+  //       headers: {
+  //         Authorization:
+  //           "Bearer " + localStorage.getItem("google-login-success"),
+  //         Refreshtoken:
+  //           "Bearer " + localStorage.getItem("google-login-success-re"),
+  //       },
+  //     }
+  //   )
+  //   .then((res) => {
+  //     resetTokens(res);
+  //     localStorage.setItem("sellerSuccess", "sellerSuccess");
+  //     alert("등록에 성공하셨습니다.");
+  //     props.history.push("/");
+  //   })
+  //   .catch((res) => {
+  //     console.log(res);
+  //     alert("등록 실패, 관리자에게 문의해주세요");
+  //   });
 }
 
 export default function UserInfoPage(props) {
@@ -74,57 +83,33 @@ export default function UserInfoPage(props) {
   });
 
   useEffect(() => {
-    axios
-      .get("/user/info", {
-        headers: {
-          Authorization:
-            "Bearer " + localStorage.getItem("google-login-success"),
-          Refreshtoken:
-            "Bearer " + localStorage.getItem("google-login-success-re"),
-        },
-      })
-      .then((responese) => {
-        console.log(responese);
-        console.log(responese.data);
+    requestGetHaveToken("/user/info", props).then((responese) => {
+      console.log(responese);
+      console.log(responese.data);
 
-        if (responese.data.role == "SELLER") {
-          localStorage.setItem("sellerSuccess", "sellerSuccess");
-        }
-        //let [userData, userDataFuntion] = responese.data;
-        // this.setState({
-        //   userName: responese.data.userName,
-        //   nickName: responese.data.nickName,
-        //   role: responese.data.role,
-        // });
+      if (responese.data.role == "SELLER") {
+        localStorage.setItem("sellerSuccess", "sellerSuccess");
+      }
+      //let [userData, userDataFuntion] = responese.data;
+      // this.setState({
+      //   userName: responese.data.userName,
+      //   nickName: responese.data.nickName,
+      //   role: responese.data.role,
+      // });
 
-        resetTokens(responese);
+      resetTokens(responese);
 
-        if (userobject.userName == "") {
-          setUserOb((userobject) => {
-            return {
-              userName: responese.data.userName,
-              nickName: responese.data.nickName,
-              role: responese.data.role,
-              picture: responese.data.picture,
-            };
-          });
-        }
-      })
-      .catch((Error) => {
-        if (Error.response.status == undefined) {
-          console.log(Error);
-        } else if (Error.response.status == "403") {
-          deleteUserDataToken();
-          alert("권한이 없습니다! 다시 로그인하거나 문의해주세요");
-          //document.location.href = "/";
-          props.history.push("/");
-        } else {
-          console.log(Error);
-
-          alert("서버에러 다시 로그인해주거나 문의해주세요!");
-          props.history.push("/");
-        }
-      });
+      if (userobject.userName == "") {
+        setUserOb((userobject) => {
+          return {
+            userName: responese.data.userName,
+            nickName: responese.data.nickName,
+            role: responese.data.role,
+            picture: responese.data.picture,
+          };
+        });
+      }
+    });
   }, []);
 
   return (

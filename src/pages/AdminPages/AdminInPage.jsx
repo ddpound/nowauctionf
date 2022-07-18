@@ -75,7 +75,7 @@ export default function AdminInPage(props) {
     return (
       <>
         {alert("비밀번호가 틀렸습니다.")}
-        <Redirect path="/" />
+        {props.history.push("/")}
       </>
     );
   }
