@@ -12,8 +12,6 @@ export function makeCookie(days, token) {
 
 
 export function makeLocalStorageToken(tokenName,retrunAuthHeaders){
-
-
   return (
     localStorage.setItem(
       tokenName,
@@ -28,4 +26,5 @@ export function makeLocalStorageReToken(reTokenName,retrunAuthRefreshHeaders){
     retrunAuthRefreshHeaders.replace("Bearer ", "")
   )
 }
+
 

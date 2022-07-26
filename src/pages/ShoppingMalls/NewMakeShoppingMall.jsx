@@ -2,7 +2,9 @@ import axios from "axios";
 import { React, useState, useEffect } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 
-function addShoppingmall() {
+import { requestPostHaveToken } from "../../commonFuntions/requestHaveToken";
+
+function addShoppingmall(props) {
   var formData = new FormData(); // 객체 생성
 
   const shoppingMallName = document.getElementById("shoppingMallName").value;
@@ -12,30 +14,31 @@ function addShoppingmall() {
   const explantion = document.getElementById("shoppingMallExplanation").value;
 
   if (!!shoppingMallName && !!inputFile) {
-    formData.append("shoppingMallName", shoppingMallName);
+    if (shoppingMallName.length > 12) {
+      alert("쇼핑몰 이름길이가 너무 깁니다 12자 이내로 써주세요");
+    } else {
+      formData.append("shoppingMallName", shoppingMallName);
 
-    formData.append("thumbnail", inputFile);
+      formData.append("thumbnail", inputFile);
 
-    formData.append("explantion", explantion);
+      formData.append("explantion", explantion);
 
-    axios
-      .post("/seller/make-shopping-mall", formData, {
-        headers: {
-          Authorization:
-            "Bearer " + localStorage.getItem("google-login-success"),
-          Refreshtoken:
-            "Bearer " + localStorage.getItem("google-login-success-re"),
-        },
-      })
-      .then(() => {
-        console.log("완료");
+      const requestAddShop = requestPostHaveToken(
+        "/seller/make-shopping-mall",
+        "",
+        formData
+      );
+      requestAddShop.then(() => {
+        alert("등록을 완료했습니다.");
+        props.his.history.push("/");
       });
+    }
   } else {
     alert("모든 항목을 입력해주세요");
   }
 }
 
-export default function NewMakeShoppingMall() {
+export default function NewMakeShoppingMall(props) {
   const [imagefile, setImageFile] = useState("");
 
   const onLoadFile = (e) => {
@@ -65,19 +68,19 @@ export default function NewMakeShoppingMall() {
   return (
     <div className="container mt-5">
       <div className="row">
-        <div className="col-3">
+        <div className="col-4">
           <div
             className="imageBox"
             style={{
               backgroundSize: "cover",
-              width: 300,
-              height: 300,
+              width: 350,
+              height: 350,
               border: "2px black solid",
             }}
             id="imageBox"
           ></div>
         </div>
-        <div className="col-7">
+        <div className="col-6">
           <div className="input-group mb-3">
             <span className="input-group-text" id="inputGroup-sizing-default">
               쇼핑몰이름
@@ -121,7 +124,7 @@ export default function NewMakeShoppingMall() {
           </p>
           <button
             onClick={() => {
-              addShoppingmall();
+              addShoppingmall(props);
             }}
             className="btn btn-dark"
           >

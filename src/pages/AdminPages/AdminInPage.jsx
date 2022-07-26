@@ -7,35 +7,19 @@ import {
   returnHeaderTokens,
 } from "../../commonFuntions/TokenRelatedFunctions";
 
+import { requestPostHaveToken } from "../../commonFuntions/requestHaveToken";
+
 const login_key = process.env.REACT_APP_admin_page_login_key;
 
 function adminGet(inputValue, props) {
-  axios
-    .post(
-      "/give-admin",
-      { password: inputValue },
-      {
-        headers: {
-          Authorization:
-            "Bearer " + localStorage.getItem("google-login-success"),
-          Refreshtoken:
-            "Bearer " + localStorage.getItem("google-login-success-re"),
-        },
-      }
-    )
-    .then((responese) => {
-      resetTokens(responese);
-      // 여기서 값을받아서 또 관리자 local값을 저장해주자
-      console.log(responese);
-
+  requestPostHaveToken("/give-admin", props, { password: inputValue }).then(
+    (responese) => {
       localStorage.setItem("adminSuccess", "imadmin");
 
       alert("권한을 받아오는데 성공했습니다!");
       props.history.push("/");
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+    }
+  );
 }
 
 export default function AdminInPage(props) {

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import {
   requestGetHaveToken,
   requestPostHaveToken,
+  requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
 import {
@@ -18,36 +19,45 @@ function deleteUser(props) {
   const userdata = JSON.parse(localStorage.getItem("userdata"));
 
   if (userdata != null) {
-    axios
-      .delete("/user/delete/" + userdata.userName, {
-        headers: {
-          Authorization:
-            "Bearer " + localStorage.getItem("google-login-success"),
-          Refreshtoken:
-            "Bearer " + localStorage.getItem("google-login-success-re"),
-        },
-      })
-      .then((responese) => {
+    requestDeleteHaveToken("/user/delete/" + userdata.userName, props).then(
+      (responese) => {
         console.log(responese.data);
         deleteUserDataToken();
         alert("삭제가 완료되었습니다.");
         props.history.push("/");
-      });
+      }
+    );
   }
 }
 
 function giveSeller(props, inputid, inputcode) {
-  requestPostHaveToken("/give-seller", props, { id: inputid, code: inputcode })
-    .then((res) => {
-      resetTokens(res);
-      localStorage.setItem("sellerSuccess", "sellerSuccess");
-      alert("등록에 성공하셨습니다.");
-      props.history.push("/");
-    })
-    .catch((res) => {
-      console.log(res);
-      alert("등록 실패, 관리자에게 문의해주세요");
+  if (!!inputid && !!inputcode) {
+    const giveSellerRe = requestPostHaveToken("/give-seller", props, {
+      id: inputid,
+      code: inputcode,
     });
+
+    giveSellerRe
+      .then((res) => {
+        localStorage.setItem("sellerSuccess", "sellerSuccess");
+        alert("등록에 성공하셨습니다.");
+        props.history.push("/");
+      })
+      .catch((res) => {
+        console.log(res);
+        if (res.response.data == "JCODE010") {
+          alert("키를 모두 입력하지 않았습니다. 제대로 모두 입력해주세요");
+        } else if ((res.response.data = "JCODE800")) {
+          alert("1번 키는 숫자입니다. 제대로 모두 입력해주세요");
+        } else if (res.response.data == "JCODE001") {
+          alert("없는 쿠폰입니다.");
+        } else {
+          alert("등록 실패, 관리자에게 문의해주세요");
+        }
+      });
+  } else {
+    alert("1번, 2번 모두 입력해 주세요!");
+  }
 
   // axios
   //   .post(
@@ -83,31 +93,29 @@ export default function UserInfoPage(props) {
   });
 
   useEffect(() => {
-    requestGetHaveToken("/user/info", props).then((responese) => {
-      console.log(responese);
-      console.log(responese.data);
+    const returnResponse = requestGetHaveToken("/user/info", props);
 
-      if (responese.data.role == "SELLER") {
-        localStorage.setItem("sellerSuccess", "sellerSuccess");
-      }
-      //let [userData, userDataFuntion] = responese.data;
-      // this.setState({
-      //   userName: responese.data.userName,
-      //   nickName: responese.data.nickName,
-      //   role: responese.data.role,
-      // });
-
-      resetTokens(responese);
-
-      if (userobject.userName == "") {
-        setUserOb((userobject) => {
-          return {
-            userName: responese.data.userName,
-            nickName: responese.data.nickName,
-            role: responese.data.role,
-            picture: responese.data.picture,
-          };
-        });
+    returnResponse.then((responese) => {
+      if (!!responese) {
+        if (responese.data.role == "SELLER") {
+          localStorage.setItem("sellerSuccess", "sellerSuccess");
+        }
+        //let [userData, userDataFuntion] = responese.data;
+        // this.setState({
+        //   userName: responese.data.userName,
+        //   nickName: responese.data.nickName,
+        //   role: responese.data.role,
+        // });
+        if (userobject.userName == "") {
+          setUserOb((userobject) => {
+            return {
+              userName: responese.data.userName,
+              nickName: responese.data.nickName,
+              role: responese.data.role,
+              picture: responese.data.picture,
+            };
+          });
+        }
       }
     });
   }, []);
@@ -240,7 +248,7 @@ export default function UserInfoPage(props) {
               </span>
               <input
                 id="inputId"
-                type="text"
+                type="number"
                 className="form-control"
                 aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-sm"

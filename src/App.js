@@ -20,7 +20,7 @@ import SellerRoute from './components/authorizeRoute/SellerRoute';
 import NotFoundPage from './pages/notFound/NotFoundPage';
 import MainAdminPage from './pages/AdminPages/MainAdminPage';
 
-import MainShoppingMallPage from './pages/ShoppingMalls/MainShoppingMallPage';
+import MainShoppingMallPage from './pages/ShoppingMalls/MyShoppingMallPage';
 
 function App() {
   
