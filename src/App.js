@@ -20,6 +20,10 @@ import SellerRoute from './components/authorizeRoute/SellerRoute';
 import NotFoundPage from './pages/notFound/NotFoundPage';
 import MainAdminPage from './pages/AdminPages/MainAdminPage';
 
+import MainAnnouncement from './pages/Announcement/MainAnnouncement';
+
+import AdminWritePageAnnouncement from './pages/Announcement/AdminWritePageAnnouncement';
+
 import MainShoppingMallPage from './pages/ShoppingMalls/MyShoppingMallPage';
 
 function App() {
@@ -34,21 +38,29 @@ function App() {
     
     <PrivateRoute  path="/admin-page-try/:password" exact component={AdminInPage}/>
     
+    {/* 공지글쓰기 (관리자만 해당)*/}
+    <AdminRoute path="/announcement-write" exact component={AdminWritePageAnnouncement} />
+
     <AdminRoute  path="/admin-page/" exact component={MainAdminPage}/>
 
     <SellerRoute  path="/my-shoppingmall-page" exact component={MainShoppingMallPage}/>
 
     <PublicRoute path="/profile" exact component={Profile} />
     
-    <PublicRoute path="/qnaboardmain" exact component={Qnaboardmain} />
+    <PublicRoute path="/qnaboard-main" exact component={Qnaboardmain} />
     
+    {/* 공지 */}
+    <PublicRoute path="/announcement-main" exact component={MainAnnouncement}/>
+
+
     <PublicRoute path="/board/:id" exact component={BoardPage} />
     
     <PublicRoute path="/chat-room/:id" exact component={ChatRoom} />
-    
+
     <PublicRoute restricted  path="/login-page" exact component={LoginTryPage} />
     
     
+
     <PublicRoute path="/" exact component={Index} />
 
     <PublicRoute component={NotFoundPage} />

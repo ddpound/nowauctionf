@@ -11,6 +11,8 @@ import {
 } from "../../commonFuntions/makeCookiesToken";
 import { setUserStore } from "../../reduxstore/actions";
 
+import { requestGetHaveToken } from "../../commonFuntions/requestHaveToken";
+
 // 현재 어플리케이션 api 2번 아이디를 따르고있음
 // 쿠키를 받아 냈을 때, 쿠키검사는 계속 하면서 아래 로그인 버튼은 뜨지 않는다.
 // 즉 메인에서 쿠키 검사
@@ -18,6 +20,22 @@ import { setUserStore } from "../../reduxstore/actions";
 const login_key = process.env.REACT_APP_google_login_API_KEY;
 
 // 로그인상태 유지를 위한 부울 값 , 로그인 성공시 로그인을 유지하겠다는 true를 넣어주면됨
+
+function giveRole() {
+  const returnResponse = requestGetHaveToken("/user/info", null);
+
+  returnResponse.then((res) => {
+    if (!!res) {
+      if (res.data.role == "ADMIN") {
+        localStorage.setItem("adminSuccess", "imadmin");
+      }
+
+      if (res.data.role == "SELLER") {
+        localStorage.setItem("sellerSuccess", "sellerSuccess");
+      }
+    }
+  });
+}
 
 function setUserModel(userName, role, nickName, picture) {
   return {
@@ -93,7 +111,8 @@ function GoogleLoginP({ set, props }) {
                   )
                 );
 
-                console.log(responese.data);
+                // 로그인 완료 권한을 다시 주는것이 중요 로그아웃시에 다삭제
+                giveRole();
                 alert("로그인 완료.");
 
                 props.history.push("/");
@@ -158,7 +177,8 @@ function GoogleLoginP({ set, props }) {
                             )
                           );
 
-                          //console.log(responese);
+                          // 로그인 완료 권한을 다시 주는것이 중요 로그아웃시에 다삭제
+                          giveRole();
                           alert("회원가입및 로그인 완료.");
                           props.history.push("/");
                         } else {

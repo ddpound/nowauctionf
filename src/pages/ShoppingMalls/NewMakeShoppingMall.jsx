@@ -55,7 +55,7 @@ export default function NewMakeShoppingMall(props) {
   const preview = () => {
     if (!imagefile) return false;
 
-    const imgEl = document.querySelector(".imageBox");
+    const imgEl = document.querySelector(".img-thumbnail");
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -70,7 +70,7 @@ export default function NewMakeShoppingMall(props) {
       <div className="row">
         <div className="col-4">
           <div
-            className="imageBox"
+            className="img-thumbnail"
             style={{
               backgroundSize: "cover",
               width: 350,
