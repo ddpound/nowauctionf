@@ -11,6 +11,8 @@ import {
   returnHeaderTokens,
 } from "../../commonFuntions/TokenRelatedFunctions";
 
+import { requestGetHaveToken } from "../../commonFuntions/requestHaveToken";
+
 function couponDelete(id) {
   console.log(id);
   axios
@@ -30,8 +32,7 @@ export default function CouponListComponent() {
   const offset = (page - 1) * limit;
 
   useEffect(() => {
-    axios
-      .get("/admin/find-all-coupon", returnHeaderTokens)
+    requestGetHaveToken("/admin/find-all-coupon", null)
       .then((res) => {
         resetTokens(res);
 

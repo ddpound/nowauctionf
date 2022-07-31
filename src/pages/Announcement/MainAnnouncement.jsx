@@ -11,7 +11,11 @@ export default function MainAnnouncement() {
       <BoardBlock />
       <BoardBlock />
 
-      {!!adminIn && <Link to="/announcement-write">글쓰기</Link>}
+      {!!adminIn && (
+        <Link className="btn btn-dark" to="/announcement-write">
+          글쓰기
+        </Link>
+      )}
     </div>
   );
 }
