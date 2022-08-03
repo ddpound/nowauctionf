@@ -23,6 +23,7 @@ import MainAdminPage from './pages/AdminPages/MainAdminPage';
 import MainAnnouncement from './pages/Announcement/MainAnnouncement';
 
 import AdminWritePageAnnouncement from './pages/Announcement/AdminWritePageAnnouncement';
+import AnnouncementRead from './pages/Announcement/AnnouncementRead';
 
 import MainShoppingMallPage from './pages/ShoppingMalls/MyShoppingMallPage';
 
@@ -52,6 +53,7 @@ function App() {
     {/* 공지 */}
     <PublicRoute path="/announcement-main" exact component={MainAnnouncement}/>
 
+    <PublicRoute path="/announcement/:id" exact component={AnnouncementRead}/>
 
     <PublicRoute path="/board/:id" exact component={BoardPage} />
     

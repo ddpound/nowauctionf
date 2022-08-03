@@ -84,7 +84,6 @@ export default function AdminWritePageAnnouncement(props) {
       </div>
       <Editor
         ref={EditorRef}
-        initialValue="글 작성을 해주세요"
         previewStyle="vertical"
         height="1000px"
         initialEditType="markdown"
@@ -92,7 +91,7 @@ export default function AdminWritePageAnnouncement(props) {
         // hooks 에서 addImageBlobHook 를 주물러 주면 된다.
         hooks={{
           addImageBlobHook: async (blob, callback) => {
-            console.log(blob); // File {name: '카레유.png', ... }
+            //console.log(blob); // File {name: '카레유.png', ... }
 
             var formData = new FormData();
 
@@ -117,9 +116,9 @@ export default function AdminWritePageAnnouncement(props) {
         <button
           onClick={() => {
             const title = document.getElementById("boardId").value;
-            const content = EditorRef.current.getInstance().getHTML();
+            const content = EditorRef.current.getInstance().getMarkdown();
 
-            saveBoard(title, content);
+            saveBoard(title, content, props);
           }}
           type="button"
           className="btn btn-dark"
