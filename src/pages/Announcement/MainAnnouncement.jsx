@@ -27,7 +27,7 @@ export default function MainAnnouncement(props) {
       {announcementList.length === 0 && <div>공지글이 없습니다</div>}
 
       {announcementList.length > 0 &&
-        announcementList.map((announcement) => {
+        announcementList.reverse().map((announcement) => {
           return (
             <BoardBlock
               announcement={announcement}

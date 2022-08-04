@@ -17,9 +17,22 @@ export default function AnnouncementRead(props) {
       setboard(res.data.value);
     });
   }, []);
+
   return (
-    <div className="container mt-5">
-      {board.Content !== "" && <Viewer initialValue={board.Content} />}
+    <div className="container-sm mt-5">
+      {!!board.Content && (
+        <div>
+          <div className="card mb-3">
+            <div className="card-header bg-transparent ">
+              <h2 style={{ fontWeight: "bold" }}>{board.title}</h2>
+            </div>
+            <div className="card-body text-dark">
+              <Viewer initialValue={board.Content}></Viewer>
+            </div>
+            <div className="card-footer bg-transparent">{board.createDate}</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
