@@ -44,7 +44,7 @@ export default function CouponListComponent() {
       });
   }, []);
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 justify-content-md-center">
       <label>
         페이지 당 표시할 게시물 수:&nbsp;
         <select

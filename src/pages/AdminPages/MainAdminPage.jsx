@@ -5,7 +5,7 @@ import CouponComponent from "../../components/CouponComponents/CouponComponent";
 
 export default function MainAdminPage() {
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 justify-content-center">
       <div>
         <p>환영합니다 관리자님</p>
 

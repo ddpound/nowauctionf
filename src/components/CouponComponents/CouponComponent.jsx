@@ -34,7 +34,7 @@ function makeCouponRequest(couponnum) {
 
 export default function CouponComponent() {
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 justify-content-center">
       <span className="input-group-text" id="inputGroup-sizing-sm">
         쿠폰 갯수
       </span>
