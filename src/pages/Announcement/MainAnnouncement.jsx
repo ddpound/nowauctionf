@@ -11,11 +11,18 @@ import ListPageNation from "../../components/PageNation/ListPageNation";
 export default function MainAnnouncement(props) {
   const [announcementList, setList] = useState([]); // 빈 배열
 
+  // 게시판 단순 페이징
   const [oneViewNumber, setOneViewNumber] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * oneViewNumber;
 
   const adminIn = localStorage.getItem("adminSuccess", "imadmin");
+
+  // 여긴 페이징 안의 페이징
+  // 페이징
+  const [pageNationPage, setPageNationPage] = useState(1);
+
+  const pageNationOffset = (pageNationPage - 1) * oneViewNumber;
 
   useEffect(() => {
     // 자동적으로 리스트 반환
@@ -45,13 +52,15 @@ export default function MainAnnouncement(props) {
             );
           })}
 
-      <ListPageNation
-        postLength={announcementList.length}
-        oneViewNumber={oneViewNumber}
-        page={page}
-        setPage={setPage}
-        inMaxPageListNumber={10}
-      />
+      {announcementList.length > 0 && (
+        <ListPageNation
+          postLength={announcementList.length}
+          oneViewNumber={oneViewNumber}
+          page={page}
+          setPage={setPage}
+          inMaxPageListNumber={10}
+        />
+      )}
       {!!adminIn && (
         <Link className="btn btn-dark" to="/announcement-write">
           글쓰기
