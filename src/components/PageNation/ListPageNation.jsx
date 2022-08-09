@@ -2,12 +2,6 @@ import axios from "axios";
 import { React, useState, useEffect } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 
-import ListPageNationUL from "./ListPageNationUL";
-// 넘어갈 수 있게끔 설계
-
-// 현재 로서는 onclik일때 관리하는 이게 필요하다고 생각이 들었음
-// set으로 관리할지 고민
-
 export default function ListPageNation({
   postLength, // 포스트 배열의 길이 (게시판 길이)
   oneViewNumber, // 한 페이지의 보여줄 Number
@@ -23,24 +17,12 @@ export default function ListPageNation({
     .fill()
     .map((v, i) => i + 1);
 
-  const [resultList, setResultList] = useState(
-    middleList.slice(0, inMaxPageListNumber)
-  );
+  const [start, setStart] = useState(0);
+  const [end, setEnd] = useState(inMaxPageListNumber);
 
-  // pp (pagenation의 page라 해서 pp)
-  const [pp, setPp] = useState(0);
+  const [resultList, setResultList] = useState(middleList.slice(start, end));
 
-  const pagenationFunction = (
-    page,
-    inMaxPageListNumber,
-    setResultList,
-    middleList,
-    pp,
-    setPp
-  ) => {
-    // 예 한번에 10개를 보여줄때 10에 도달했을때 그 이상일 때
-    // 페이지네이션의 페이지가 필요함
-
+  useEffect(() => {
     // 얼마나 반복했는지 횟수 알기위함
     // 즉 현재 페이지, page의 page라 해서 pp
 
@@ -49,6 +31,8 @@ export default function ListPageNation({
 
     var start = 0;
     var end = inMaxPageListNumber;
+    var pp = 0;
+
     while (fpage > fInMaxPageListNumber) {
       fpage = fpage - fInMaxPageListNumber;
       pp++;
@@ -57,17 +41,14 @@ export default function ListPageNation({
       }
     }
     // 페이지가 도출됨
-    // 그럼 범위는 whileNum
-
     start = inMaxPageListNumber * pp + 1;
     end = inMaxPageListNumber * (pp + 1);
 
-    console.log(start + " : " + end);
-    setResultList(middleList.slice(start - 1, end));
-  };
+    setStart(start);
+    setEnd(end);
 
-  const start = inMaxPageListNumber;
-  const end = inMaxPageListNumber;
+    setResultList(middleList.slice(start - 1, end));
+  }, [page]);
 
   return (
     <ul className="pagination mt-5 justify-content-center">
@@ -77,14 +58,6 @@ export default function ListPageNation({
           aria-label="Next"
           onClick={() => {
             setPage(1);
-            pagenationFunction(
-              page,
-              inMaxPageListNumber,
-              setResultList,
-              middleList,
-              pp,
-              setPp
-            );
           }}
           disabled={page === 1}
         >
@@ -97,14 +70,6 @@ export default function ListPageNation({
         aria-label="Previous"
         onClick={() => {
           setPage(page - 1);
-          pagenationFunction(
-            page,
-            inMaxPageListNumber,
-            setResultList,
-            middleList,
-            pp,
-            setPp
-          );
         }}
         disabled={page === 1}
       >
@@ -117,14 +82,6 @@ export default function ListPageNation({
             key={i}
             onClick={() => {
               setPage(i);
-              return pagenationFunction(
-                page,
-                inMaxPageListNumber,
-                setResultList,
-                middleList,
-                pp,
-                setPp
-              );
             }}
             aria-current={page === i ? "page" : null}
           >
@@ -138,14 +95,6 @@ export default function ListPageNation({
           aria-label="Next"
           onClick={() => {
             setPage(page + 1);
-            pagenationFunction(
-              page,
-              inMaxPageListNumber,
-              setResultList,
-              middleList,
-              pp,
-              setPp
-            );
           }}
           disabled={page === numPages}
         >
@@ -158,14 +107,6 @@ export default function ListPageNation({
           aria-label="Next"
           onClick={() => {
             setPage(numPages);
-            pagenationFunction(
-              page,
-              inMaxPageListNumber,
-              setResultList,
-              middleList,
-              pp,
-              setPp
-            );
           }}
           disabled={page === numPages}
         >

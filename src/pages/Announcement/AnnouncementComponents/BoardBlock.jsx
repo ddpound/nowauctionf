@@ -13,9 +13,7 @@ export default function BoardBlock(announcement) {
     >
       <div className="card text-white bg-dark mb-3">
         <div className="card-header">
-          <h5 className="card-title">
-            {announcement.announcement.title} {announcement.announcement.id}
-          </h5>
+          <h5 className="card-title">{announcement.announcement.title}</h5>
         </div>
         <div className="card-body">
           <p className="card-text">

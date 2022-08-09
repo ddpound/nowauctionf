@@ -3,7 +3,6 @@ import axios from "axios";
 import { React, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import BoardBlock from "./AnnouncementComponents/BoardBlock";
-import { requestGetHaveToken } from "../../commonFuntions/requestHaveToken";
 
 // 내가 직접만든 페이지네이션 양식
 import ListPageNation from "../../components/PageNation/ListPageNation";
