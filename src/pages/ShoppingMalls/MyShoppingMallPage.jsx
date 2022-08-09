@@ -1,16 +1,14 @@
 import axios from "axios";
 import { React, useState, useEffect } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
-import MyShoppingMall from "./MyShoppingMall";
+import MyShoppingMall from "./components/MyShoppingMall";
 
-import NewMakeShoppingMall from "./NewMakeShoppingMall";
+import NewMakeShoppingMall from "./components/NewMakeShoppingMall";
 
 import { requestGetHaveToken } from "../../commonFuntions/requestHaveToken";
 
 // 등록한 쇼핑몰이 있는지 확인 있을때는 설정창
 // 없을 때는 만드는 페이지
-
-function checkMall() {}
 
 export default function MyShoppingMallPage(props) {
   const [shoppingMalldata, setShoppingMalldata] = useState("");
@@ -22,9 +20,9 @@ export default function MyShoppingMallPage(props) {
   }, []);
 
   if (!!shoppingMalldata.data) {
-    return <MyShoppingMall data={shoppingMalldata.data} />;
+    return <MyShoppingMall props={props} data={shoppingMalldata.data} />;
   } else {
-    return <NewMakeShoppingMall his={props} />;
+    return <NewMakeShoppingMall props={props} inData={null} />;
     // 데이터가 없다는것
   }
 }

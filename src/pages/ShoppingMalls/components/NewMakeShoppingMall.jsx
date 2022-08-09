@@ -2,35 +2,47 @@ import axios from "axios";
 import { React, useState, useEffect } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 
-import { requestPostHaveToken } from "../../commonFuntions/requestHaveToken";
+import { requestPostHaveToken } from "../../../commonFuntions/requestHaveToken";
 
-function addShoppingmall(props) {
+function addShoppingmall(props, modify) {
   var formData = new FormData(); // 객체 생성
 
   const shoppingMallName = document.getElementById("shoppingMallName").value;
 
   const inputFile = document.getElementById("inputGroupFile01").files[0];
+  // 수정할때는 url로 받아옴
+  const inputFile2 = document.getElementById("inputGroupFile02").value;
 
   const explantion = document.getElementById("shoppingMallExplanation").value;
 
-  if (!!shoppingMallName && !!inputFile) {
+  let reqyestUrl = "/seller/make-shopping-mall";
+
+  // modify 가 참이라면 수정이니깐
+  if (modify) {
+    reqyestUrl = "/seller/modify-shopping-mall";
+  }
+
+  // 즉 inputFile, inputFile2 둘중하나만 채워넣으면 된다 이거임
+  if (!!shoppingMallName && (!!inputFile || !!inputFile2)) {
     if (shoppingMallName.length > 12) {
       alert("쇼핑몰 이름길이가 너무 깁니다 12자 이내로 써주세요");
     } else {
       formData.append("shoppingMallName", shoppingMallName);
 
-      formData.append("thumbnail", inputFile);
+      // inputFile이 null이 아니라면
+      if (!!inputFile) {
+        formData.append("thumbnail", inputFile);
+      } else {
+        formData.append("thumbnail2", inputFile2);
+      }
 
       formData.append("explantion", explantion);
 
-      const requestAddShop = requestPostHaveToken(
-        "/seller/make-shopping-mall",
-        "",
-        formData
-      );
+      const requestAddShop = requestPostHaveToken(reqyestUrl, "", formData);
       requestAddShop.then(() => {
         alert("등록을 완료했습니다.");
-        props.his.history.push("/");
+        console.log(props);
+        props.history.push("/");
       });
     }
   } else {
@@ -38,11 +50,17 @@ function addShoppingmall(props) {
   }
 }
 
-export default function NewMakeShoppingMall(props) {
+export default function NewMakeShoppingMall({ props, inData }) {
+  // true일때 수정 , false일때는 처음 추가
+  const [data, setData] = useState(inData);
+
   const [imagefile, setImageFile] = useState("");
+
+  let [addOrModifyButtonValue, setAddOrModifyButtonValue] = useState("등록");
 
   const onLoadFile = (e) => {
     const file = e.target.files;
+
     setImageFile(file);
   };
 
@@ -51,6 +69,28 @@ export default function NewMakeShoppingMall(props) {
 
     return () => preview();
   });
+
+  useEffect(() => {
+    // console.log("newMake 안 데이터");
+
+    // data && console.log(data); // 적극활용
+
+    data &&
+      (document.getElementById("shoppingMallName").value =
+        data.shoppingMallName);
+
+    data &&
+      (document.getElementById("shoppingMallExplanation").value =
+        data.shppingMallExplanation);
+    data &&
+      (document.querySelector(
+        ".img-thumbnail"
+      ).style.backgroundImage = `url(${data.thumnail})`);
+
+    data && (document.getElementById("inputGroupFile02").value = data.thumnail);
+
+    data && setAddOrModifyButtonValue("수정");
+  }, [data]);
 
   const preview = () => {
     if (!imagefile) return false;
@@ -117,18 +157,21 @@ export default function NewMakeShoppingMall(props) {
               id="inputGroupFile01"
             />
           </div>
-
+          <input type="hidden" className="form-control" id="inputGroupFile02" />
           <p>
             썸네일이 없으시면 기본 썸네일로 자동선택되며 나중에 수정하실수
             있습니다.
           </p>
           <button
+            id="addOrModifyButton"
             onClick={() => {
-              addShoppingmall(props);
+              //데이터가 없을때
+              !data && addShoppingmall(props, false);
+              data && addShoppingmall(props, true);
             }}
             className="btn btn-dark"
           >
-            등록
+            {addOrModifyButtonValue}
           </button>
         </div>
       </div>

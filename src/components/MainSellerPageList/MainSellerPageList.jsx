@@ -1,6 +1,13 @@
 import axios from "axios";
 import "bootstrap/dist/js/bootstrap.bundle";
 
-export default function MainSellerPageList() {
-  return <div>판매 사이트 리스트</div>;
+import NowShoppingMallList from "../../pages/ShoppingMalls/components/NowShoppingMallList";
+
+export default function MainSellerPageList({ props }) {
+  return (
+    <div className="container">
+      판매 사이트 리스트
+      <NowShoppingMallList props={props} />
+    </div>
+  );
 }

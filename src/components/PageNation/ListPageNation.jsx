@@ -51,10 +51,10 @@ export default function ListPageNation({
   }, [page]);
 
   return (
-    <ul className="pagination mt-5 justify-content-center">
-      <li className="page-item">
+    <ul className="pagination  mt-5 justify-content-center">
+      <li className="page-item ">
         <button
-          className="page-link"
+          className="page-link bg-dark border-dark text-white"
           aria-label="Next"
           onClick={() => {
             setPage(1);
@@ -64,9 +64,9 @@ export default function ListPageNation({
           <span aria-hidden="true">처음</span>
         </button>
       </li>
-      <li className="page-item"></li>
+      <li className="page-item "></li>
       <button
-        className="page-link"
+        className="page-link bg-dark border-dark text-white"
         aria-label="Previous"
         onClick={() => {
           setPage(page - 1);
@@ -75,23 +75,42 @@ export default function ListPageNation({
       >
         <span aria-hidden="true">이전</span>
       </button>
-      {resultList.map((i) => (
-        <li key={i} className="page-item">
-          <button
-            className="page-link"
-            key={i}
-            onClick={() => {
-              setPage(i);
-            }}
-            aria-current={page === i ? "page" : null}
-          >
-            {i}
-          </button>
-        </li>
-      ))}
+      {resultList.map((i) => {
+        if (i === page) {
+          return (
+            <li key={i} className="page-item active">
+              <button
+                className="page-link bg-white border-dark text-dark "
+                key={i}
+                onClick={() => {
+                  setPage(i);
+                }}
+                aria-current={page === i ? "page" : null}
+              >
+                {i}
+              </button>
+            </li>
+          );
+        } else {
+          return (
+            <li key={i} className="page-item">
+              <button
+                className=" page-link bg-dark border-dark text-white "
+                key={i}
+                onClick={() => {
+                  setPage(i);
+                }}
+                aria-current={page === i ? "page" : null}
+              >
+                {i}
+              </button>
+            </li>
+          );
+        }
+      })}
       <li className="page-item">
         <button
-          className="page-link"
+          className="page-link bg-dark border-dark text-white"
           aria-label="Next"
           onClick={() => {
             setPage(page + 1);
@@ -101,9 +120,10 @@ export default function ListPageNation({
           <span aria-hidden="true">다음</span>
         </button>
       </li>
+
       <li className="page-item">
         <button
-          className="page-link"
+          className="page-link bg-dark border-dark text-white"
           aria-label="Next"
           onClick={() => {
             setPage(numPages);
