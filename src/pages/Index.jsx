@@ -11,87 +11,45 @@ function requestBoardList() {
 
 export default function Index(props) {
   return (
-    <div className="container">
-      <div className="row mt-5">
+    <div className="container mt-5">
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div className="col">
-          <Link to="/chat-room/1">
-            <div
-              className="card"
-              style={{ width: "18rem", margin: "18px auto" }}
-            >
+          <div className="card shadow-sm">
+            <Link to="/chat-room/1">
               <img
                 src="thumbnail/jangThumbnail.png"
-                className="card-img-top"
+                className="card-img-top bd-placeholder-img"
+                width="100%"
+                height="225"
                 alt=""
+                style={{ objectFit: "fill" }}
               />
+
               <div className="card-body">
                 <h5 className="card-title">방제</h5>
                 <p className="card-text">방장</p>
                 <hr />
                 <p className="card-text">시청자수</p>
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="btn-group">
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-secondary"
+                    >
+                      View
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-secondary"
+                    >
+                      Edit
+                    </button>
+                  </div>
+                  <small className="text-muted">9 mins</small>
+                </div>
               </div>
-            </div>
-          </Link>
-        </div>
-        <div className="col">
-          <Link to="/chat-room/1">
-            <div
-              className="card"
-              style={{ width: "18rem", margin: "18px auto" }}
-            >
-              <img
-                src="thumbnail/jangThumbnail.png"
-                className="card-img-top"
-                alt=""
-              />
-              <div className="card-body">
-                <h5 className="card-title">방제</h5>
-                <p className="card-text">방장</p>
-                <hr />
-                <p className="card-text">시청자수</p>
-              </div>
-            </div>
-          </Link>
-        </div>
-        <div className="col">
-          <Link to="/chat-room/1">
-            <div
-              className="card"
-              style={{ width: "18rem", margin: "18px auto" }}
-            >
-              <img
-                src="thumbnail/jangThumbnail.png"
-                className="card-img-top"
-                alt=""
-              />
-              <div className="card-body">
-                <h5 className="card-title">방제</h5>
-                <p className="card-text">방장</p>
-                <hr />
-                <p className="card-text">시청자수</p>
-              </div>
-            </div>
-          </Link>
-        </div>
-        <div className="col">
-          <Link to="/chat-room/1">
-            <div
-              className="card"
-              style={{ width: "18rem", margin: "18px auto" }}
-            >
-              <img
-                src="thumbnail/jangThumbnail.png"
-                className="card-img-top"
-                alt=""
-              />
-              <div className="card-body">
-                <h5 className="card-title">방제</h5>
-                <p className="card-text">방장</p>
-                <hr />
-                <p className="card-text">시청자수</p>
-              </div>
-            </div>
-          </Link>
+            </Link>
+          </div>
         </div>
       </div>
       <MainSellerPageList props={props} />

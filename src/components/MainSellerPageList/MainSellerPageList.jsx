@@ -5,8 +5,8 @@ import NowShoppingMallList from "../../pages/ShoppingMalls/components/NowShoppin
 
 export default function MainSellerPageList({ props }) {
   return (
-    <div className="container">
-      판매 사이트 리스트
+    <div className="container mt-5">
+      <h2>[판매 사이트 리스트]</h2>
       <NowShoppingMallList props={props} />
     </div>
   );
