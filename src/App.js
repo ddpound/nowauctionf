@@ -27,6 +27,9 @@ import AnnouncementRead from './pages/Announcement/AnnouncementRead';
 
 import MainShoppingMallPage from './pages/ShoppingMalls/MyShoppingMallPage';
 
+// 제품 작성
+import ProductRegistrationWrite from './pages/ProductRegistration/pages/ProductRegistrationWrite';
+
 function App() {
   
 
@@ -45,6 +48,9 @@ function App() {
     <AdminRoute  path="/admin-page/" exact component={MainAdminPage}/>
 
     <SellerRoute  path="/my-shoppingmall-page" exact component={MainShoppingMallPage}/>
+
+    {/* 제품 글쓰기 (판매자만 해당)*/}
+    <SellerRoute  path="/product-write" exact component={ProductRegistrationWrite}/>
 
     <PublicRoute path="/profile" exact component={Profile} />
     

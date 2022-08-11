@@ -17,12 +17,6 @@ export default function MainAnnouncement(props) {
 
   const adminIn = localStorage.getItem("adminSuccess", "imadmin");
 
-  // 여긴 페이징 안의 페이징
-  // 페이징
-  const [pageNationPage, setPageNationPage] = useState(1);
-
-  const pageNationOffset = (pageNationPage - 1) * oneViewNumber;
-
   useEffect(() => {
     // 자동적으로 리스트 반환
     const requestList = axios

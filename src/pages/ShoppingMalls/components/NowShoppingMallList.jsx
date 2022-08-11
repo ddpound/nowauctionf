@@ -9,24 +9,9 @@ import ShoppingMallBlockComponent from "../NowShoppingMallListComponents/Shpping
 import ShoppingMallBlockComponentContainer from "../NowShoppingMallListComponents/ShoppingMallBlockComponentContainer";
 
 export default function NowShoppingMallList({ props }) {
-  // 리스트라 의미함
-  const [shoppingMallList, setShoppingMallList] = useState([]);
-
-  useEffect(() => {
-    const requestList = axios.get("/find-all-shopping-mall");
-    requestList.then((res) => {
-      setShoppingMallList(res.data.reverse());
-    });
-  }, []);
-
   return (
     <div className="container mt-5">
-      {
-        <ShoppingMallBlockComponentContainer
-          onePagePostNumber={10}
-          inPosts={shoppingMallList}
-        />
-      }
+      {<ShoppingMallBlockComponentContainer onePagePostNumber={9} />}
     </div>
   );
 }

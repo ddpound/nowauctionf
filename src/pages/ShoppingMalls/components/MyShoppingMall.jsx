@@ -7,8 +7,8 @@ import ProductRegistrationMain from "../../ProductRegistration/ProductRegistrati
 export default function MyShoppingMall({ props, data }) {
   console.log(data);
   return (
-    <div>
-      현재 쇼핑몰
+    <div className="container mt-5">
+      <h3>{data.shoppingMallName}</h3>
       <NewMakeShoppingMall props={props} inData={data} />
       <ProductRegistrationMain />
     </div>
