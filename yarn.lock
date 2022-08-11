@@ -8259,7 +8259,7 @@
     "strip-ansi" "^6.0.1"
     "text-table" "^0.2.0"
 
-"react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^18.0.0", "react-dom@>=16.8.0":
+"react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^18.0.0", "react-dom@>= 16.9.0", "react-dom@>=16.8.0":
   "integrity" "sha512-XqX7uzmFo0pUceWFCt7Gff6IyIMzFUn7QMZrbrQfGxtaxXZIcGQzoNpRLE3fQLnS4XzLLPMZX2T9TRcSrasicw=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.0.0.tgz"
   "version" "18.0.0"
@@ -8398,7 +8398,7 @@
   optionalDependencies:
     "fsevents" "^2.3.2"
 
-"react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^16.13.1 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^17.0.1", "react@^18.0.0", "react@>= 16", "react@>=15", "react@>=16.8.0":
+"react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^16.13.1 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^17.0.1", "react@^18.0.0", "react@>= 16", "react@>= 16.9.0", "react@>=15", "react@>=16.8.0":
   "integrity" "sha512-x+VL6wbT4JRVPm7EGxXhZ8w8LTROaxPXOqhlGyVSrv0sB1jkyFGgXxJ8LVoPRLvPR6/CIZGFmfzqUa2NYeMr2A=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.0.0.tgz"
   "version" "18.0.0"
@@ -9357,6 +9357,16 @@
   dependencies:
     "browserslist" "^4.16.6"
     "postcss-selector-parser" "^6.0.4"
+
+"suneditor-react@^3.4.1":
+  "integrity" "sha512-xsfMjy2748x8Bcw/SeT2CeecrBABcJPyCO+LPourVLcQg8QW/A9FbIfP0DghNlBkH/gxy9iviR5wVydg9UW2wQ=="
+  "resolved" "https://registry.npmjs.org/suneditor-react/-/suneditor-react-3.4.1.tgz"
+  "version" "3.4.1"
+
+"suneditor@^2.42.0", "suneditor@^2.43.14":
+  "integrity" "sha512-5FMoAW/TwwU2MQl795iE1RZy5vHxgReHJjo208z2SAyr/erG2N4XDv392tThHAe0fWBNvx3b8HfaMrrj5do00w=="
+  "resolved" "https://registry.npmjs.org/suneditor/-/suneditor-2.43.14.tgz"
+  "version" "2.43.14"
 
 "supports-color@^5.3.0":
   "integrity" "sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow=="
