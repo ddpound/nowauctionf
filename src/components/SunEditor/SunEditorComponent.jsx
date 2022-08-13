@@ -71,6 +71,19 @@ export default function SunEditorComponent({
           aria-describedby="basic-addon1"
         />
       </div>
+      <div className="input-group mb-3">
+        <span className="input-group-text" id="basic-addon1">
+          제품수량
+        </span>
+        <input
+          id="productquantity"
+          type="number"
+          className="form-control"
+          placeholder="제품 수량 입력해주세요"
+          aria-label="Username"
+          aria-describedby="basic-addon1"
+        />
+      </div>
       <div className="mb-3">
         <label htmlFor="formFileMultiple" className="form-label">
           썸네일은 최대 3장 입니다.
@@ -147,8 +160,16 @@ export default function SunEditorComponent({
           onClick={() => {
             const productname = document.getElementById("productname").value;
             const productprice = document.getElementById("productprice").value;
+            const productquantity =
+              document.getElementById("productquantity").value;
 
-            onSubmit(content, files, productname, productprice);
+            onSubmit(
+              content,
+              files,
+              productname,
+              productprice,
+              productquantity
+            );
           }}
         >
           등록하기

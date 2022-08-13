@@ -15,19 +15,24 @@ import SunEditorComponent from "../../../components/SunEditor/SunEditorComponent
 
 // Page입니다.
 export default function ProductRegistrationWrite(props) {
-  const initialContent = "Hello World";
-  const onSubmit = (content, files, productname, productprice) => {
+  const initialContent = "제품 설명을 작성해주세요 사진은 최대 10장입니다.";
+  const onSubmit = (
+    content,
+    files,
+    productname,
+    productprice,
+    productquantity
+  ) => {
     const formData = new FormData();
 
     console.log("Submitted Content", productname);
     console.log("Submitted Content", productprice);
-
     console.log("Submitted Content", files);
-
     console.log("Submitted Content", content);
 
     formData.append("productname", productname);
     formData.append("productprice", productprice);
+    formData.append("productquantity", productquantity);
     formData.append("content", content);
     formData.append("thumbnail1", files[0]);
     formData.append("thumbnail2", files[1]);
