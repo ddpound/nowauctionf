@@ -11,134 +11,48 @@ import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 
 import { requestPostHaveToken } from "../../../commonFuntions/requestHaveToken";
 
-//최대 세장
-function thumbnailFileUpload() {
-  let fileData = document.getElementById("formFileMultiple").files;
-
-  console.log(fileData);
-  console.log(fileData[0]);
-
-  if (fileData.length > 3) {
-    alert("썸네일은 최대 3장입니다.");
-    document.getElementById("formFileMultiple").value = "";
-  }
-}
+import SunEditorComponent from "../../../components/SunEditor/SunEditorComponent";
 
 // Page입니다.
 export default function ProductRegistrationWrite(props) {
-  const editor = useRef();
+  const initialContent = "Hello World";
+  const onSubmit = (content, files, productname, productprice) => {
+    const formData = new FormData();
 
-  // The sunEditor parameter will be set to the core suneditor instance when this function is called
-  const getSunEditorInstance = (sunEditor) => {
-    editor.current = sunEditor;
-  };
+    console.log("Submitted Content", productname);
+    console.log("Submitted Content", productprice);
 
-  const handleImageUploadBefore = (files, info, uploadHandler) => {
-    // uploadHandler is a function
-    console.log(files, info);
+    console.log("Submitted Content", files);
 
-    var formData = new FormData();
+    console.log("Submitted Content", content);
 
-    formData.append("file", files[0]);
+    formData.append("productname", productname);
+    formData.append("productprice", productprice);
+    formData.append("content", content);
+    formData.append("thumbnail1", files[0]);
+    formData.append("thumbnail2", files[1]);
+    formData.append("thumbnail3", files[2]);
 
-    requestPostHaveToken("/seller/temporary-image-save", null, formData).then(
-      (res) => {
-        const response = { result: [{ url: res.data.url }] };
+    const rqPhT = requestPostHaveToken("/seller/save-product", props, formData);
 
-        uploadHandler(response);
-      }
-    );
+    rqPhT
+      .then(() => {
+        alert("제품등록에 성공하셨습니다.");
+      })
+      .catch((Error) => {
+        console.log(Error);
+      });
 
-    //uploadHandler(files);
+    // 여기서 세이브 진행하면 될듯
   };
 
   return (
-    <div className="container mt-5">
-      <div className="input-group mb-3">
-        <span className="input-group-text" id="basic-addon1">
-          제품이름
-        </span>
-        <input
-          id="productname"
-          type="text"
-          className="form-control"
-          placeholder="제품이름을 입력해주세요"
-          aria-label="Username"
-          aria-describedby="basic-addon1"
-        />
-      </div>
-      <div className="input-group mb-3">
-        <span className="input-group-text" id="basic-addon1">
-          제품가격
-        </span>
-        <input
-          id="productprice"
-          type="number"
-          className="form-control"
-          placeholder="제품 가격을 입력해주세요"
-          aria-label="Username"
-          aria-describedby="basic-addon1"
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="formFileMultiple" className="form-label">
-          썸네일은 최대 3장 입니다.
-        </label>
-        <input
-          className="form-control"
-          type="file"
-          id="formFileMultiple"
-          multiple
-          onChange={() => {
-            thumbnailFileUpload();
-          }}
-        />
-      </div>
-
-      <label className="form-label">
-        <h3>설명에 들어가는 사진은 최대 10장입니다.</h3>
-      </label>
-      <SunEditor
-        onImageUploadBefore={handleImageUploadBefore}
-        setOptions={{
-          height: 200,
-          buttonList: [
-            ["undo", "redo"],
-            ["font", "fontSize", "formatBlock"],
-            ["paragraphStyle", "blockquote"],
-            [
-              "bold",
-              "underline",
-              "italic",
-              "strike",
-              "subscript",
-              "superscript",
-            ],
-            ["fontColor", "hiliteColor", "textStyle"],
-            ["removeFormat"],
-
-            ["outdent", "indent"],
-            ["align", "horizontalRule", "list", "lineHeight"],
-            ["table", "link", "image", "video", "audio" /** ,'math' */], // You must add the 'katex' library at options to use the 'math' plugin.
-
-            ["fullScreen", "showBlocks"],
-            ["preview", "print"],
-            ["save"],
-            "/", // Line break
-            // 여기서 빼놓은거  "template" , "codeView"
-          ],
-        }}
-        plugins={["image"]}
-        height={"1100"}
-        lang={"ko"}
-        getSunEditorInstance={getSunEditorInstance}
-        placeholder={"물건에 대한 설명 사진을 넣어주세요 최대 10장"}
+    <div className="App">
+      <SunEditorComponent
+        initialContent={initialContent}
+        onSubmit={onSubmit}
+        title="제품등록"
       />
-      <div className="d-grid gap-2">
-        <button onClick={() => {}} type="button" className="btn btn-dark">
-          제품등록
-        </button>
-      </div>
     </div>
   );
 }
