@@ -15,6 +15,7 @@ export default function ModalCommonsComponent({
   show,
   setShow,
   yesfunction, // yes눌렀을때 실행될 함수를 넣어주자
+  setIsLeave, // isleave가 참일 때 밖으로 나가진다
 }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -22,6 +23,7 @@ export default function ModalCommonsComponent({
   // 네 를 눌렀을 때
   const yesPart = () => {
     setShow(false);
+    setIsLeave(true);
   };
   return (
     <>

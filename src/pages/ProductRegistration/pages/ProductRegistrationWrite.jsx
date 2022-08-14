@@ -21,25 +21,27 @@ export default function ProductRegistrationWrite(props) {
   const [show, setShow] = useState(false);
   const [nextLocation, setNextLocation] = useState("");
 
-  const [shouldConfirm, setShouldConfirm] = useState(false);
+  const [shouldConfirm, setShouldConfirm] = useState(true);
 
   // 여기에 axios를 담으면 될듯
   const deleteRequest = () => {};
 
   const handlePrompt = (location) => {
+    setShow(true);
+
     if (!isLeave && shouldConfirm) {
       setNextLocation(location.pathname);
-      setShow(true);
 
       return false;
     }
-    console.log("테스트 2");
+
     return true;
   };
 
   useEffect(() => {
     if (isLeave) {
-      shouldConfirm(false);
+      setShouldConfirm(false);
+      console.log("작도오오옹");
       return props.history.push(nextLocation);
     }
   }, [isLeave, props.history]);
@@ -101,6 +103,7 @@ export default function ProductRegistrationWrite(props) {
         nopart={"아니요"}
         show={show}
         setShow={setShow}
+        setIsLeave={setIsLeave}
       />
     </>
   );
