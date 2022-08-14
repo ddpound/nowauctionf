@@ -7,13 +7,21 @@ import SunEditorComponent from "./SunEditorComponent";
 
 export default function ExampleSunEditorUse() {
   const initialContent = "Hello World";
-  const onSubmit = (content, files, productname, productprice) => {
+  const onSubmit = (
+    content,
+    files,
+    productname,
+    productprice,
+    productquantity
+  ) => {
     console.log("Submitted Content", productname);
     console.log("Submitted Content", productprice);
 
     console.log("Submitted Content", files);
 
     console.log("Submitted Content", content);
+
+    console.log("productquantity", productquantity);
   };
 
   return (
