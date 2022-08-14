@@ -3,15 +3,19 @@ import axios from "axios";
 import { React, useState, useEffect, useRef } from "react";
 import { Link, Prompt } from "react-router-dom";
 
-import SunEditor, { buttonList } from "suneditor-react";
+// import SunEditor, { buttonList } from "suneditor-react";
 
 import ModalCommonsComponent from "../../../components/ModalCommonsComponent";
+import SetShowAndShouldConfirm from "../JSComponents/SetShowAndShouldConfirm";
 
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 // 썸네일 사진 최대3장
 // 글 작성 사진 최대 10장
 
-import { requestPostHaveToken } from "../../../commonFuntions/requestHaveToken";
+import {
+  requestPostHaveToken,
+  requestGetHaveToken,
+} from "../../../commonFuntions/requestHaveToken";
 
 import SunEditorComponent from "../../../components/SunEditor/SunEditorComponent";
 
@@ -21,10 +25,16 @@ export default function ProductRegistrationWrite(props) {
   const [show, setShow] = useState(false);
   const [nextLocation, setNextLocation] = useState("");
 
+  const [successProduct, setSuccessProduct] = useState(false);
+
   const [shouldConfirm, setShouldConfirm] = useState(true);
 
   // 여기에 axios를 담으면 될듯
-  const deleteRequest = () => {};
+  const deleteRequest = () => {
+    requestGetHaveToken("/seller/delete-temporary-iamge").catch((Error) => {
+      console.log(Error);
+    });
+  };
 
   const handlePrompt = (location) => {
     setShow(true);
@@ -41,10 +51,21 @@ export default function ProductRegistrationWrite(props) {
   useEffect(() => {
     if (isLeave) {
       setShouldConfirm(false);
-      console.log("작도오오옹");
+
       return props.history.push(nextLocation);
     }
   }, [isLeave, props.history]);
+
+  // 제품등록시 늦는 render 때문에 useEffect를 하나 더둠
+  // 반드시 필요함
+  useEffect(() => {
+    if (successProduct) {
+      setShouldConfirm(false);
+
+      alert("제품등록에 성공하셨습니다.");
+      return props.history.push("/");
+    }
+  }, [successProduct]);
 
   const initialContent = "제품 설명을 작성해주세요 사진은 최대 10장입니다.";
   const onSubmit = (
@@ -55,11 +76,6 @@ export default function ProductRegistrationWrite(props) {
     productquantity
   ) => {
     const formData = new FormData();
-
-    console.log("Submitted Content", productname);
-    console.log("Submitted Content", productprice);
-    console.log("Submitted Content", files);
-    console.log("Submitted Content", content);
 
     formData.append("productname", productname);
     formData.append("productprice", productprice);
@@ -73,9 +89,9 @@ export default function ProductRegistrationWrite(props) {
 
     rqPhT
       .then(() => {
-        show(false);
-        props.history.push("/");
-        alert("제품등록에 성공하셨습니다.");
+        setShow(false);
+        setShouldConfirm(false);
+        setSuccessProduct(true);
       })
       .catch((Error) => {
         console.log(Error);
@@ -96,13 +112,12 @@ export default function ProductRegistrationWrite(props) {
       <Prompt when={shouldConfirm} message={handlePrompt} />
       <ModalCommonsComponent
         modalHeading={"나가기"}
-        question={
-          "나가시면 작성했던 내용이 전부 날라갑니다. 그래도 나가시겠습니까?"
-        }
+        question={"작성내용이 없어집니다. 그래도 나가시겠습니까?"}
         yespart={"네"}
         nopart={"아니요"}
         show={show}
         setShow={setShow}
+        yesfunction={deleteRequest}
         setIsLeave={setIsLeave}
       />
     </>

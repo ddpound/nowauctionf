@@ -24,6 +24,7 @@ export default function ModalCommonsComponent({
   const yesPart = () => {
     setShow(false);
     setIsLeave(true);
+    yesfunction();
   };
   return (
     <>
