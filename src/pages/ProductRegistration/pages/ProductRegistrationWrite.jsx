@@ -57,7 +57,7 @@ export default function ProductRegistrationWrite(props) {
   }, [isLeave, props.history]);
 
   // 제품등록시 늦는 render 때문에 useEffect를 하나 더둠
-  // 반드시 필요함
+  // 반드시 필요함 , 오늘이나 내일 모듈화 예정
   useEffect(() => {
     if (successProduct) {
       setShouldConfirm(false);
