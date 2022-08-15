@@ -6,7 +6,6 @@ import { Link, Prompt } from "react-router-dom";
 // import SunEditor, { buttonList } from "suneditor-react";
 
 import ModalCommonsComponent from "../../../components/ModalCommonsComponent";
-import SetShowAndShouldConfirm from "../JSComponents/SetShowAndShouldConfirm";
 
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 // 썸네일 사진 최대3장
@@ -20,6 +19,7 @@ import {
 import SunEditorComponent from "../../../components/SunEditor/SunEditorComponent";
 
 // Page입니다.
+// 중요 여기다가 또 수정또한 할꺼임
 export default function ProductRegistrationWrite(props) {
   const [isLeave, setIsLeave] = useState(false);
   const [show, setShow] = useState(false);
@@ -67,7 +67,9 @@ export default function ProductRegistrationWrite(props) {
     }
   }, [successProduct]);
 
+  // 수정부분이 될것임
   const initialContent = "제품 설명을 작성해주세요 사진은 최대 10장입니다.";
+
   const onSubmit = (
     content,
     files,

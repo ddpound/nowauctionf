@@ -12,7 +12,7 @@ export default function ModalCommonsComponent({
   question,
   yespart,
   nopart,
-  show,
+  show, // 사용할 show는 밖에 둬야함 state로
   setShow,
   yesfunction, // yes눌렀을때 실행될 함수를 넣어주자
   setIsLeave, // isleave가 참일 때 밖으로 나가진다
@@ -26,6 +26,7 @@ export default function ModalCommonsComponent({
     setIsLeave(true);
     yesfunction();
   };
+
   return (
     <>
       {/* <Button variant="primary" onClick={handleShow}>
