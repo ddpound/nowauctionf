@@ -30,6 +30,10 @@ import MainShoppingMallPage from './pages/ShoppingMalls/MyShoppingMallPage';
 // 제품 작성
 import ProductRegistrationWrite from './pages/ProductRegistration/pages/ProductRegistrationWrite';
 
+// 쇼핑몰 보기
+import UserShowShoppingMall from './pages/ShoppingMalls/UserShowShoppingMall/UserShowShoppingMall';
+
+
 function App() {
   
 
@@ -60,6 +64,9 @@ function App() {
     <PublicRoute path="/announcement-main" exact component={MainAnnouncement}/>
 
     <PublicRoute path="/announcement/:id" exact component={AnnouncementRead}/>
+     
+     {/* 쇼핑몰 보기 */}
+    <PublicRoute path="/show-shoppingmall/:id" exact component={UserShowShoppingMall}/>
 
     <PublicRoute path="/board/:id" exact component={BoardPage} />
     
