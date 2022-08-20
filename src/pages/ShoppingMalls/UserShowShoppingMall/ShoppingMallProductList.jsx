@@ -13,6 +13,8 @@ export default function ShoppingMallProductList({
   const [productList, setProductList] = useState([]);
   const [postingNumber, setPostingNumber] = useState(onePagePostNumber);
   const [page, setPage] = useState(1);
+
+  // 페이지 네이션
   const offset = (page - 1) * postingNumber;
 
   useEffect(() => {
@@ -27,5 +29,24 @@ export default function ShoppingMallProductList({
 
   console.log(productList);
 
-  return <ShoppingMallProductComponent />;
+  return (
+    !!productList && (
+      <div className="container mt-5">
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          {productList.map((productList) => {
+            return (
+              <ShoppingMallProductComponent
+                key={productList.id}
+                name={productList.productName}
+                seller={productList.shoppingMall.userModel.nickname}
+                price={productList.productPrice}
+                quantity={productList.productQuantity}
+              />
+            );
+          })}
+          ;
+        </div>
+      </div>
+    )
+  );
 }
