@@ -5,24 +5,30 @@ import "bootstrap/dist/js/bootstrap.bundle";
 import SunEditor from "suneditor-react";
 import { requestPostHaveToken } from "../../commonFuntions/requestHaveToken";
 
+import { Form } from "react-bootstrap";
+
+// 카테고리 선택할때 이미 있는 카테고리가 있는 걸 보여주며(get요청)
+// 다른 카테고리를 만들때는 자동으로 만들게 해줌
+
 export default function SunEditorSellerWriteComponent({
   initialContent = "",
   title,
   onSubmit,
+  category,
 }) {
   const [content, setContent] = useState(initialContent);
 
   const [files, setFiles] = useState("");
 
+  const [categorySelect, setCategorySelect] = useState("");
+
   const editor = useRef();
 
-  // The sunEditor parameter will be set to the core suneditor instance when this function is called
   const getSunEditorInstance = (sunEditor) => {
     editor.current = sunEditor;
   };
 
   const handleImageUploadBefore = (files, info, uploadHandler) => {
-    // uploadHandler is a function
     console.log(files, info);
 
     var formData = new FormData();
@@ -39,6 +45,9 @@ export default function SunEditorSellerWriteComponent({
 
     //uploadHandler(files);
   };
+
+  // 셀렉터의 값이 바뀔때 마다
+  useEffect(() => {}, [categorySelect]);
 
   return (
     <div className="container mt-5">
@@ -64,7 +73,24 @@ export default function SunEditorSellerWriteComponent({
         <input className="form-control" type="file" id="formFileMultiple" />
       </div>
 
-      <label className="form-label">
+      <div className="mt-3">
+        <label htmlFor="categorySelecter" className="form-label">
+          카테고리
+        </label>
+        <Form.Select
+          id="categorySelecter"
+          aria-label="Default select example"
+          onChange={() => {
+            setCategorySelect(this.value);
+          }}
+        >
+          <option>기본 카테고리는 공지 입니다.</option>
+
+          <option value="3">카테고리만들기</option>
+        </Form.Select>
+      </div>
+
+      <label className="form-label mt-4">
         <h3>글에 들어가는 사진은 최대 10장입니다.</h3>
       </label>
 

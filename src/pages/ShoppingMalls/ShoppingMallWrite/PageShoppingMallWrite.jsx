@@ -13,6 +13,7 @@ import {
 import SunEditorSellerWriteComponent from "../../../components/SunEditor/SunEditorSellerWriteComponent";
 
 // Page jsx입니다.
+// 판매자가 글을 작성하는 곳 입니다.
 
 export default function PageShoppingMallWrite(props) {
   const [isLeave, setIsLeave] = useState(false);
@@ -22,6 +23,9 @@ export default function PageShoppingMallWrite(props) {
   const [successProduct, setSuccessProduct] = useState(false);
 
   const [shouldConfirm, setShouldConfirm] = useState(true);
+
+  // 카테고리를 가져올 리스트
+  const [categoryList, setCategoryList] = useState([]);
 
   // 여기에 axios를 담으면 될듯
   const deleteRequest = () => {
@@ -33,12 +37,13 @@ export default function PageShoppingMallWrite(props) {
   // 수정부분이 될것임
   const initialContent = "글작성 해주세요 사진 첨부는 최대 세장입니다.";
 
-  const onSubmit = (content, files, title, productprice, productquantity) => {
+  const onSubmit = (content, files, title, category) => {
     const formData = new FormData();
 
     if (!!files) {
       formData.append("title", title);
       formData.append("content", content);
+      formData.append("category", category);
       formData.append("thumbnail1", files[0]);
 
       const rqPhT = requestPostHaveToken("/seller/save-board", props, formData);
@@ -70,6 +75,18 @@ export default function PageShoppingMallWrite(props) {
     return true;
   };
 
+  // 카테고리 값 가져오는 부분
+  useEffect(() => {
+    requestGetHaveToken("/seller/get-category-list")
+      .then((res) => {
+        console.log(res);
+        setCategoryList(res);
+      })
+      .catch((Error) => {
+        console.log(Error);
+      });
+  }, []);
+
   useEffect(() => {
     if (isLeave) {
       setShouldConfirm(false);
@@ -95,6 +112,7 @@ export default function PageShoppingMallWrite(props) {
         initialContent={initialContent}
         onSubmit={onSubmit}
         title="글작성"
+        category={categoryList}
       />
       <div className="container"></div>
       <Prompt when={shouldConfirm} message={handlePrompt} />

@@ -27,7 +27,7 @@ export default function UserShowShoppingMall(props) {
   }, []);
 
   return (
-    <div className="container">
+    <div className="container mt-5">
       <p className="h1 text-center" style={{ fontSize: "72px" }}>
         {shoppingMall.shoppingMallName}
       </p>
