@@ -33,6 +33,8 @@ import ProductRegistrationWrite from './pages/ProductRegistration/pages/ProductR
 // 쇼핑몰 보기
 import UserShowShoppingMall from './pages/ShoppingMalls/UserShowShoppingMall/UserShowShoppingMall';
 
+// 쇼핑몰 작성
+import PageShoppingMallWrite from './pages/ShoppingMalls/ShoppingMallWrite/PageShoppingMallWrite';
 
 function App() {
   
@@ -51,7 +53,11 @@ function App() {
 
     <AdminRoute path="/admin-page/" exact component={MainAdminPage}/>
 
+    {/* 내 쇼핑몰 보기 (판매자만 해당)*/}
     <SellerRoute path="/my-shoppingmall-page" exact component={MainShoppingMallPage}/>
+    
+    내 쇼핑몰 글쓰기 (판매자만 해당)
+    <SellerRoute path="/seller-write" exact component={PageShoppingMallWrite}/>
 
     {/* 제품 글쓰기 (판매자만 해당)*/}
     <SellerRoute path="/product-write" exact component={ProductRegistrationWrite}/>

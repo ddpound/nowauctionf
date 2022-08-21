@@ -15,7 +15,8 @@ export default function ShoppingMallProductComponent({
   quantity,
   thumbnail,
 }) {
-  const splitThumnail = thumbnail.slice(0, -1).split(",");
+  const slicepath = thumbnail.slice(0, -1);
+  const splitThumnail = slicepath.split(",");
 
   return (
     !!name && (
