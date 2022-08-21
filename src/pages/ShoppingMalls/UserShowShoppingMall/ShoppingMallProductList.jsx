@@ -30,8 +30,8 @@ export default function ShoppingMallProductList({
   console.log(productList);
 
   return (
-    !!productList && (
-      <div className="container mt-5">
+    <div className="container mt-5">
+      {!!productList && (
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
           {productList.map((productList) => {
             return (
@@ -41,12 +41,17 @@ export default function ShoppingMallProductList({
                 seller={productList.shoppingMall.userModel.nickname}
                 price={productList.productPrice}
                 quantity={productList.productQuantity}
+                thumbnail={productList.pictureUrlPath}
               />
             );
           })}
-          ;
         </div>
-      </div>
-    )
+      )}
+      {productList.length === 0 && (
+        <div className="container mt-5">
+          <h3>등록된 제품이 없습니다.</h3>
+        </div>
+      )}
+    </div>
   );
 }

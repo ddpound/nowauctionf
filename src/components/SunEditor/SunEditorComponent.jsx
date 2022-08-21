@@ -86,7 +86,7 @@ export default function SunEditorComponent({
       </div>
       <div className="mb-3">
         <label htmlFor="formFileMultiple" className="form-label">
-          썸네일은 최대 3장 입니다.
+          썸네일 사진은 꼭 넣어주셔야하며 최대 3장 입니다.
         </label>
         <input
           className="form-control"

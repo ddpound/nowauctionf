@@ -13,54 +13,42 @@ export default function ShoppingMallProductComponent({
   seller,
   price,
   quantity,
+  thumbnail,
 }) {
-  // map으로 받아내야함
+  const splitThumnail = thumbnail.slice(0, -1).split(",");
+
   return (
     !!name && (
       <div className="col">
         <div className="card shadow-sm">
           {/* 설명 썸네일 부분 */}
           <Carousel>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="/thumbnail/jangThumbnail.png"
-                alt="First slide"
-              />
-              <Carousel.Caption>
-                <h3>First slide label</h3>
-                <p>
-                  Nulla vitae elit libero, a pharetra augue mollis interdum.
-                </p>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="/thumbnail/jangThumbnail.png"
-                alt="Second slide"
-              />
-
-              <Carousel.Caption>
-                <h3>Second slide label</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="/thumbnail/jangThumbnail.png"
-                alt="Third slide"
-              />
-
-              <Carousel.Caption>
-                <h3>Third slide label</h3>
-                <p>
-                  Praesent commodo cursus magna, vel scelerisque nisl
-                  consectetur.
-                </p>
-              </Carousel.Caption>
-            </Carousel.Item>
+            {!!splitThumnail ? (
+              splitThumnail.map((thumbnail) => {
+                return (
+                  <Carousel.Item key={thumbnail}>
+                    <img
+                      className="d-block w-100"
+                      style={{
+                        minWidth: "100%",
+                        minHeight: "400px",
+                        maxHeight: "400px",
+                      }}
+                      src={thumbnail}
+                      alt="thumbnail"
+                    />
+                  </Carousel.Item>
+                );
+              })
+            ) : (
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src="/thumbnail/jangThumnail.png"
+                  alt="default"
+                />
+              </Carousel.Item>
+            )}
           </Carousel>
           <Link to="/chat-room/1">
             {/* 설명 썸네일 부분 */}

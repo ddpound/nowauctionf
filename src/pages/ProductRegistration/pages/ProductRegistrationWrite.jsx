@@ -79,27 +79,35 @@ export default function ProductRegistrationWrite(props) {
   ) => {
     const formData = new FormData();
 
-    formData.append("productname", productname);
-    formData.append("productprice", productprice);
-    formData.append("productquantity", productquantity);
-    formData.append("content", content);
-    formData.append("thumbnail1", files[0]);
-    formData.append("thumbnail2", files[1]);
-    formData.append("thumbnail3", files[2]);
+    if (!!files) {
+      formData.append("productname", productname);
+      formData.append("productprice", productprice);
+      formData.append("productquantity", productquantity);
+      formData.append("content", content);
+      formData.append("thumbnail1", files[0]);
+      formData.append("thumbnail2", files[1]);
+      formData.append("thumbnail3", files[2]);
 
-    const rqPhT = requestPostHaveToken("/seller/save-product", props, formData);
+      const rqPhT = requestPostHaveToken(
+        "/seller/save-product",
+        props,
+        formData
+      );
 
-    rqPhT
-      .then(() => {
-        setShow(false);
-        setShouldConfirm(false);
-        setSuccessProduct(true);
-      })
-      .catch((Error) => {
-        console.log(Error);
-      });
+      rqPhT
+        .then(() => {
+          setShow(false);
+          setShouldConfirm(false);
+          setSuccessProduct(true);
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
 
-    // 여기서 세이브 진행하면 될듯
+      // 여기서 세이브 진행하면 될듯
+    } else {
+      alert("제품의 썸네일 사진은 필수입니다!");
+    }
   };
 
   return (
