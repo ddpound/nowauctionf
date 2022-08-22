@@ -5,7 +5,7 @@ import "bootstrap/dist/js/bootstrap.bundle";
 import SunEditor from "suneditor-react";
 import { requestPostHaveToken } from "../../commonFuntions/requestHaveToken";
 
-import { Form } from "react-bootstrap";
+import { Form, Collapse, InputGroup, Button } from "react-bootstrap";
 
 // 카테고리 선택할때 이미 있는 카테고리가 있는 걸 보여주며(get요청)
 // 다른 카테고리를 만들때는 자동으로 만들게 해줌
@@ -14,13 +14,18 @@ export default function SunEditorSellerWriteComponent({
   initialContent = "",
   title,
   onSubmit,
-  category,
+  categoryList,
+  setCategoryListCheck,
 }) {
   const [content, setContent] = useState(initialContent);
 
   const [files, setFiles] = useState("");
 
+  // 현재 셀렉트 카테고리 선택값
   const [categorySelect, setCategorySelect] = useState("");
+
+  // 카테고리를 만들기를 눌렀을때 작동할
+  const [open, setOpen] = useState(false);
 
   const editor = useRef();
 
@@ -47,7 +52,14 @@ export default function SunEditorSellerWriteComponent({
   };
 
   // 셀렉터의 값이 바뀔때 마다
-  useEffect(() => {}, [categorySelect]);
+  // 만약 categoryList.length+1 값을 찍는 다면
+  useEffect(() => {
+    if (categoryList.length + 1 == categorySelect) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [categorySelect]);
 
   return (
     <div className="container mt-5">
@@ -80,14 +92,66 @@ export default function SunEditorSellerWriteComponent({
         <Form.Select
           id="categorySelecter"
           aria-label="Default select example"
-          onChange={() => {
-            setCategorySelect(this.value);
+          onChange={(e) => {
+            return setCategorySelect(e.target.value);
           }}
+          aria-controls="example-collapse-text"
+          aria-expanded={open}
         >
-          <option>기본 카테고리는 공지 입니다.</option>
+          <option value={0}>기본 카테고리는 공지 입니다.</option>
+          {categoryList.length > 0 &&
+            categoryList.map((categoryList) => {
+              return (
+                <option key={categoryList.id} value={categoryList.id}>
+                  {categoryList.categoryName}
+                </option>
+              );
+            })}
 
-          <option value="3">카테고리만들기</option>
+          <option value={categoryList.length + 1}>카테고리만들기</option>
         </Form.Select>
+        <Collapse in={open}>
+          <div id="example-collapse-text">
+            <InputGroup className="mb-3">
+              <Form.Control
+                placeholder="추가할 카테고리를 입력해주세요"
+                aria-label="Category add"
+                aria-describedby="basic-addon2"
+                id="inputCategory"
+              />
+              <Button
+                variant="outline-secondary"
+                id="button-addon2"
+                onClick={() => {
+                  const formData = new FormData();
+                  const newCategory =
+                    document.getElementById("inputCategory").value;
+
+                  // 공백 검사기
+                  var blank_pattern = /[\s]/g;
+
+                  if (blank_pattern.test(newCategory) == true) {
+                    alert("카테고리에 공백은 빼주셔야합니다.");
+                  } else {
+                    formData.append("categoryName", newCategory);
+                    requestPostHaveToken(
+                      "/seller/save-category",
+                      null,
+                      formData
+                    ).then(() => {
+                      //초기화
+                      document.getElementById("inputCategory").value = "";
+                      setOpen(false);
+                      setCategoryListCheck(true);
+                    });
+                  }
+                }}
+              >
+                추가
+              </Button>
+            </InputGroup>
+          </div>
+        </Collapse>
       </div>
 
       <label className="form-label mt-4">

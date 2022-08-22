@@ -27,6 +27,9 @@ export default function PageShoppingMallWrite(props) {
   // 카테고리를 가져올 리스트
   const [categoryList, setCategoryList] = useState([]);
 
+  // 이게 참일때 리스트 요청을 한번 더해준다
+  const [categoryListCheck, setCategoryListCheck] = useState(false);
+
   // 여기에 axios를 담으면 될듯
   const deleteRequest = () => {
     requestGetHaveToken("/seller/delete-temporary-iamge").catch((Error) => {
@@ -76,11 +79,25 @@ export default function PageShoppingMallWrite(props) {
   };
 
   // 카테고리 값 가져오는 부분
+  // 체크 부분이 참일 때 실행,
   useEffect(() => {
     requestGetHaveToken("/seller/get-category-list")
       .then((res) => {
         console.log(res);
-        setCategoryList(res);
+        setCategoryList(res.data);
+        setCategoryListCheck(false);
+      })
+      .catch((Error) => {
+        console.log(Error);
+      });
+  }, [categoryListCheck]);
+
+  // 카테고리 값 가져오는 부분
+  useEffect(() => {
+    requestGetHaveToken("/seller/get-category-list")
+      .then((res) => {
+        console.log(res);
+        setCategoryList(res.data);
       })
       .catch((Error) => {
         console.log(Error);
@@ -112,7 +129,8 @@ export default function PageShoppingMallWrite(props) {
         initialContent={initialContent}
         onSubmit={onSubmit}
         title="글작성"
-        category={categoryList}
+        categoryList={categoryList}
+        setCategoryListCheck={setCategoryListCheck}
       />
       <div className="container"></div>
       <Prompt when={shouldConfirm} message={handlePrompt} />
