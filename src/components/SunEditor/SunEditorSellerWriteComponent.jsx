@@ -39,6 +39,7 @@ export default function SunEditorSellerWriteComponent({
     var formData = new FormData();
 
     formData.append("file", files[0]);
+    setFiles(files);
 
     requestPostHaveToken("/seller/temporary-image-save", null, formData).then(
       (res) => {
@@ -127,10 +128,15 @@ export default function SunEditorSellerWriteComponent({
                   const newCategory =
                     document.getElementById("inputCategory").value;
 
+                  //공백만 입력되었을때
+                  var blank_pattern = /^\s+|\s+$/g;
+
                   // 공백 검사기
                   var blank_pattern = /[\s]/g;
 
-                  if (blank_pattern.test(newCategory) == true) {
+                  if (newCategory.replace(blank_pattern, "") == "") {
+                    alert("공백만 입력되었습니다.");
+                  } else if (blank_pattern.test(newCategory) == true) {
                     alert("카테고리에 공백은 빼주셔야합니다.");
                   } else {
                     formData.append("categoryName", newCategory);
@@ -141,6 +147,7 @@ export default function SunEditorSellerWriteComponent({
                     ).then(() => {
                       //초기화
                       document.getElementById("inputCategory").value = "";
+                      document.getElementById("categorySelecter").value = 0;
                       setOpen(false);
                       setCategoryListCheck(true);
                     });
@@ -202,9 +209,10 @@ export default function SunEditorSellerWriteComponent({
         <button
           className="btn btn-dark"
           onClick={() => {
-            const productname = document.getElementById("title").value;
+            const title = document.getElementById("title").value;
+            const category = document.getElementById("categorySelecter").value;
 
-            onSubmit(content, files, productname);
+            onSubmit(content, files, title, category);
           }}
         >
           작성하기

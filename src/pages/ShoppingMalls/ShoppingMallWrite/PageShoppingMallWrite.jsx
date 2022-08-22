@@ -47,7 +47,7 @@ export default function PageShoppingMallWrite(props) {
       formData.append("title", title);
       formData.append("content", content);
       formData.append("category", category);
-      formData.append("thumbnail1", files[0]);
+      formData.append("thumbnail", files[0]);
 
       const rqPhT = requestPostHaveToken("/seller/save-board", props, formData);
 
