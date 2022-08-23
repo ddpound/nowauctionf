@@ -36,6 +36,9 @@ import UserShowShoppingMall from './pages/ShoppingMalls/UserShowShoppingMall/Use
 // 쇼핑몰 작성
 import PageShoppingMallWrite from './pages/ShoppingMalls/ShoppingMallWrite/PageShoppingMallWrite';
 
+// 제품보기
+import ProductShowPage from './pages/ShoppingMalls/ProductShowPage';
+
 function App() {
   
 
@@ -71,6 +74,9 @@ function App() {
 
     <PublicRoute path="/announcement/:id" exact component={AnnouncementRead}/>
      
+     {/* 제품 보기 */}
+    <PublicRoute path="/product-show/:id" exact component={ProductShowPage}/>
+
      {/* 쇼핑몰 보기 */}
     <PublicRoute path="/show-shoppingmall/:id" exact component={UserShowShoppingMall}/>
 

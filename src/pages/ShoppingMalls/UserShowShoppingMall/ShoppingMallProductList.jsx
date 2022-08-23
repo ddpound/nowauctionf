@@ -41,6 +41,7 @@ export default function ShoppingMallProductList({
               return (
                 <ShoppingMallProductComponent
                   key={productList.id}
+                  productId={productList.id}
                   name={productList.productName}
                   seller={productList.shoppingMall.userModel.nickname}
                   price={productList.productPrice}

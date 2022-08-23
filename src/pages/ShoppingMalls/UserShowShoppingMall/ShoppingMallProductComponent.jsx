@@ -6,9 +6,8 @@ import { Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import Carousel from "react-bootstrap/Carousel";
 
-// 썸네일 생각
-
 export default function ShoppingMallProductComponent({
+  productId,
   name,
   seller,
   price,
@@ -17,6 +16,8 @@ export default function ShoppingMallProductComponent({
 }) {
   const slicepath = thumbnail.slice(0, -1);
   const splitThumnail = slicepath.split(",");
+
+  let url = "/product-show/" + productId;
 
   return (
     !!name && (
@@ -51,7 +52,7 @@ export default function ShoppingMallProductComponent({
               </Carousel.Item>
             )}
           </Carousel>
-          <Link to="/chat-room/1">
+          <Link to={url}>
             {/* 설명 썸네일 부분 */}
             <div className="card-body">
               <h5 className="card-title">{name}</h5>
