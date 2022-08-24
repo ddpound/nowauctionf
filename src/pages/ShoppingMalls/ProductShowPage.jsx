@@ -4,6 +4,7 @@ import "bootstrap/dist/js/bootstrap.bundle";
 
 import SunEditor from "suneditor-react";
 import { Viewer } from "@toast-ui/react-editor";
+
 import {
   requestPostHaveToken,
   requestGetHaveToken,
@@ -41,6 +42,40 @@ export default function ProductShowPage(props) {
           <div className="card-footer bg-transparent">{product.createDate}</div>
         </div>
       )}
+      <button
+        className="btn btn-primary"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasRight"
+        aria-controls="offcanvasRight"
+      >
+        구매 예약하기
+      </button>
+
+      <div
+        className="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="offcanvasRight"
+        aria-labelledby="offcanvasRightLabel"
+      >
+        <div className="offcanvas-header">
+          <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+          <button
+            type="button"
+            className="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div className="offcanvas-body">
+          <div>제품 설명</div>
+          <div>
+            <button type="button" className="btn btn-dark">
+              구매 예약
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
