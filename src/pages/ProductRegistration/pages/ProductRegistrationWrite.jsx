@@ -18,9 +18,12 @@ import {
 
 import SunEditorComponent from "../../../components/SunEditor/SunEditorComponent";
 
-// Page입니다.
-// 중요 여기다가 또 수정또한 할꺼임
-export default function ProductRegistrationWrite(props) {
+/**
+ * Page입니다.
+ * 수정, 저장 모두 여기서 진행합니다.
+ *
+ */
+export default function ProductRegistrationWrite(props, { InModify, product }) {
   const [isLeave, setIsLeave] = useState(false);
   const [show, setShow] = useState(false);
   const [nextLocation, setNextLocation] = useState("");
@@ -28,6 +31,24 @@ export default function ProductRegistrationWrite(props) {
   const [successProduct, setSuccessProduct] = useState(false);
 
   const [shouldConfirm, setShouldConfirm] = useState(true);
+
+  /**
+   * 기본은 false
+   * true 일때 수정이 진행됩니다.
+   */
+  const [modify, setModify] = useState(InModify);
+  const [modifyBoard, setModifyBoard] = useState({});
+
+  // board 값 가져오기
+  if (modify) {
+    requestGetHaveToken()
+      .then((res) => {
+        setModifyBoard(res.data);
+      })
+      .catch((Error) => {
+        console.log(Error);
+      });
+  }
 
   // 여기에 axios를 담으면 될듯
   const deleteRequest = () => {
@@ -89,7 +110,7 @@ export default function ProductRegistrationWrite(props) {
       formData.append("thumbnail3", files[2]);
 
       const rqPhT = requestPostHaveToken(
-        "/seller/save-product",
+        "/seller/save-product/false",
         props,
         formData
       );
