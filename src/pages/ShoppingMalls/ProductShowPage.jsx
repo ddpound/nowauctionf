@@ -14,12 +14,43 @@ import {
 
 /**
  * 유저와 관리자등 모두가 볼수있는 제품 뷰 페이지
- *
+ * 이미 완성된 제품 객체를 받으니 수정 onSubmit만 있으면될듯
  */
 export default function ProductShowPage(props) {
   const productId = props.match.params.id;
 
   const [product, setProduct] = useState(...[]);
+
+  const onSubmit = (
+    content,
+    files,
+    productname,
+    productprice,
+    productquantity
+  ) => {
+    const formData = new FormData();
+
+    //수정 작업이니깐 files는 없다면 빼도 됨
+    if (!!files) {
+      formData.append("thumbnail1", files[0]);
+      formData.append("thumbnail2", files[1]);
+      formData.append("thumbnail3", files[2]);
+    }
+
+    formData.append("productname", productname);
+    formData.append("productprice", productprice);
+    formData.append("productquantity", productquantity);
+    formData.append("content", content);
+
+    const requestUrl = "/seller/save-product/true";
+    const rqPhT = requestPostHaveToken(requestUrl, props, formData)
+      .then(() => {
+        alert("수정이 완료되었습니다.");
+      })
+      .catch((Error) => {
+        console.log(Error);
+      });
+  };
 
   /**
    * declare 선언하다
@@ -37,7 +68,6 @@ export default function ProductShowPage(props) {
     });
   }, []);
 
-  console.log(product);
   return (
     <div className="container mt-5">
       {!sellerIn && (
@@ -95,6 +125,7 @@ export default function ProductShowPage(props) {
           history={props.history}
           InModify={true}
           product={product}
+          onSubmit={onSubmit}
         />
       )}
 

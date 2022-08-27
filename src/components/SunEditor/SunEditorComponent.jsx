@@ -13,13 +13,30 @@ export default function SunEditorComponent({
   onSubmit,
   modifyProduct,
 }) {
+  let slicepath = "";
+  let splitThumnail = [];
+  if (!!modifyProduct) {
+    // ,로 나뉜 썸네일 꺼내기
+    slicepath = modifyProduct.pictureUrlPath.slice(0, -1);
+    splitThumnail = slicepath.split(",");
+  }
+
+  const [modifyThumbnail, setModifyThumbnail] = useState(splitThumnail);
+
+  const getSunEditorInstance = (sunEditor) => {
+    editor.current = sunEditor;
+  };
+
+  /**
+   * file값을 받고, 해당 img의 id를 받아내 render해줌
+   *
+   */
   const encodeFileToBase64 = (fileBlob, id) => {
     const reader = new FileReader();
 
     reader.readAsDataURL(fileBlob);
     return (reader.onload = () => {
       document.getElementById(id).src = reader.result;
-      console.log(reader.result);
     });
   };
 
@@ -41,11 +58,6 @@ export default function SunEditorComponent({
 
   const editor = useRef();
 
-  // The sunEditor parameter will be set to the core suneditor instance when this function is called
-  const getSunEditorInstance = (sunEditor) => {
-    editor.current = sunEditor;
-  };
-
   const handleImageUploadBefore = (files, info, uploadHandler) => {
     // uploadHandler is a function
     console.log(files, info);
@@ -64,6 +76,10 @@ export default function SunEditorComponent({
 
     //uploadHandler(files);
   };
+
+  useEffect(() => {
+    setOpen(true);
+  }, [splitThumnail]);
 
   return (
     <div className="container mt-5">
@@ -112,7 +128,12 @@ export default function SunEditorComponent({
       </div>
       <div className="mb-3">
         <label htmlFor="formFileMultiple" className="form-label">
-          썸네일 사진은 꼭 넣어주셔야하며 최대 3장 입니다.
+          <p>썸네일 사진은 꼭 넣어주셔야하며 최대 3장 입니다.</p>
+          {!!modifyProduct && (
+            <p>
+              썸네일 수정하실때는 부분 수정이 안되니 한번에 사진을 올려주세요!
+            </p>
+          )}
         </label>
         <input
           className="form-control"
@@ -124,8 +145,9 @@ export default function SunEditorComponent({
 
             // 먼저 초기화
             setThumbnailDivList([]);
-            // console.log(files);
-            // console.log(files[0]);
+
+            // 앞서 수정할때 받는 리스트도 초기화가 필수
+            setModifyThumbnail([]);
 
             if (files.length > 3) {
               alert("썸네일은 최대 3장입니다.");
@@ -158,20 +180,12 @@ export default function SunEditorComponent({
             {thumbnaiDivList.length > 0 &&
               thumbnaiDivList.map((thumbnail, idx) => {
                 return (
-                  <div
-                    className="col img-thumbnail"
-                    style={{
-                      backgroundSize: "cover",
-                      width: 350,
-                      height: 350,
-                      border: "2px black solid",
-                    }}
-                    key={idx}
-                    id="imageBox"
-                  >
+                  <div className="col" key={idx}>
                     {thumbnail && (
                       <img
+                        className="img-thumbnail"
                         id={"thumbnail-" + idx}
+                        style={{ maxHeight: "300px" }}
                         onLoad={encodeFileToBase64(
                           thumbnail,
                           "thumbnail-" + idx
@@ -183,6 +197,23 @@ export default function SunEditorComponent({
                 );
               })}
           </div>
+          {modifyThumbnail.length > 0 && (
+            <div className="row">
+              {modifyThumbnail.map((thumbnail, idx) => {
+                return (
+                  <div className="col" key={idx}>
+                    <img
+                      className="img-thumbnail"
+                      id={"thumbnail-" + idx}
+                      style={{ maxHeight: "300px" }}
+                      src={thumbnail}
+                      alt="preview-img"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </Collapse>
 
