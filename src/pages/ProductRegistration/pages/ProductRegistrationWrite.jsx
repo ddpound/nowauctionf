@@ -23,7 +23,12 @@ import SunEditorComponent from "../../../components/SunEditor/SunEditorComponent
  * 수정, 저장 모두 여기서 진행합니다.
  *
  */
-export default function ProductRegistrationWrite(props, { InModify, product }) {
+export default function ProductRegistrationWrite({
+  history,
+  props,
+  InModify,
+  product,
+}) {
   const [isLeave, setIsLeave] = useState(false);
   const [show, setShow] = useState(false);
   const [nextLocation, setNextLocation] = useState("");
@@ -32,23 +37,13 @@ export default function ProductRegistrationWrite(props, { InModify, product }) {
 
   const [shouldConfirm, setShouldConfirm] = useState(true);
 
+  const [modifyProduct, setModifyProduct] = useState(product);
+
   /**
    * 기본은 false
    * true 일때 수정이 진행됩니다.
    */
   const [modify, setModify] = useState(InModify);
-  const [modifyBoard, setModifyBoard] = useState({});
-
-  // board 값 가져오기
-  if (modify) {
-    requestGetHaveToken()
-      .then((res) => {
-        setModifyBoard(res.data);
-      })
-      .catch((Error) => {
-        console.log(Error);
-      });
-  }
 
   // 여기에 axios를 담으면 될듯
   const deleteRequest = () => {
@@ -73,9 +68,9 @@ export default function ProductRegistrationWrite(props, { InModify, product }) {
     if (isLeave) {
       setShouldConfirm(false);
 
-      return props.history.push(nextLocation);
+      return history.push(nextLocation);
     }
-  }, [isLeave, props.history]);
+  }, [isLeave, history]);
 
   // 제품등록시 늦는 render 때문에 useEffect를 하나 더둠
   // 반드시 필요함 , 오늘이나 내일 모듈화 예정
@@ -84,12 +79,13 @@ export default function ProductRegistrationWrite(props, { InModify, product }) {
       setShouldConfirm(false);
 
       alert("제품등록에 성공하셨습니다.");
-      return props.history.push("/");
+      return history.push("/");
     }
   }, [successProduct]);
 
   // 수정부분이 될것임
-  const initialContent = "제품 설명을 작성해주세요 사진은 최대 10장입니다.";
+
+  let initialContent = "제품 설명을 작성해주세요 사진은 최대 10장입니다.";
 
   const onSubmit = (
     content,
@@ -100,6 +96,11 @@ export default function ProductRegistrationWrite(props, { InModify, product }) {
   ) => {
     const formData = new FormData();
 
+    let requestUrl = "/seller/save-product/false";
+    if (InModify) {
+      requestUrl = "/seller/save-product/true";
+    }
+
     if (!!files) {
       formData.append("productname", productname);
       formData.append("productprice", productprice);
@@ -109,11 +110,7 @@ export default function ProductRegistrationWrite(props, { InModify, product }) {
       formData.append("thumbnail2", files[1]);
       formData.append("thumbnail3", files[2]);
 
-      const rqPhT = requestPostHaveToken(
-        "/seller/save-product/false",
-        props,
-        formData
-      );
+      const rqPhT = requestPostHaveToken(requestUrl, props, formData);
 
       rqPhT
         .then(() => {
@@ -138,6 +135,7 @@ export default function ProductRegistrationWrite(props, { InModify, product }) {
           initialContent={initialContent}
           onSubmit={onSubmit}
           title="제품등록"
+          modifyProduct={product}
         />
       </div>
       <Prompt when={shouldConfirm} message={handlePrompt} />

@@ -51,7 +51,7 @@ export default function ProductShowPage(props) {
           구매 예약하기
         </button>
       )}
-      {!!sellerIn && (
+      {!!sellerIn && !modifyDeclare && (
         <button
           className="btn btn-dark"
           type="button"
@@ -60,6 +60,17 @@ export default function ProductShowPage(props) {
           }}
         >
           제품수정하기
+        </button>
+      )}
+      {!!sellerIn && modifyDeclare && (
+        <button
+          className="btn btn-dark"
+          type="button"
+          onClick={() => {
+            setModifyDeclare(false);
+          }}
+        >
+          제품보기로 돌아가기
         </button>
       )}
       {/* 제품이 있으며 수정선언이 거짓일때, 역이니 진실 */}
@@ -79,7 +90,12 @@ export default function ProductShowPage(props) {
       )}
 
       {modifyDeclare && (
-        <ProductRegistrationWrite props={props} InModify={true} />
+        <ProductRegistrationWrite
+          props={props}
+          history={props.history}
+          InModify={true}
+          product={product}
+        />
       )}
 
       {!!product && (
