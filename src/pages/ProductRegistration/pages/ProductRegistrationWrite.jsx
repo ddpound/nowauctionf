@@ -92,27 +92,36 @@ export default function ProductRegistrationWrite({
     files,
     productname,
     productprice,
-    productquantity
+    productquantity,
+    productId
   ) => {
     const formData = new FormData();
 
     let requestUrl = "/seller/save-product/false";
     if (InModify) {
       requestUrl = "/seller/save-product/true";
+
+      // 꼭 ID도 넣어줘야함
+      formData.append("ProductID", productId);
     }
 
+    // 공통적인것은 지금 담아
+    formData.append("productname", productname);
+    formData.append("productprice", productprice);
+    formData.append("productquantity", productquantity);
+    formData.append("content", content);
+
     if (!!files) {
-      formData.append("productname", productname);
-      formData.append("productprice", productprice);
-      formData.append("productquantity", productquantity);
-      formData.append("content", content);
       formData.append("thumbnail1", files[0]);
       formData.append("thumbnail2", files[1]);
       formData.append("thumbnail3", files[2]);
+    }
 
-      const rqPhT = requestPostHaveToken(requestUrl, props, formData);
-
-      rqPhT
+    // 수정이 아닐때는 false니깐 역을줘서 true
+    if (files.length == 0 && !modify) {
+      alert("처음 입력할때는 썸네일이 있어야합니다.");
+    } else {
+      requestPostHaveToken(requestUrl, props, formData)
         .then(() => {
           setShow(false);
           setShouldConfirm(false);
@@ -123,8 +132,6 @@ export default function ProductRegistrationWrite({
         });
 
       // 여기서 세이브 진행하면 될듯
-    } else {
-      alert("제품의 썸네일 사진은 필수입니다!");
     }
   };
 

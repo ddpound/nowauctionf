@@ -26,8 +26,10 @@ export default function ProductShowPage(props) {
     files,
     productname,
     productprice,
-    productquantity
+    productquantity,
+    productId
   ) => {
+    console.log(productId);
     const formData = new FormData();
 
     //수정 작업이니깐 files는 없다면 빼도 됨
@@ -36,6 +38,9 @@ export default function ProductShowPage(props) {
       formData.append("thumbnail2", files[1]);
       formData.append("thumbnail3", files[2]);
     }
+
+    // 꼭 ID도 넣어줘야함
+    formData.append("ProductID", productId);
 
     formData.append("productname", productname);
     formData.append("productprice", productprice);

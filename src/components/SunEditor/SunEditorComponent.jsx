@@ -269,13 +269,18 @@ export default function SunEditorComponent({
             const productprice = document.getElementById("productprice").value;
             const productquantity =
               document.getElementById("productquantity").value;
+            let productId = 0;
+            if (!!modifyProduct) {
+              productId = modifyProduct.id;
+            }
 
             onSubmit(
               content,
               files,
               productname,
               productprice,
-              productquantity
+              productquantity,
+              productId
             );
           }}
         >
