@@ -10,6 +10,7 @@ import ProductRegistrationWrite from "../ProductRegistration/pages/ProductRegist
 import {
   requestPostHaveToken,
   requestGetHaveToken,
+  requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
 /**
@@ -21,42 +22,6 @@ export default function ProductShowPage(props) {
 
   const [product, setProduct] = useState(...[]);
 
-  const onSubmit = (
-    content,
-    files,
-    productname,
-    productprice,
-    productquantity,
-    productId
-  ) => {
-    console.log(productId);
-    const formData = new FormData();
-
-    //수정 작업이니깐 files는 없다면 빼도 됨
-    if (!!files) {
-      formData.append("thumbnail1", files[0]);
-      formData.append("thumbnail2", files[1]);
-      formData.append("thumbnail3", files[2]);
-    }
-
-    // 꼭 ID도 넣어줘야함
-    formData.append("ProductID", productId);
-
-    formData.append("productname", productname);
-    formData.append("productprice", productprice);
-    formData.append("productquantity", productquantity);
-    formData.append("content", content);
-
-    const requestUrl = "/seller/save-product/true";
-    const rqPhT = requestPostHaveToken(requestUrl, props, formData)
-      .then(() => {
-        alert("수정이 완료되었습니다.");
-      })
-      .catch((Error) => {
-        console.log(Error);
-      });
-  };
-
   /**
    * declare 선언하다
    * @param modifyDeclare
@@ -66,7 +31,7 @@ export default function ProductShowPage(props) {
   const [modifyDeclare, setModifyDeclare] = useState(false);
 
   const sellerIn = localStorage.getItem("sellerSuccess", "sellerSuccess");
-
+  const adminIn = localStorage.getItem("adminSuccess", "imadmin");
   useEffect(() => {
     axios.get("/show-shoppingmall/product-show/" + productId).then((res) => {
       setProduct(res.data);
@@ -95,6 +60,16 @@ export default function ProductShowPage(props) {
           }}
         >
           제품수정하기
+        </button>
+      )}
+      {((!!sellerIn && !modifyDeclare) || !!adminIn) && (
+        <button
+          type="button"
+          className="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          제품 삭제하기
         </button>
       )}
       {!!sellerIn && modifyDeclare && (
@@ -130,7 +105,6 @@ export default function ProductShowPage(props) {
           history={props.history}
           InModify={true}
           product={product}
-          onSubmit={onSubmit}
         />
       )}
 
@@ -176,6 +150,62 @@ export default function ProductShowPage(props) {
           </div>
         </div>
       )}
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                삭제하기
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              정말 제품을 삭제하시겠습니까? <br />
+              삭제한 제품은 다시 복구할수 없습니다.
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                취소
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  requestDeleteHaveToken(
+                    "/seller/delete-product/" + product.id,
+                    props
+                  )
+                    .then((res) => {
+                      alert("삭제에 성공하셨습니다.");
+                      props.history.push("/");
+                    })
+                    .catch((Error) => {
+                      alert("삭제에 실패했습니다.");
+                    });
+                }}
+                className="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                삭제하기
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -78,7 +78,13 @@ export default function ProductRegistrationWrite({
     if (successProduct) {
       setShouldConfirm(false);
 
-      alert("제품등록에 성공하셨습니다.");
+      // 즉 modify가 참이라면 수정이니
+      if (modify) {
+        alert("수정에 성공하셨습니다");
+      } else {
+        alert("제품등록에 성공하셨습니다.");
+      }
+
       return history.push("/");
     }
   }, [successProduct]);
@@ -126,6 +132,7 @@ export default function ProductRegistrationWrite({
           setShow(false);
           setShouldConfirm(false);
           setSuccessProduct(true);
+          setModify(InModify);
         })
         .catch((Error) => {
           console.log(Error);

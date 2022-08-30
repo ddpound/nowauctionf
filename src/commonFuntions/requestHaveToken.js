@@ -85,7 +85,7 @@ export function requestPostHaveToken(url,props,body){
 }
 
 export function requestDeleteHaveToken(url,props){
-
+  
   return axios.delete(url,{
     headers: {
       Authorization: "Bearer " + localStorage.getItem("google-login-success"),
