@@ -16,6 +16,7 @@ export default function SunEditorSellerWriteComponent({
   onSubmit,
   categoryList,
   setCategoryListCheck,
+  board,
 }) {
   const [content, setContent] = useState(initialContent);
 
@@ -76,14 +77,15 @@ export default function SunEditorSellerWriteComponent({
           placeholder="제목이름을 입력해주세요"
           aria-label="Username"
           aria-describedby="basic-addon1"
+          defaultValue={!!board ? board.title : ""}
         />
       </div>
 
       <div className="mb-3">
-        <label htmlFor="formFileMultiple" className="form-label">
+        <label htmlFor="thumbnailFile" className="form-label">
           썸네일이 없거나 글에 사진이 없다면 기본 썸네일로 지정됩니다.
         </label>
-        <input className="form-control" type="file" id="formFileMultiple" />
+        <input className="form-control" type="file" id="thumbnailFile" />
       </div>
 
       <div className="mt-3">
@@ -172,7 +174,7 @@ export default function SunEditorSellerWriteComponent({
         getSunEditorInstance={getSunEditorInstance}
         autoFocus={true}
         lang={"ko"}
-        setContents={initialContent}
+        setContents={!!board ? board.Content : ""}
         onChange={setContent}
         placeholder={"글을 작성해주세요"}
         setOptions={{
@@ -211,11 +213,12 @@ export default function SunEditorSellerWriteComponent({
           onClick={() => {
             const title = document.getElementById("title").value;
             const category = document.getElementById("categorySelecter").value;
+            const files = document.getElementById("thumbnailFile").files;
 
             onSubmit(content, files, title, category);
           }}
         >
-          작성하기
+          {!!board ? "작성하기" : "수정하기"}
         </button>
       </div>
     </div>

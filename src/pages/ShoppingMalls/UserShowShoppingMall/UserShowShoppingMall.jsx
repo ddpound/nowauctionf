@@ -11,6 +11,9 @@ import { requestGetHaveToken } from "../../../commonFuntions/requestHaveToken";
 // 쇼핑몰 설명 부분
 import ShoppingMallExplanation from "./ShoppingMallExplanation";
 
+// 판매자의 게시글 페이지
+import SellerBoardListPage from "../SellerBoard/SellerBoardListPage";
+
 /**
  * 해당 컴포넌트는 Page용도입니다.
  * 모든 사용자가 접근 가능합니다. public
@@ -51,6 +54,9 @@ export default function UserShowShoppingMall(props) {
           name="btnradio"
           id="btnradio1"
           autoComplete="off"
+          onClick={() => {
+            setViewNumber(1);
+          }}
         />
         <label className="btn btn-outline-warning btn-dark" htmlFor="btnradio1">
           제품,쇼핑몰설명
@@ -62,6 +68,9 @@ export default function UserShowShoppingMall(props) {
           name="btnradio"
           id="btnradio2"
           autoComplete="off"
+          onClick={() => {
+            setViewNumber(2);
+          }}
         />
         <label className="btn btn-outline-warning btn-dark" htmlFor="btnradio2">
           게시판보기
@@ -72,14 +81,28 @@ export default function UserShowShoppingMall(props) {
           name="btnradio"
           id="btnradio3"
           autoComplete="off"
+          onClick={() => {
+            setViewNumber(3);
+          }}
         />
         <label className="btn btn-outline-warning btn-dark" htmlFor="btnradio3">
           모두 보기
         </label>
       </div>
-      <ShoppingMallExplanation shoppingmall={shoppingMall} />
+
+      {(viewNumber == 1 || viewNumber == 3) && (
+        <ShoppingMallExplanation shoppingmall={shoppingMall} />
+      )}
+
       {/*제품 리스트 */}
-      <ShoppingMallProductList mallId={mallId} onePagePostNumber={9} />
+
+      {(viewNumber == 1 || viewNumber == 3) && (
+        <ShoppingMallProductList mallId={mallId} onePagePostNumber={9} />
+      )}
+
+      {(viewNumber == 2 || viewNumber == 3) && (
+        <SellerBoardListPage onePagePostNumber={9} mallId={mallId} />
+      )}
     </div>
   );
 }

@@ -5,7 +5,6 @@ import NewMakeShoppingMall from "./NewMakeShoppingMall";
 
 import ProductRegistrationMain from "../../ProductRegistration/ProductRegistrationMain";
 export default function MyShoppingMall({ props, data }) {
-  console.log(data);
   return (
     <div className="container mt-5">
       <h3>{data.shoppingMallName}</h3>

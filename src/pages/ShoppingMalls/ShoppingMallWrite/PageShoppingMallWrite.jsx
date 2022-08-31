@@ -15,7 +15,7 @@ import SunEditorSellerWriteComponent from "../../../components/SunEditor/SunEdit
 // Page jsx입니다.
 // 판매자가 글을 작성하는 곳 입니다.
 
-export default function PageShoppingMallWrite(props) {
+export default function PageShoppingMallWrite({ history, board }) {
   const [isLeave, setIsLeave] = useState(false);
   const [show, setShow] = useState(false);
   const [nextLocation, setNextLocation] = useState("");
@@ -23,6 +23,11 @@ export default function PageShoppingMallWrite(props) {
   const [successProduct, setSuccessProduct] = useState(false);
 
   const [shouldConfirm, setShouldConfirm] = useState(true);
+
+  /**
+   * 글이 들어왔다면 수정이라는 뜻이니 수정에 넣어준다
+   */
+  const [modifyBoard, setModifyBoard] = useState(board);
 
   // 카테고리를 가져올 리스트
   const [categoryList, setCategoryList] = useState([]);
@@ -38,7 +43,7 @@ export default function PageShoppingMallWrite(props) {
   };
 
   // 수정부분이 될것임
-  const initialContent = "글작성 해주세요 사진 첨부는 최대 세장입니다.";
+  const initialContent = "글작성 해주세요 사진 첨부는 최대 10장 입니다.";
 
   const onSubmit = (content, files, title, category) => {
     const formData = new FormData();
@@ -49,7 +54,11 @@ export default function PageShoppingMallWrite(props) {
       formData.append("category", category);
       formData.append("thumbnail", files[0]);
 
-      const rqPhT = requestPostHaveToken("/seller/save-board", props, formData);
+      const rqPhT = requestPostHaveToken(
+        "/seller/save-board/false",
+        null,
+        formData
+      );
 
       rqPhT
         .then(() => {
@@ -108,9 +117,9 @@ export default function PageShoppingMallWrite(props) {
     if (isLeave) {
       setShouldConfirm(false);
 
-      return props.history.push(nextLocation);
+      return history.push(nextLocation);
     }
-  }, [isLeave, props.history]);
+  }, [isLeave, history]);
 
   // 제품등록시 늦는 render 때문에 useEffect를 하나 더둠
   // 반드시 필요함 , 오늘이나 내일 모듈화 예정
@@ -119,14 +128,14 @@ export default function PageShoppingMallWrite(props) {
       setShouldConfirm(false);
 
       alert("글 작성에 성공하셨습니다.");
-      return props.history.push("/");
+      return history.push("/");
     }
   }, [successProduct]);
 
   return (
     <>
       <SunEditorSellerWriteComponent
-        initialContent={initialContent}
+        board={modifyBoard}
         onSubmit={onSubmit}
         title="글작성"
         categoryList={categoryList}

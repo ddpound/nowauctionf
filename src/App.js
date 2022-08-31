@@ -39,8 +39,10 @@ import PageShoppingMallWrite from './pages/ShoppingMalls/ShoppingMallWrite/PageS
 // 제품보기
 import ProductShowPage from './pages/ShoppingMalls/ProductShowPage';
 
+// 판매자의 글 보기
+import SellerBoardShowPage from './pages/ShoppingMalls/SellerBoard/SellerBoardShowPage'
+
 function App() {
-  
 
   return (
     <BrowserRouter>
@@ -59,7 +61,7 @@ function App() {
     {/* 내 쇼핑몰 보기 (판매자만 해당)*/}
     <SellerRoute path="/my-shoppingmall-page" exact component={MainShoppingMallPage}/>
     
-    내 쇼핑몰 글쓰기 (판매자만 해당)
+    {/* 내 쇼핑몰 글쓰기 (판매자만 해당)*/ }
     <SellerRoute path="/seller-write" exact component={PageShoppingMallWrite}/>
 
     {/* 제품 글쓰기 (판매자만 해당)*/}
@@ -79,6 +81,9 @@ function App() {
 
      {/* 쇼핑몰 보기 */}
     <PublicRoute path="/show-shoppingmall/:id" exact component={UserShowShoppingMall}/>
+    
+    {/* 판매자의 글 보기 */}
+    <PublicRoute path="/show-seller-board/:id" exact component={SellerBoardShowPage}/>
 
     <PublicRoute path="/board/:id" exact component={BoardPage} />
     
