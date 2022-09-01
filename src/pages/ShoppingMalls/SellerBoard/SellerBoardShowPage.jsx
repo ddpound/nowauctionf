@@ -38,7 +38,6 @@ export default function SellerBoardShowPage(props) {
     });
   }, []);
 
-  console.log(sellerBoard);
   return (
     <div className="container mt-5">
       {!!sellerIn && !modifyDeclare && (
@@ -133,7 +132,7 @@ export default function SellerBoardShowPage(props) {
                 type="button"
                 onClick={() => {
                   requestDeleteHaveToken(
-                    "/seller/delete-product/" + sellerBoard.id,
+                    "/seller/delete-seller-board/" + sellerBoard.id,
                     props
                   )
                     .then((res) => {

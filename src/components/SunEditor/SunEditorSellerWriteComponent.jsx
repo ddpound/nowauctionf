@@ -18,6 +18,8 @@ export default function SunEditorSellerWriteComponent({
   setCategoryListCheck,
   board,
 }) {
+  console.log(board);
+
   const [content, setContent] = useState(initialContent);
 
   const [files, setFiles] = useState("");
@@ -35,8 +37,6 @@ export default function SunEditorSellerWriteComponent({
   };
 
   const handleImageUploadBefore = (files, info, uploadHandler) => {
-    console.log(files, info);
-
     var formData = new FormData();
 
     formData.append("file", files[0]);
@@ -218,7 +218,7 @@ export default function SunEditorSellerWriteComponent({
             onSubmit(content, files, title, category);
           }}
         >
-          {!!board ? "작성하기" : "수정하기"}
+          {!!board ? "수정하기" : "작성하기"}
         </button>
       </div>
     </div>

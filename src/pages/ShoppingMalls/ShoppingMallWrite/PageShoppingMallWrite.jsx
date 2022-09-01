@@ -42,23 +42,30 @@ export default function PageShoppingMallWrite({ history, board }) {
     });
   };
 
-  // 수정부분이 될것임
-  const initialContent = "글작성 해주세요 사진 첨부는 최대 10장 입니다.";
-
   const onSubmit = (content, files, title, category) => {
     const formData = new FormData();
 
-    if (!!files) {
+    let url = "/seller/save-board/false";
+
+    if (!!modifyBoard) {
+      url = "/seller/save-board/true";
+    }
+
+    //수정이 아니면서 파일이 없다면 썸네일이 반드시 필요
+    // 흠 글작성할때는 필요없을듯
+    if (!modifyBoard && !files) {
+      alert("처음 글작성 할때 썸네일은 필수입니다!");
+    } else {
       formData.append("title", title);
       formData.append("content", content);
       formData.append("category", category);
       formData.append("thumbnail", files[0]);
 
-      const rqPhT = requestPostHaveToken(
-        "/seller/save-board/false",
-        null,
-        formData
-      );
+      if (!!modifyBoard) {
+        formData.append("boardId", modifyBoard.id);
+      }
+
+      const rqPhT = requestPostHaveToken(url, null, formData);
 
       rqPhT
         .then(() => {
@@ -69,10 +76,6 @@ export default function PageShoppingMallWrite({ history, board }) {
         .catch((Error) => {
           console.log(Error);
         });
-
-      // 여기서 세이브 진행하면 될듯
-    } else {
-      alert("제품의 썸네일 사진은 필수입니다!");
     }
   };
   const handlePrompt = (location) => {
@@ -127,7 +130,12 @@ export default function PageShoppingMallWrite({ history, board }) {
     if (successProduct) {
       setShouldConfirm(false);
 
-      alert("글 작성에 성공하셨습니다.");
+      if (!!modifyBoard) {
+        alert("수정에에 성공하셨습니다.");
+      } else {
+        alert("글 작성에 성공하셨습니다.");
+      }
+
       return history.push("/");
     }
   }, [successProduct]);
