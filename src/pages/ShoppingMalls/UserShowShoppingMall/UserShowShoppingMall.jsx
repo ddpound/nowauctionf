@@ -99,6 +99,7 @@ export default function UserShowShoppingMall(props) {
       {(viewNumber == 1 || viewNumber == 3) && (
         <ShoppingMallProductList mallId={mallId} onePagePostNumber={9} />
       )}
+      <hr />
 
       {(viewNumber == 2 || viewNumber == 3) && (
         <SellerBoardListPage onePagePostNumber={9} mallId={mallId} />

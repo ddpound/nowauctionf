@@ -30,7 +30,7 @@ function deleteUser(props) {
   }
 }
 
-function giveSeller(props, inputid, inputcode) {
+function giveSeller(props, inputid, inputcode, userobject) {
   if (!!inputid && !!inputcode) {
     const giveSellerRe = requestPostHaveToken("/give-seller", props, {
       id: inputid,
@@ -39,7 +39,7 @@ function giveSeller(props, inputid, inputcode) {
 
     giveSellerRe
       .then((res) => {
-        localStorage.setItem("sellerSuccess", "sellerSuccess");
+        localStorage.setItem("sellerSuccess", userobject.id);
         alert("등록에 성공하셨습니다.");
         props.history.push("/");
       })
@@ -86,6 +86,7 @@ function giveSeller(props, inputid, inputcode) {
 
 export default function UserInfoPage(props) {
   const [userobject, setUserOb] = useState({
+    id: "",
     userName: "",
     nickName: "",
     role: "",
@@ -109,6 +110,7 @@ export default function UserInfoPage(props) {
         if (userobject.userName == "") {
           setUserOb((userobject) => {
             return {
+              id: responese.data.id,
               userName: responese.data.userName,
               nickName: responese.data.nickName,
               role: responese.data.role,
@@ -279,7 +281,7 @@ export default function UserInfoPage(props) {
                   const idInput = document.getElementById("inputId").value;
                   const idcodoeInput =
                     document.getElementById("inputCode").value;
-                  giveSeller(props, idInput, idcodoeInput);
+                  giveSeller(props, idInput, idcodoeInput, userobject);
                 }}
                 type="button"
                 className="btn btn-primary"

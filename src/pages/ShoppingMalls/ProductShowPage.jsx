@@ -30,7 +30,7 @@ export default function ProductShowPage(props) {
    */
   const [modifyDeclare, setModifyDeclare] = useState(false);
 
-  const sellerIn = localStorage.getItem("sellerSuccess", "sellerSuccess");
+  const sellerIn = localStorage.getItem("sellerSuccess");
   const adminIn = localStorage.getItem("adminSuccess", "imadmin");
   useEffect(() => {
     axios.get("/show-shoppingmall/product-show/" + productId).then((res) => {
