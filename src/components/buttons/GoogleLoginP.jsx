@@ -60,7 +60,7 @@ function GoogleLoginP({ set, props }) {
           //console.log(credentialResponse.credential);
 
           axios
-            .get("/login/token/google", {
+            .get("/auction-user/login/token/google", {
               headers: {
                 Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
               },
@@ -129,7 +129,7 @@ function GoogleLoginP({ set, props }) {
                 // 주의 Post 요청일때는 반드시 중간에 null넣어줘야함
                 // 요청 url, body, header 이렇게 되기 때문!!!
                 axios
-                  .post("/join/googletoken", null, {
+                  .post("/auction-user/join/googletoken", null, {
                     headers: {
                       Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
                     },
@@ -137,7 +137,7 @@ function GoogleLoginP({ set, props }) {
                   .then((responese) => {
                     console.log(responese);
                     axios
-                      .get("/login/token/google", {
+                      .get("/auction-user/login/token/google", {
                         headers: {
                           Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
                         },
