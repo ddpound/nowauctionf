@@ -94,7 +94,10 @@ export default function UserInfoPage(props) {
   });
 
   useEffect(() => {
-    const returnResponse = requestGetHaveToken("/user/info", props);
+    const returnResponse = requestGetHaveToken(
+      "http://localhost:8000/auction-user/info",
+      props
+    );
 
     returnResponse.then((responese) => {
       if (!!responese) {

@@ -29,16 +29,6 @@ export function requestGetHaveToken(url,props){
           }
 
           
-        } else {
-          console.log(Error);
-
-          alert("서버에러 다시 로그인해주거나 문의해주세요!");
-
-          if(!!props){
-            props.history.push("/");
-          }else{
-            document.location.href = "/";
-          }
         }
       })
     
@@ -69,16 +59,6 @@ export function requestPostHaveToken(url,props,body){
           }
 
           
-        } else {
-          console.log(Error);
-
-          alert("서버에러 다시 로그인해주거나 문의해주세요!");
-
-          if(!!props){
-            props.history.push("/");
-          }else{
-            document.location.href = "/";
-          }
         }
       })
     
@@ -110,16 +90,6 @@ export function requestDeleteHaveToken(url,props){
       }
 
       
-    } else {
-      console.log(Error);
-
-      alert("서버에러 다시 로그인해주거나 문의해주세요!");
-
-      if(!!props){
-        props.history.push("/");
-      }else{
-        document.location.href = "/";
-      }
     }
   })
 
@@ -150,16 +120,6 @@ export function requestPutHaveToken(url,props,body){
         }
 
         
-      } else {
-        console.log(Error);
-
-        alert("서버에러 다시 로그인해주거나 문의해주세요!");
-
-        if(!!props){
-          props.history.push("/");
-        }else{
-          document.location.href = "/";
-        }
       }
     })
   

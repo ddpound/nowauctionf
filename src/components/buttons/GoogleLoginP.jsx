@@ -74,6 +74,9 @@ function GoogleLoginP({ set, props }) {
               const retrunAuthHeaders = responese.headers.authorization;
               const retrunAuthRefreshHeaders = responese.headers.refreshtoken;
 
+              console.log(responese.headers.authorization);
+              console.log(responese.headers.refreshtoken);
+
               if (
                 retrunAuthHeaders != null &&
                 retrunAuthRefreshHeaders != null
@@ -124,7 +127,10 @@ function GoogleLoginP({ set, props }) {
               if (Error.response.status == "500") {
                 alert("서버에 문제 발생했습니다 죄송합니다!");
               }
-              if (Error.response.status == "401") {
+              if (
+                Error.response.status == "401" ||
+                Error.response.status == "403"
+              ) {
                 console.log("로그인 실패 회원가입시도");
                 // 주의 Post 요청일때는 반드시 중간에 null넣어줘야함
                 // 요청 url, body, header 이렇게 되기 때문!!!
