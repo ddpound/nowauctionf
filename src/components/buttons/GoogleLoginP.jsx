@@ -60,7 +60,7 @@ function GoogleLoginP({ set, props }) {
           //console.log(credentialResponse.credential);
 
           axios
-            .get("/auction-user/login/token/google", {
+            .get("http://localhost:8000/auction-user/login/token/google", {
               headers: {
                 Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
               },
@@ -73,7 +73,7 @@ function GoogleLoginP({ set, props }) {
 
               const retrunAuthHeaders = responese.headers.authorization;
               const retrunAuthRefreshHeaders = responese.headers.refreshtoken;
-
+              console.log(responese);
               console.log(responese.headers.authorization);
               console.log(responese.headers.refreshtoken);
 
@@ -135,19 +135,26 @@ function GoogleLoginP({ set, props }) {
                 // 주의 Post 요청일때는 반드시 중간에 null넣어줘야함
                 // 요청 url, body, header 이렇게 되기 때문!!!
                 axios
-                  .post("/auction-user/join/googletoken", null, {
-                    headers: {
-                      Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
-                    },
-                  })
+                  .post(
+                    "http://localhost:8000/auction-user/join/googletoken",
+                    null,
+                    {
+                      headers: {
+                        Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
+                      },
+                    }
+                  )
                   .then((responese) => {
                     console.log(responese);
                     axios
-                      .get("/auction-user/login/token/google", {
-                        headers: {
-                          Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
-                        },
-                      })
+                      .get(
+                        "http://localhost:8000/auction-user/login/token/google",
+                        {
+                          headers: {
+                            Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
+                          },
+                        }
+                      )
                       .then((responese) => {
                         console.log(responese);
                         const retrunAuthHeaders =

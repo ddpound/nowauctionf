@@ -8,6 +8,7 @@ export function requestGetHaveToken(url,props){
           Authorization: "Bearer " + localStorage.getItem("google-login-success"),
           Refreshtoken:
             "Bearer " + localStorage.getItem("google-login-success-re"),
+          "Access-Control-Allow-Origin": "*"
         },
       }).then((responese)=>{
         // 토큰 초기화
@@ -40,6 +41,7 @@ export function requestPostHaveToken(url,props,body){
           Authorization: "Bearer " + localStorage.getItem("google-login-success"),
           Refreshtoken:
             "Bearer " + localStorage.getItem("google-login-success-re"),
+          "Access-Control-Allow-Origin": "*"
         },
       }).then((responese)=>{
         // 토큰 초기화
