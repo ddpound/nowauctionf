@@ -12,14 +12,14 @@ import { requestPostHaveToken } from "../../commonFuntions/requestHaveToken";
 const login_key = process.env.REACT_APP_admin_page_login_key;
 
 function adminGet(inputValue, props) {
-  requestPostHaveToken("/give-admin", props, { password: inputValue }).then(
-    (responese) => {
-      localStorage.setItem("adminSuccess", "imadmin");
+  requestPostHaveToken("/auction-user/give-admin", props, {
+    password: inputValue,
+  }).then((responese) => {
+    localStorage.setItem("adminSuccess", "imadmin");
 
-      alert("권한을 받아오는데 성공했습니다!");
-      props.history.push("/");
-    }
-  );
+    alert("권한을 받아오는데 성공했습니다!");
+    props.history.push("/");
+  });
 }
 
 export default function AdminInPage(props) {

@@ -16,7 +16,7 @@ import { requestGetHaveToken } from "../../commonFuntions/requestHaveToken";
 function couponDelete(id) {
   console.log(id);
   axios
-    .delete("admin/delete-one-coupon/" + id, returnHeaderTokens)
+    .delete("/auction-user/admin/delete-one-coupon/" + id, returnHeaderTokens)
     .then((res) => {
       resetTokens(res);
       console.log("삭제완료");
@@ -32,7 +32,7 @@ export default function CouponListComponent() {
   const offset = (page - 1) * limit;
 
   useEffect(() => {
-    requestGetHaveToken("/admin/find-all-coupon", null)
+    requestGetHaveToken("/auction-user/admin/find-all-coupon", null)
       .then((res) => {
         resetTokens(res);
 

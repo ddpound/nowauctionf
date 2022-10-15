@@ -7,8 +7,7 @@ export function requestGetHaveToken(url,props){
         headers: {
           Authorization: "Bearer " + localStorage.getItem("google-login-success"),
           Refreshtoken:
-            "Bearer " + localStorage.getItem("google-login-success-re"),
-          "Access-Control-Allow-Origin": "*"
+            "Bearer " + localStorage.getItem("google-login-success-re")
         },
       }).then((responese)=>{
         // 토큰 초기화
@@ -28,7 +27,6 @@ export function requestGetHaveToken(url,props){
           }else{
             document.location.href = "/";
           }
-
           
         }
       })

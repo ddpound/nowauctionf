@@ -8,11 +8,12 @@ import { resetTokens } from "../../commonFuntions/TokenRelatedFunctions";
 import CouponListComponent from "./CouponListComponent";
 
 function makeCouponRequest(couponnum) {
-  var requestcouponurl = "/admin/make-coupon";
+  var requestcouponurl = "/auction-user/admin/make-coupon";
 
   // 값이 있을때
   if (!!couponnum) {
-    requestcouponurl = "/admin/make-coupon?couponNumber=" + couponnum;
+    requestcouponurl =
+      "/auction-user/admin/make-coupon?couponNumber=" + couponnum;
   }
 
   axios

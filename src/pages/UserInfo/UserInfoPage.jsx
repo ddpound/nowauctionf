@@ -19,23 +19,28 @@ function deleteUser(props) {
   const userdata = JSON.parse(localStorage.getItem("userdata"));
 
   if (userdata != null) {
-    requestDeleteHaveToken("/user/delete/" + userdata.userName, props).then(
-      (responese) => {
-        console.log(responese.data);
-        deleteUserDataToken();
-        alert("삭제가 완료되었습니다.");
-        props.history.push("/");
-      }
-    );
+    requestDeleteHaveToken(
+      "/auction-user/user/delete/" + userdata.userName,
+      props
+    ).then((responese) => {
+      console.log(responese.data);
+      deleteUserDataToken();
+      alert("삭제가 완료되었습니다.");
+      props.history.push("/");
+    });
   }
 }
 
 function giveSeller(props, inputid, inputcode, userobject) {
   if (!!inputid && !!inputcode) {
-    const giveSellerRe = requestPostHaveToken("/give-seller", props, {
-      id: inputid,
-      code: inputcode,
-    });
+    const giveSellerRe = requestPostHaveToken(
+      "/auction-seller/seller/give-seller",
+      props,
+      {
+        id: inputid,
+        code: inputcode,
+      }
+    );
 
     giveSellerRe
       .then((res) => {
@@ -95,7 +100,7 @@ export default function UserInfoPage(props) {
 
   useEffect(() => {
     const returnResponse = requestGetHaveToken(
-      "http://localhost:8000/auction-user/info",
+      "/auction-user/user/info",
       props
     );
 

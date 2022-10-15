@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './reduxstore/store'
 
+import axios from 'axios';
+
 import { Provider } from 'react-redux';
 
 // <React.StrictMode> 사용하는 이유는 개발자 모드에서의 생명주기 체크등의
@@ -12,6 +14,7 @@ import { Provider } from 'react-redux';
 // 덕분에 모든 프로그램을 실행할때 두번씩 실행합니다
 //개발이아닌 배포때는 없어질 예정
 
+axios.defaults.baseURL = 'http://localhost:8000';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
