@@ -34,7 +34,7 @@ function deleteUser(props) {
 function giveSeller(props, inputid, inputcode, userobject) {
   if (!!inputid && !!inputcode) {
     const giveSellerRe = requestPostHaveToken(
-      "/auction-seller/seller/give-seller",
+      "/auction-user/seller/give-seller",
       props,
       {
         id: inputid,

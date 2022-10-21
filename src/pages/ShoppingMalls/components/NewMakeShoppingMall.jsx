@@ -15,11 +15,11 @@ function addShoppingmall(props, modify) {
 
   const explantion = document.getElementById("shoppingMallExplanation").value;
 
-  let reqyestUrl = "/seller/make-shopping-mall";
+  let reqyestUrl = "/auction-seller/seller/make-shopping-mall";
 
   // modify 가 참이라면 수정이니깐
   if (modify) {
-    reqyestUrl = "/seller/modify-shopping-mall";
+    reqyestUrl = "/auction-seller/seller/modify-shopping-mall";
   }
 
   // 즉 inputFile, inputFile2 둘중하나만 채워넣으면 된다 이거임
