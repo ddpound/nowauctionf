@@ -66,13 +66,15 @@ export default function SunEditorComponent({
 
     formData.append("file", files[0]);
 
-    requestPostHaveToken("/seller/temporary-image-save", null, formData).then(
-      (res) => {
-        const response = { result: [{ url: res.data.url }] };
+    requestPostHaveToken(
+      "/auction-seller/seller/temporary-image-save",
+      null,
+      formData
+    ).then((res) => {
+      const response = { result: [{ url: res.data.url }] };
 
-        uploadHandler(response);
-      }
-    );
+      uploadHandler(response);
+    });
 
     //uploadHandler(files);
   };

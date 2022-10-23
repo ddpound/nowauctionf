@@ -15,7 +15,7 @@ function registerProduct(props) {
   formData.append("productPrice", productPrice);
 
   const requestProduct = requestPostHaveToken(
-    "/seller/register-product",
+    "/auction-seller/seller/register-product",
     props,
     formData
   );

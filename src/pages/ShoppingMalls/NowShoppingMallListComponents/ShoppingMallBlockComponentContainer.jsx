@@ -20,7 +20,9 @@ export default function ShoppingMallBlockComponentContainer({
 
   useEffect(() => {
     // 무조건 딱 한번 리스트를 받아와서 페이징해줌
-    const requestList = axios.get("/find-all-shopping-mall");
+    const requestList = axios.get(
+      "/auction-seller/auth/find-all-shopping-mall"
+    );
     requestList.then((res) => {
       setShoppingMallList(res.data.reverse());
     });
@@ -40,7 +42,6 @@ export default function ShoppingMallBlockComponentContainer({
                 <ShoppingMallBlockComponent
                   title={posts.shoppingMallName}
                   text1={posts.shoppingMallExplanation}
-                  text2={posts.userModel.nickname}
                   src={posts.thumbnailUrlPath}
                   makedate={posts.createShoppinMall}
                   key={posts.id}

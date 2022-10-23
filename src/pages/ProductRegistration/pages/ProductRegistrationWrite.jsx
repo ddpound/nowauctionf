@@ -47,9 +47,11 @@ export default function ProductRegistrationWrite({
 
   // 여기에 axios를 담으면 될듯
   const deleteRequest = () => {
-    requestGetHaveToken("/seller/delete-temporary-iamge").catch((Error) => {
-      console.log(Error);
-    });
+    requestGetHaveToken("/auction-seller/seller/delete-temporary-iamge").catch(
+      (Error) => {
+        console.log(Error);
+      }
+    );
   };
 
   const handlePrompt = (location) => {
@@ -103,9 +105,9 @@ export default function ProductRegistrationWrite({
   ) => {
     const formData = new FormData();
 
-    let requestUrl = "/seller/save-product/false";
+    let requestUrl = "/auction-seller/seller/save-product/false";
     if (InModify) {
-      requestUrl = "/seller/save-product/true";
+      requestUrl = "/auction-seller/seller/save-product/true";
 
       // 꼭 ID도 넣어줘야함
       formData.append("ProductID", productId);
