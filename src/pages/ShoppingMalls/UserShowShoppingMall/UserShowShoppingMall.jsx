@@ -33,9 +33,11 @@ export default function UserShowShoppingMall(props) {
   const [viewNumber, setViewNumber] = useState(1);
 
   useEffect(() => {
-    axios.get("/show-shoppingmall?id=" + mallId).then((res) => {
-      setShoppingMall(res.data.value);
-    });
+    axios
+      .get("auction-seller/auth/show-shoppingmall?id=" + mallId)
+      .then((res) => {
+        setShoppingMall(res.data.value);
+      });
   }, []);
 
   return (

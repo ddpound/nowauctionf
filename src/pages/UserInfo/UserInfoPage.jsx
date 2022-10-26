@@ -104,30 +104,35 @@ export default function UserInfoPage(props) {
       props
     );
 
-    returnResponse.then((responese) => {
-      if (!!responese) {
-        if (responese.data.role == "SELLER") {
-          localStorage.setItem("sellerSuccess", "sellerSuccess");
+    returnResponse
+      .then((responese) => {
+        if (!!responese) {
+          if (responese.data.role == "SELLER") {
+            localStorage.setItem("sellerSuccess", "sellerSuccess");
+          }
+          //let [userData, userDataFuntion] = responese.data;
+          // this.setState({
+          //   userName: responese.data.userName,
+          //   nickName: responese.data.nickName,
+          //   role: responese.data.role,
+          // });
+          if (userobject.userName == "") {
+            setUserOb((userobject) => {
+              return {
+                id: responese.data.id,
+                userName: responese.data.userName,
+                nickName: responese.data.nickName,
+                role: responese.data.role,
+                picture: responese.data.picture,
+              };
+            });
+          }
         }
-        //let [userData, userDataFuntion] = responese.data;
-        // this.setState({
-        //   userName: responese.data.userName,
-        //   nickName: responese.data.nickName,
-        //   role: responese.data.role,
-        // });
-        if (userobject.userName == "") {
-          setUserOb((userobject) => {
-            return {
-              id: responese.data.id,
-              userName: responese.data.userName,
-              nickName: responese.data.nickName,
-              role: responese.data.role,
-              picture: responese.data.picture,
-            };
-          });
-        }
-      }
-    });
+      })
+      .catch((Error) => {
+        console.log(Error.responese);
+        console.log("에러");
+      });
   }, []);
 
   return (

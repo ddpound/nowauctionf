@@ -22,7 +22,7 @@ export default function ShoppingMallProductList({
   useEffect(() => {
     // 무조건 딱 한번 리스트를 받아와서 페이징해줌
     const requestList = axios.get(
-      "/show-shoppingmall/find-product-all/" + mallId
+      "/auction-seller/auth/show-shoppingmall/find-product-all/" + mallId
     );
     requestList.then((res) => {
       setProductList(res.data.reverse());
@@ -43,7 +43,6 @@ export default function ShoppingMallProductList({
                   key={productList.id}
                   productId={productList.id}
                   name={productList.productName}
-                  seller={productList.shoppingMall.userModel.nickname}
                   price={productList.productPrice}
                   quantity={productList.productQuantity}
                   thumbnail={productList.pictureUrlPath}

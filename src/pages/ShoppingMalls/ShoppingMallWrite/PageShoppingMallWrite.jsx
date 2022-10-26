@@ -37,18 +37,20 @@ export default function PageShoppingMallWrite({ history, board }) {
 
   // 여기에 axios를 담으면 될듯
   const deleteRequest = () => {
-    requestGetHaveToken("/seller/delete-temporary-iamge").catch((Error) => {
-      console.log(Error);
-    });
+    requestGetHaveToken("/auction-seller/seller/delete-temporary-iamge").catch(
+      (Error) => {
+        console.log(Error);
+      }
+    );
   };
 
   const onSubmit = (content, files, title, category) => {
     const formData = new FormData();
 
-    let url = "/seller/save-board/false";
+    let url = "/auction-seller/seller/save-board/false";
 
     if (!!modifyBoard) {
-      url = "/seller/save-board/true";
+      url = "/auction-seller/seller/save-board/true";
     }
 
     //수정이 아니면서 파일이 없다면 썸네일이 반드시 필요
@@ -93,7 +95,7 @@ export default function PageShoppingMallWrite({ history, board }) {
   // 카테고리 값 가져오는 부분
   // 체크 부분이 참일 때 실행,
   useEffect(() => {
-    requestGetHaveToken("/seller/get-category-list")
+    requestGetHaveToken("/auction-seller/seller/get-category-list")
       .then((res) => {
         console.log(res);
         setCategoryList(res.data);
@@ -106,7 +108,7 @@ export default function PageShoppingMallWrite({ history, board }) {
 
   // 카테고리 값 가져오는 부분
   useEffect(() => {
-    requestGetHaveToken("/seller/get-category-list")
+    requestGetHaveToken("/auction-seller/seller/get-category-list")
       .then((res) => {
         console.log(res);
         setCategoryList(res.data);

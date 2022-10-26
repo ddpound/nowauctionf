@@ -33,9 +33,11 @@ export default function ProductShowPage(props) {
   const sellerIn = localStorage.getItem("sellerSuccess");
   const adminIn = localStorage.getItem("adminSuccess", "imadmin");
   useEffect(() => {
-    axios.get("/show-shoppingmall/product-show/" + productId).then((res) => {
-      setProduct(res.data);
-    });
+    axios
+      .get("/auction-seller/auth/show-shoppingmall/product-show/" + productId)
+      .then((res) => {
+        setProduct(res.data);
+      });
   }, []);
 
   return (
@@ -186,7 +188,7 @@ export default function ProductShowPage(props) {
                 type="button"
                 onClick={() => {
                   requestDeleteHaveToken(
-                    "/seller/delete-product/" + product.id,
+                    "/auction-seller/seller/delete-product/" + product.id,
                     props
                   )
                     .then((res) => {

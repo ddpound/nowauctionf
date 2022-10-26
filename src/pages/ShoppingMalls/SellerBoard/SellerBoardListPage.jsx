@@ -19,7 +19,9 @@ export default function SellerBoardListPage({ onePagePostNumber, mallId }) {
 
   useEffect(() => {
     // 무조건 딱 한번 리스트를 받아와서 페이징해줌
-    const requestList = axios.get("/find-all-seller-board/" + mallId);
+    const requestList = axios.get(
+      "/auction-seller/auth/find-all-seller-board/" + mallId
+    );
     requestList.then((res) => {
       setCommonboardList(res.data.reverse());
     });

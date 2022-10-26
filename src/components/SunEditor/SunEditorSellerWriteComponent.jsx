@@ -42,13 +42,15 @@ export default function SunEditorSellerWriteComponent({
     formData.append("file", files[0]);
     setFiles(files);
 
-    requestPostHaveToken("/seller/temporary-image-save", null, formData).then(
-      (res) => {
-        const response = { result: [{ url: res.data.url }] };
+    requestPostHaveToken(
+      "/auction-seller/seller/temporary-image-save",
+      null,
+      formData
+    ).then((res) => {
+      const response = { result: [{ url: res.data.url }] };
 
-        uploadHandler(response);
-      }
-    );
+      uploadHandler(response);
+    });
 
     //uploadHandler(files);
   };
@@ -143,7 +145,7 @@ export default function SunEditorSellerWriteComponent({
                   } else {
                     formData.append("categoryName", newCategory);
                     requestPostHaveToken(
-                      "/seller/save-category",
+                      "/auction-seller/seller/save-category",
                       null,
                       formData
                     ).then(() => {

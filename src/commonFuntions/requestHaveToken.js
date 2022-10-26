@@ -17,7 +17,7 @@ export function requestGetHaveToken(url,props){
         return responese;
       }).catch((Error)=>{
         if (Error.response.status == undefined) {
-          console.log(Error);
+          console.log(Error.response);
         } else if (Error.response.status == "403") {
           deleteUserDataToken();
           alert("권한이 없습니다! 다시 로그인하거나 문의해주세요");
@@ -28,6 +28,16 @@ export function requestGetHaveToken(url,props){
             document.location.href = "/";
           }
           
+        }else if(Error.response.status == "401"){
+          deleteUserDataToken();
+          console.log("401 ERROR Plese server")
+          alert("권한이 없습니다! 다시 로그인하거나 문의해주세요");
+          
+          if(!!props){
+            props.history.push("/");
+          }else{
+            document.location.href = "/";
+          }
         }
       })
     

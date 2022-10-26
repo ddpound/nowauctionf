@@ -33,9 +33,11 @@ export default function SellerBoardShowPage(props) {
   const sellerIn = localStorage.getItem("sellerSuccess", "sellerSuccess");
   const adminIn = localStorage.getItem("adminSuccess", "imadmin");
   useEffect(() => {
-    axios.get("/show-seller-board/" + productId).then((res) => {
-      setSellerBoard(res.data);
-    });
+    axios
+      .get("/auction-seller/auth/show-seller-board/" + productId)
+      .then((res) => {
+        setSellerBoard(res.data);
+      });
   }, []);
 
   return (
@@ -132,7 +134,8 @@ export default function SellerBoardShowPage(props) {
                 type="button"
                 onClick={() => {
                   requestDeleteHaveToken(
-                    "/seller/delete-seller-board/" + sellerBoard.id,
+                    "/auction-seller/seller/delete-seller-board/" +
+                      sellerBoard.id,
                     props
                   )
                     .then((res) => {
