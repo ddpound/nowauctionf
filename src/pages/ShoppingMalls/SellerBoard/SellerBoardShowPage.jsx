@@ -30,29 +30,39 @@ export default function SellerBoardShowPage(props) {
    */
   const [modifyDeclare, setModifyDeclare] = useState(false);
 
-  const sellerIn = localStorage.getItem("sellerSuccess", "sellerSuccess");
-  const adminIn = localStorage.getItem("adminSuccess", "imadmin");
+  const sellerIn = localStorage.getItem("sellerSuccess");
+  const adminIn = localStorage.getItem("adminSuccess");
   useEffect(() => {
     axios
       .get("/auction-seller/auth/show-seller-board/" + productId)
       .then((res) => {
         setSellerBoard(res.data);
+        console.log(res.data);
+        console.log(res.data.shoppingMall.username);
       });
   }, []);
 
+  console.log("아너ㅚㅏ");
+  console.log(sellerBoard);
+  if (!!sellerBoard) {
+    console.log();
+  }
   return (
     <div className="container mt-5">
-      {!!sellerIn && !modifyDeclare && (
-        <button
-          className="btn btn-dark"
-          type="button"
-          onClick={() => {
-            setModifyDeclare(true);
-          }}
-        >
-          글 수정하기
-        </button>
-      )}
+      {!!sellerIn &&
+        !!sellerBoard &&
+        !modifyDeclare &&
+        sellerBoard.shoppingMall.username == sellerIn && (
+          <button
+            className="btn btn-dark"
+            type="button"
+            onClick={() => {
+              setModifyDeclare(true);
+            }}
+          >
+            글 수정하기
+          </button>
+        )}
       {((!!sellerIn && !modifyDeclare) || !!adminIn) && (
         <button
           type="button"

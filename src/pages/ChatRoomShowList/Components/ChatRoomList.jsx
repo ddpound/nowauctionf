@@ -16,7 +16,7 @@ export default function ChatRoomList({ props, onePagePostNumber }) {
 
   useEffect(() => {
     // 무조건 딱 한번 리스트를 받아와서 페이징해줌
-    const requestList = axios.get("/find-all-chat-room");
+    const requestList = axios.get("/auction-chat/auth/find-all-chat-room");
     requestList.then((res) => {
       setChatRoomList(res.data.reverse());
     });

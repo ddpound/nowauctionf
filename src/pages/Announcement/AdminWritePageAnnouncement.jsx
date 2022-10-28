@@ -18,15 +18,19 @@ function saveBoard(title, boardContent, props) {
     };
 
     axios
-      .post("/admin/save-announcement-board", JSON.stringify(formData), {
-        headers: {
-          Authorization:
-            "Bearer " + localStorage.getItem("google-login-success"),
-          Refreshtoken:
-            "Bearer " + localStorage.getItem("google-login-success-re"),
-          "Content-Type": `application/json`,
-        },
-      })
+      .post(
+        "/auction-user/admin/save-announcement-board/false",
+        JSON.stringify(formData),
+        {
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("google-login-success"),
+            Refreshtoken:
+              "Bearer " + localStorage.getItem("google-login-success-re"),
+            "Content-Type": `application/json`,
+          },
+        }
+      )
       .then((res) => {
         alert("작성이 완료되었습니다.");
         resetTokens(res);
@@ -100,7 +104,7 @@ export default function AdminWritePageAnnouncement(props) {
             // const imgUrl = await .... 서버 전송 / 경로 수신 코드 ...
 
             requestPostHaveToken(
-              "/admin/temporary-image-save",
+              "/auction-user/admin/temporary-image-save",
               null,
               formData
             ).then((res) => {

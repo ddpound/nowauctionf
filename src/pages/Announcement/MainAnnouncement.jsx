@@ -20,7 +20,7 @@ export default function MainAnnouncement(props) {
   useEffect(() => {
     // 자동적으로 리스트 반환
     const requestList = axios
-      .get("/find-all-announcement-board")
+      .get("/auction-user/auth/find-all-announcement-board")
       .then((res) => {
         setList(res.data.reverse());
       })

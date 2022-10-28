@@ -34,7 +34,7 @@ function deleteUser(props) {
 function giveSeller(props, inputid, inputcode, userobject) {
   if (!!inputid && !!inputcode) {
     const giveSellerRe = requestPostHaveToken(
-      "/auction-user/seller/give-seller",
+      "/auction-user/give-seller",
       props,
       {
         id: inputid,
@@ -44,7 +44,7 @@ function giveSeller(props, inputid, inputcode, userobject) {
 
     giveSellerRe
       .then((res) => {
-        localStorage.setItem("sellerSuccess", userobject.id);
+        localStorage.setItem("sellerSuccess", userobject.userName);
         alert("등록에 성공하셨습니다.");
         props.history.push("/");
       })
@@ -108,7 +108,7 @@ export default function UserInfoPage(props) {
       .then((responese) => {
         if (!!responese) {
           if (responese.data.role == "SELLER") {
-            localStorage.setItem("sellerSuccess", "sellerSuccess");
+            localStorage.setItem("sellerSuccess", responese.data.userName);
           }
           //let [userData, userDataFuntion] = responese.data;
           // this.setState({

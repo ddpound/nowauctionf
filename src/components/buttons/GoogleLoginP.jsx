@@ -27,11 +27,11 @@ function giveRole() {
   returnResponse.then((res) => {
     if (!!res) {
       if (res.data.role == "ADMIN") {
-        localStorage.setItem("adminSuccess", res.data.id);
+        localStorage.setItem("adminSuccess", res.data.userName);
       }
 
       if (res.data.role == "SELLER") {
-        localStorage.setItem("sellerSuccess", res.data.id);
+        localStorage.setItem("sellerSuccess", res.data.userName);
       }
     }
   });
