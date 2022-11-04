@@ -36,7 +36,8 @@ export default function UserShowShoppingMall(props) {
     axios
       .get("auction-seller/auth/show-shoppingmall?id=" + mallId)
       .then((res) => {
-        setShoppingMall(res.data.value);
+        console.log(res);
+        setShoppingMall(res.data);
       });
   }, []);
 

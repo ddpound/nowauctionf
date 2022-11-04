@@ -6,6 +6,8 @@ import SunEditor from "suneditor-react";
 import { Viewer } from "@toast-ui/react-editor";
 
 import PageShoppingMallWrite from "../ShoppingMallWrite/PageShoppingMallWrite";
+import ReplyContainer from "../../../components/replyComponents/ReplyContainer";
+import ReplyWriteContainer from "../../../components/replyComponents/ReplyWriteContainer";
 
 import {
   requestPostHaveToken,
@@ -32,6 +34,8 @@ export default function SellerBoardShowPage(props) {
 
   const sellerIn = localStorage.getItem("sellerSuccess");
   const adminIn = localStorage.getItem("adminSuccess");
+  const userdata = localStorage.getItem("userdata");
+
   useEffect(() => {
     axios
       .get("/auction-seller/auth/show-seller-board/" + productId)
@@ -42,7 +46,7 @@ export default function SellerBoardShowPage(props) {
       });
   }, []);
 
-  console.log("아너ㅚㅏ");
+  console.log("댓글 확인을 위한 보드 log확인");
   console.log(sellerBoard);
   if (!!sellerBoard) {
     console.log();
@@ -63,7 +67,20 @@ export default function SellerBoardShowPage(props) {
             글 수정하기
           </button>
         )}
-      {((!!sellerIn && !modifyDeclare) || !!adminIn) && (
+      {!!sellerIn &&
+        !!sellerBoard &&
+        !modifyDeclare &&
+        sellerBoard.shoppingMall.username == sellerIn && (
+          <button
+            type="button"
+            className="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            글 삭제하기
+          </button>
+        )}
+      {!!adminIn && (
         <button
           type="button"
           className="btn btn-danger"
@@ -99,6 +116,11 @@ export default function SellerBoardShowPage(props) {
           </div>
         </div>
       )}
+
+      {!!userdata && !modifyDeclare && (
+        <ReplyWriteContainer userdata={userdata} />
+      )}
+      {!!sellerBoard && !modifyDeclare && <ReplyContainer />}
 
       {modifyDeclare && (
         <PageShoppingMallWrite
