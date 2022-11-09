@@ -15,6 +15,8 @@ export default function ReplyWriteContainer({
   boardId,
   userdata,
   onclickEvent,
+  replyId,
+  setReplyAreaId,
 }) {
   // 사용자 입력 저장
   const [checkItemContent, setCheckItemContent] = useState("");
@@ -82,7 +84,7 @@ export default function ReplyWriteContainer({
             <label className="ms-3">{userdataParse.nickName}</label>
           </span>
           <textarea
-            id="replyArea"
+            id={setReplyAreaId}
             className="form-control border border-dark"
             aria-label="With textarea"
             onChange={checkItemChangeHandler}
@@ -97,14 +99,15 @@ export default function ReplyWriteContainer({
           <button
             className="btn btn-dark"
             onClick={() => {
-              const content = document.getElementById("replyArea").value;
+              const content = document.getElementById(setReplyAreaId).value;
 
               onclickEvent(
                 content,
                 userdataParse.id,
                 userdataParse.nickName,
                 userdataParse.picture,
-                boardId
+                boardId,
+                replyId
               );
             }}
           >

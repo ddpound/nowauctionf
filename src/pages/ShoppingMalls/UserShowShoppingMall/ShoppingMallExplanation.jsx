@@ -12,7 +12,7 @@ export default function ShoppingMallExplanation({ shoppingmall }) {
       <div className="row mt-5">
         <div className="col-4">
           <img
-            className="img-fluid"
+            className="img-fluid border border-dark"
             src={shoppingmall.thumbnailUrlPath}
             alt="thumbnail"
           />

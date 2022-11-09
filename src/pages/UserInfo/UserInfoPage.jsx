@@ -44,7 +44,7 @@ function giveSeller(props, inputid, inputcode, userobject) {
 
     giveSellerRe
       .then((res) => {
-        localStorage.setItem("sellerSuccess", userobject.userName);
+        localStorage.setItem("sellerSuccess", userobject.id);
         alert("등록에 성공하셨습니다.");
         props.history.push("/");
       })
@@ -108,7 +108,7 @@ export default function UserInfoPage(props) {
       .then((responese) => {
         if (!!responese) {
           if (responese.data.role == "SELLER") {
-            localStorage.setItem("sellerSuccess", responese.data.userName);
+            localStorage.setItem("sellerSuccess", responese.data.id);
           }
           //let [userData, userDataFuntion] = responese.data;
           // this.setState({

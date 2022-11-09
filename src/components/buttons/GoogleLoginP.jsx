@@ -31,7 +31,7 @@ function giveRole() {
       }
 
       if (res.data.role == "SELLER") {
-        localStorage.setItem("sellerSuccess", res.data.userName);
+        localStorage.setItem("sellerSuccess", res.data.id);
       }
     }
   });

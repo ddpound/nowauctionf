@@ -89,7 +89,7 @@ export default function SellerBoardShowPage(props) {
       {!!sellerIn &&
         !!sellerBoard &&
         !modifyDeclare &&
-        sellerBoard.shoppingMall.username == sellerIn && (
+        sellerBoard.shoppingMall.userId == sellerIn && (
           <button
             className="btn btn-dark"
             type="button"
@@ -103,7 +103,7 @@ export default function SellerBoardShowPage(props) {
       {!!sellerIn &&
         !!sellerBoard &&
         !modifyDeclare &&
-        sellerBoard.shoppingMall.username == sellerIn && (
+        sellerBoard.shoppingMall.userId == sellerIn && (
           <button
             type="button"
             className="btn btn-danger"
@@ -155,11 +155,12 @@ export default function SellerBoardShowPage(props) {
           onclickEvent={onClickBoardWriteEvent}
           userdata={userdata}
           boardId={boardId}
+          setReplyAreaId={"reply"}
         />
       )}
       {!!sellerBoard && !modifyDeclare && (
         <ReplyContainer
-          inputReplylist={sellerBoard.commonReplyModelList}
+          inputReplylist={sellerBoard.commonReplyModelList.reverse()}
           userdata={userdata}
         />
       )}

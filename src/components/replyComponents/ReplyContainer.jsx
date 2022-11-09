@@ -85,13 +85,17 @@ export default function ReplyContainer({
       </div>
       {!!replyList &&
         newAndOld == 1 &&
-        replyList.reverse().map((reply) => {
-          return <ReplyBlock key={reply.id} reply={reply} />;
+        replyList.map((reply) => {
+          return (
+            <ReplyBlock key={reply.id} reply={reply} userdata={userdata} />
+          );
         })}
       {!!replyList &&
         newAndOld == 3 &&
-        replyList.map((reply) => {
-          return <ReplyBlock key={reply.id} reply={reply} />;
+        replyList.reverse().map((reply) => {
+          return (
+            <ReplyBlock key={reply.id} reply={reply} userdata={userdata} />
+          );
         })}
     </div>
   );
