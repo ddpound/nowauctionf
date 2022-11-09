@@ -3,9 +3,17 @@
 /*  테마 색 코드 #27AE60 */
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 
+/*  태나다 체 */
+@font-face {
+    font-family: 'Tenada';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Tenada.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 header{
     background-color: black;
     // font-family: 'Kdam Thmor Pro', sans-serif;
-    font-family: 'Jua', sans-serif;
+    font-family: 'Tenada';
 }
 

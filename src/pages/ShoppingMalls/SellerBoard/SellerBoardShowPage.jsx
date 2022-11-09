@@ -20,7 +20,7 @@ import {
  * 이미 완성된 제품 객체를 받으니 수정 onSubmit만 있으면될듯
  */
 export default function SellerBoardShowPage(props) {
-  const productId = props.match.params.id;
+  const boardId = props.match.params.id;
 
   const [sellerBoard, setSellerBoard] = useState(...[]);
 
@@ -38,7 +38,7 @@ export default function SellerBoardShowPage(props) {
 
   useEffect(() => {
     axios
-      .get("/auction-seller/auth/show-seller-board/" + productId)
+      .get("/auction-seller/auth/show-seller-board/" + boardId)
       .then((res) => {
         setSellerBoard(res.data);
         console.log(res.data);
@@ -51,6 +51,39 @@ export default function SellerBoardShowPage(props) {
   if (!!sellerBoard) {
     console.log();
   }
+
+  const onClickBoardWriteEvent = (
+    content,
+    id,
+    nickName,
+    userPicture,
+    boardId
+  ) => {
+    const formData = new FormData();
+
+    console.log(content);
+    console.log(id);
+    console.log(nickName);
+    console.log(boardId);
+
+    formData.append("content", content);
+    formData.append("userId", id);
+    formData.append("nickName", nickName);
+    formData.append("userPicture", userPicture);
+    formData.append("boardId", boardId);
+
+    requestPostHaveToken("/auction-user/user/save-reply", null, formData)
+      .then((res) => {
+        console.log(res);
+        alert("댓글작성 성공");
+        document.location.reload();
+      })
+      .catch((Error) => {
+        console.log(Error);
+        alert("댓글 작성 실패");
+      });
+  };
+
   return (
     <div className="container mt-5">
       {!!sellerIn &&
@@ -118,9 +151,18 @@ export default function SellerBoardShowPage(props) {
       )}
 
       {!!userdata && !modifyDeclare && (
-        <ReplyWriteContainer userdata={userdata} />
+        <ReplyWriteContainer
+          onclickEvent={onClickBoardWriteEvent}
+          userdata={userdata}
+          boardId={boardId}
+        />
       )}
-      {!!sellerBoard && !modifyDeclare && <ReplyContainer />}
+      {!!sellerBoard && !modifyDeclare && (
+        <ReplyContainer
+          inputReplylist={sellerBoard.commonReplyModelList}
+          userdata={userdata}
+        />
+      )}
 
       {modifyDeclare && (
         <PageShoppingMallWrite

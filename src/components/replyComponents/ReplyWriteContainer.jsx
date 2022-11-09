@@ -2,6 +2,7 @@ import axios from "axios";
 import { React, useState, useEffect, useRef, useCallback } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 
+import { requestPostHaveToken } from "../../commonFuntions/requestHaveToken";
 /**
  * 1. get요청해서 댓글 리스트를 받아낼 url
  * 2. post요청해서 댓글 작성을 받아낼 url
@@ -11,8 +12,9 @@ import "bootstrap/dist/js/bootstrap.bundle";
 export default function ReplyWriteContainer({
   repleyGetUrl,
   replySavePostUrl,
+  boardId,
   userdata,
-  writeButtonOnClickEvent,
+  onclickEvent,
 }) {
   // 사용자 입력 저장
   const [checkItemContent, setCheckItemContent] = useState("");
@@ -58,12 +60,15 @@ export default function ReplyWriteContainer({
   console.log(userdata);
 
   const userdataParse = JSON.parse(userdata);
+
+  console.log(userdataParse);
+
   return (
     <div className="container">
       <div>
         <div className="input-group">
           <span
-            className="input-group-text bg-white"
+            className="input-group-text bg-white border border-dark"
             style={{
               height: lineHeight * 27 + 27 + "px",
               minHeight: "50px",
@@ -78,7 +83,7 @@ export default function ReplyWriteContainer({
           </span>
           <textarea
             id="replyArea"
-            className="form-control"
+            className="form-control border border-dark"
             aria-label="With textarea"
             onChange={checkItemChangeHandler}
             onKeyDown={checkItemEnterHandler}
@@ -89,7 +94,20 @@ export default function ReplyWriteContainer({
               minHeight: "50px",
             }}
           ></textarea>
-          <button className="btn btn-dark" onClick={writeButtonOnClickEvent}>
+          <button
+            className="btn btn-dark"
+            onClick={() => {
+              const content = document.getElementById("replyArea").value;
+
+              onclickEvent(
+                content,
+                userdataParse.id,
+                userdataParse.nickName,
+                userdataParse.picture,
+                boardId
+              );
+            }}
+          >
             작성
           </button>
         </div>
