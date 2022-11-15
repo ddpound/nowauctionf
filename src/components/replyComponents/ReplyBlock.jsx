@@ -10,6 +10,12 @@ import { requestPostHaveToken } from "../../commonFuntions/requestHaveToken";
  *
  */
 const ReplyBlock = ({ reply, userdata }) => {
+  const [replyOfReply, setReplyOfReply] = useState([]);
+
+  useEffect(() => {
+    setReplyOfReply(reply.commonReplyOfReplyModels);
+  }, []);
+
   const onClickReplyOfReplyWriteEvent = (
     content,
     id,
@@ -49,6 +55,8 @@ const ReplyBlock = ({ reply, userdata }) => {
         alert("댓글 작성에 실패하셨습니다.");
       });
   };
+  console.log("여기 대댓용 콘솔");
+  console.log(replyOfReply);
   return (
     <div className="container mt-2" key={reply.id}>
       <div className="card border-dark mt-1">
@@ -87,6 +95,39 @@ const ReplyBlock = ({ reply, userdata }) => {
             setReplyAreaId={"replyOfReply" + reply.id}
           />
         </div>
+        {!!replyOfReply &&
+          replyOfReply.reverse().map((replyOfReply) => {
+            return (
+              <div className="card border-dark mt-1">
+                <div className="card-header d-flex bg-transparent border-dark">
+                  <div className="col">
+                    <img
+                      className="rounded-circle w-25"
+                      src={replyOfReply.userPicture}
+                      style={{ maxWidth: "30px" }}
+                      alt=""
+                    />
+                    <label className="ms-3">{replyOfReply.nickName}</label>
+                  </div>
+                  <div className="col-6 justify-content-start">
+                    <label className="text-end d-block lh-1 mt-1 text-wrap">
+                      작성 : {replyOfReply.createDate}
+                    </label>
+                    <label className="text-end d-block lh-1 mt-1 text-wrap">
+                      수정 : {replyOfReply.modifyDate}
+                    </label>
+                  </div>
+                  <div className="col d-flex justify-content-end">
+                    <button className="btn btn-dark btn-sm">수정하기</button>
+                    <button className="btn btn-danger btn-sm">삭제</button>
+                  </div>
+                </div>
+                <div className="card-body text-dark">
+                  <p className="card-text">{replyOfReply.content}</p>
+                </div>
+              </div>
+            );
+          })}
       </div>
     </div>
   );

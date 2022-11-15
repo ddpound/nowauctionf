@@ -160,7 +160,7 @@ export default function SellerBoardShowPage(props) {
       )}
       {!!sellerBoard && !modifyDeclare && (
         <ReplyContainer
-          inputReplylist={sellerBoard.commonReplyModelList.reverse()}
+          inputReplylist={sellerBoard.commonReplyModel.reverse()}
           userdata={userdata}
         />
       )}
