@@ -38,8 +38,11 @@ export default function SellerBoardListPage({ onePagePostNumber, mallId }) {
                 <SellerBoardBlockComponent
                   key={commonboard.id}
                   boardTitle={commonboard.title}
+                  boardContent={commonboard.Content}
                   boardId={commonboard.id}
                   thumbnail={commonboard.pictureUrlPath}
+                  makedate={commonboard.createDate}
+                  board={commonboard}
                 />
               );
             })}

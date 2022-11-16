@@ -2,7 +2,10 @@ import axios from "axios";
 import { React, useState, useEffect, useRef } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 import ReplyWriteContainer from "./ReplyWriteContainer";
-import { requestPostHaveToken } from "../../commonFuntions/requestHaveToken";
+import {
+  requestPostHaveToken,
+  requestDeleteHaveToken,
+} from "../../commonFuntions/requestHaveToken";
 
 /**
  * 대댓글이 안에있음
@@ -55,12 +58,26 @@ const ReplyBlock = ({ reply, userdata }) => {
         alert("댓글 작성에 실패하셨습니다.");
       });
   };
+
+  const onClickDelteReply = (url, replyId) => {
+    requestDeleteHaveToken(url + replyId)
+      .then((res) => {
+        console.log(res);
+        alert("댓글 삭제에 성공했습니다.");
+        document.location.reload();
+      })
+      .catch((Error) => {
+        console.log(Error);
+        alert("댓글 삭제에 실패하셨습니다.");
+      });
+  };
+
   console.log("여기 대댓용 콘솔");
   console.log(replyOfReply);
   return (
     <div className="container mt-2" key={reply.id}>
-      <div className="card border-dark mt-1">
-        <div className="card-header d-flex bg-transparent border-dark">
+      <div className="card mt-1 ">
+        <div className="card-body text-dark">
           <div className="col">
             <img
               className="rounded-circle w-25"
@@ -68,25 +85,31 @@ const ReplyBlock = ({ reply, userdata }) => {
               style={{ maxWidth: "30px" }}
               alt=""
             />
-            <label className="ms-3">{reply.nickName}</label>
+            <label className="ms-3 d-inline p-2">{reply.nickName}</label>
+            <p className="card-text d-inline p-2">
+              <small className="text-muted">작성 : {reply.createDate}</small>
+            </p>
+            <p className="card-text d-inline p-2">
+              <small className="text-muted">수정 : {reply.modifyDate}</small>
+            </p>
           </div>
-          <div className="col-6 justify-content-start">
-            <label className="text-end d-block lh-1 mt-1 text-wrap">
-              작성 : {reply.createDate}
-            </label>
-            <label className="text-end d-block lh-1 mt-1 text-wrap">
-              수정 : {reply.modifyDate}
-            </label>
+          <div className="col mt-3 mb-3">
+            <p className="card-text">{reply.content}</p>
           </div>
           <div className="col d-flex justify-content-end">
             <button className="btn btn-dark btn-sm">수정하기</button>
-            <button className="btn btn-danger btn-sm">삭제</button>
+            <button
+              id={reply.id}
+              className="btn btn-danger btn-sm"
+              onClick={(e) => {
+                onClickDelteReply("/auction-user/user/delete-reply/", reply.id);
+              }}
+            >
+              삭제
+            </button>
           </div>
         </div>
-        <div className="card-body text-dark">
-          <p className="card-text">{reply.content}</p>
-        </div>
-        <div className="card-footer bg-transparent border-dark">
+        <div className="card-footer bg-transparent">
           <ReplyWriteContainer
             boardId={reply.commonModelId}
             userdata={userdata}
@@ -98,8 +121,12 @@ const ReplyBlock = ({ reply, userdata }) => {
         {!!replyOfReply &&
           replyOfReply.reverse().map((replyOfReply) => {
             return (
-              <div className="card border-dark mt-1">
-                <div className="card-header d-flex bg-transparent border-dark">
+              <div
+                key={replyOfReply.id}
+                className="border-dark border-top border-bottom"
+                style={{ paddingLeft: "100px", backgroundColor: "#FBF2EF" }}
+              >
+                <div className="mt-3 mb-5 d-flex bg-transparent">
                   <div className="col">
                     <img
                       className="rounded-circle w-25"
@@ -110,19 +137,34 @@ const ReplyBlock = ({ reply, userdata }) => {
                     <label className="ms-3">{replyOfReply.nickName}</label>
                   </div>
                   <div className="col-6 justify-content-start">
-                    <label className="text-end d-block lh-1 mt-1 text-wrap">
-                      작성 : {replyOfReply.createDate}
-                    </label>
-                    <label className="text-end d-block lh-1 mt-1 text-wrap">
-                      수정 : {replyOfReply.modifyDate}
-                    </label>
+                    <p className="card-text d-inline p-2">
+                      <small className="text-muted">
+                        작성 : {replyOfReply.createDate}
+                      </small>
+                    </p>
+                    <p className="card-text d-inline p-2">
+                      <small className="text-muted">
+                        수정 : {replyOfReply.modifyDate}
+                      </small>
+                    </p>
                   </div>
                   <div className="col d-flex justify-content-end">
                     <button className="btn btn-dark btn-sm">수정하기</button>
-                    <button className="btn btn-danger btn-sm">삭제</button>
+                    <button
+                      id={replyOfReply.id}
+                      className="btn btn-danger btn-sm"
+                      onClick={(e) => {
+                        onClickDelteReply(
+                          "/auction-user/user/delete-reply/",
+                          replyOfReply.id
+                        );
+                      }}
+                    >
+                      삭제
+                    </button>
                   </div>
                 </div>
-                <div className="card-body text-dark">
+                <div className="mb-4 text-dark">
                   <p className="card-text">{replyOfReply.content}</p>
                 </div>
               </div>

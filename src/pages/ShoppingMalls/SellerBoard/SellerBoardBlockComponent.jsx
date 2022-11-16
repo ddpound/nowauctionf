@@ -12,11 +12,18 @@ export default function SellerBoardBlockComponent({
   boardTitle,
   seller,
   category,
+  boardContent,
   makedate,
   thumbnail,
+  board,
 }) {
   let url = "/show-seller-board/" + boardId;
 
+  // 태그 제거
+  const extractTextPattern = /(<([^>]+)>)/gi;
+  let contentReplace = boardContent.replace(extractTextPattern, "");
+
+  console.log(board);
   return (
     <div className="container mt-5">
       {!!boardTitle && (
@@ -34,6 +41,7 @@ export default function SellerBoardBlockComponent({
               <div className="card-body">
                 <h5 className="card-title">{boardTitle}</h5>
                 <p className="card-text">{seller}</p>
+                <p className="card-text text-truncate">{contentReplace}</p>
                 <hr />
                 <p className="card-text">{category}</p>
                 <div className="d-flex justify-content-between align-items-center">

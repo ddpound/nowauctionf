@@ -16,9 +16,8 @@ export default function BoardBlock(announcement) {
           <h5 className="card-title">{announcement.announcement.title}</h5>
         </div>
         <div className="card-body">
-          <p className="card-text">
-            현재 공지글에 대한 미리보기입니다. 앞서 받은 글 길이의 100글자만
-            가져와도 될듯
+          <p className="card-text text-truncate">
+            {announcement.announcement.Content}
           </p>
         </div>
         <div className="card-footer">

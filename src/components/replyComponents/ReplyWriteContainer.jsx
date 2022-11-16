@@ -67,28 +67,31 @@ export default function ReplyWriteContainer({
 
   return (
     <div className="container">
-      <div>
-        <div className="input-group">
+      <div className="row border-bottom border-dark">
+        <div className="col-2 ">
           <span
-            className="input-group-text bg-white border border-dark"
+            className="input-group-text bg-white border-white"
             style={{
               height: lineHeight * 27 + 27 + "px",
               minHeight: "50px",
             }}
           >
             <img
-              className="rounded-circle w-25"
+              className="img-fluid rounded-circle w-25"
               src={userdataParse.picture}
               alt=""
             />
-            <label className="ms-3">{userdataParse.nickName}</label>
+            <label className="fs-6 ms-3">{userdataParse.nickName}</label>
           </span>
+        </div>
+        <div className="col-8">
           <textarea
             id={setReplyAreaId}
-            className="form-control border border-dark"
+            className="form-control border-white"
             aria-label="With textarea"
             onChange={checkItemChangeHandler}
             onKeyDown={checkItemEnterHandler}
+            placeholder="댓글 추가"
             style={{
               height: lineHeight * 27 + 27 + "px",
               resize: "none",
@@ -96,6 +99,8 @@ export default function ReplyWriteContainer({
               minHeight: "50px",
             }}
           ></textarea>
+        </div>
+        <div className="col-2 d-grid gap-2">
           <button
             className="btn btn-dark"
             onClick={() => {
