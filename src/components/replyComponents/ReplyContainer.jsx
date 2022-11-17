@@ -1,8 +1,11 @@
 import axios from "axios";
-import { React, useState, useEffect, useRef } from "react";
+import { React, useState, useEffect, useRef, Fragment } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 
+import { useInView } from "react-intersection-observer";
+
 import ReplyBlock from "./ReplyBlock";
+import { useCallback } from "react";
 
 /**
  * 1. get요청해서 댓글 리스트를 받아낼 url
@@ -16,16 +19,57 @@ export default function ReplyContainer({
   userdata,
   inputReplylist,
 }) {
-  const [replyList, setReplyList] = useState();
+  const [replyList, setReplyList] = useState([]);
   const [newAndOld, setNewAndOld] = useState(1);
+
+  // 페이징할 리스트 계속 +20 씩 넣을 예정 page가 변환할때 마다
+  const [pagingList, setPagingList] = useState([]);
+
+  // 페이징 할 값
+  const pageNumber = 5;
+
+  const chageList = useCallback(async () => {
+    setLoading(true);
+    // 1~5, 6~10, 11~15,
+    setPagingList((prevState) => [
+      ...prevState,
+      replyList.slice(page - 1, page + pageNumber),
+    ]);
+    setLoading(false);
+  }, [page]);
+
+  // `getItems` 가 바뀔 때 마다 함수 실행
+  useEffect(() => {
+    chageList();
+  }, [chageList]);
+
+  // 로딩중...
+  const [loading, setLoading] = useState(false);
+
+  // 페이지
+  const [page, setPage] = useState(1);
+
+  // observer 사용, 해당 div가 보이면 view 로 작동됨
+  const [ref, inView] = useInView();
 
   useEffect(() => {
     setReplyList(inputReplylist);
+
+    // 시작하자마자 받아내야함
+    setPagingList(inputReplylist.slice(1, pageNumber));
   }, []);
 
   useEffect(() => {
     setNewAndOld(newAndOld);
   }, [newAndOld]);
+
+  useEffect(() => {
+    // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
+    // 페이지 +1 해줌
+    if (inView && !loading) {
+      setPage((prevState) => prevState + (pageNumber - 1));
+    }
+  }, [inView, loading]);
 
   const nowStateChange = (number) => {
     setNewAndOld(number);
@@ -87,14 +131,18 @@ export default function ReplyContainer({
         newAndOld == 1 &&
         replyList.map((reply) => {
           return (
-            <ReplyBlock key={reply.id} reply={reply} userdata={userdata} />
+            <Fragment ref={ref} key={reply.id}>
+              <ReplyBlock key={reply.id} reply={reply} userdata={userdata} />
+            </Fragment>
           );
         })}
       {!!replyList &&
         newAndOld == 3 &&
         replyList.reverse().map((reply) => {
           return (
-            <ReplyBlock key={reply.id} reply={reply} userdata={userdata} />
+            <Fragment ref={ref} key={reply.id}>
+              <ReplyBlock key={reply.id} reply={reply} userdata={userdata} />
+            </Fragment>
           );
         })}
     </div>

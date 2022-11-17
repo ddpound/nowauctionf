@@ -1,5 +1,5 @@
 import axios from "axios";
-import { React, useState, useEffect, useRef } from "react";
+import { React, useState, useEffect, useRef, Fragment } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 import ReplyWriteContainer from "./ReplyWriteContainer";
 import {
@@ -14,6 +14,7 @@ import {
  */
 const ReplyBlock = ({ reply, userdata }) => {
   const [replyOfReply, setReplyOfReply] = useState([]);
+  const userdataParse = JSON.parse(userdata);
 
   useEffect(() => {
     setReplyOfReply(reply.commonReplyOfReplyModels);
@@ -74,6 +75,7 @@ const ReplyBlock = ({ reply, userdata }) => {
 
   console.log("여기 대댓용 콘솔");
   console.log(replyOfReply);
+
   return (
     <div className="container mt-2" key={reply.id}>
       <div className="card mt-1 ">
@@ -96,18 +98,23 @@ const ReplyBlock = ({ reply, userdata }) => {
           <div className="col mt-3 mb-3">
             <p className="card-text">{reply.content}</p>
           </div>
-          <div className="col d-flex justify-content-end">
-            <button className="btn btn-dark btn-sm">수정하기</button>
-            <button
-              id={reply.id}
-              className="btn btn-danger btn-sm"
-              onClick={(e) => {
-                onClickDelteReply("/auction-user/user/delete-reply/", reply.id);
-              }}
-            >
-              삭제
-            </button>
-          </div>
+          {userdataParse.id == reply.userId && (
+            <div className="col d-flex justify-content-end">
+              <button className="btn btn-dark btn-sm">수정하기</button>
+              <button
+                id={reply.id}
+                className="btn btn-danger btn-sm"
+                onClick={(e) => {
+                  onClickDelteReply(
+                    "/auction-user/user/delete-reply/",
+                    reply.id
+                  );
+                }}
+              >
+                삭제
+              </button>
+            </div>
+          )}
         </div>
         <div className="card-footer bg-transparent">
           <ReplyWriteContainer
@@ -121,53 +128,59 @@ const ReplyBlock = ({ reply, userdata }) => {
         {!!replyOfReply &&
           replyOfReply.reverse().map((replyOfReply) => {
             return (
-              <div
-                key={replyOfReply.id}
-                className="border-dark border-top border-bottom"
-                style={{ paddingLeft: "100px", backgroundColor: "#FBF2EF" }}
-              >
-                <div className="mt-3 mb-5 d-flex bg-transparent">
-                  <div className="col">
-                    <img
-                      className="rounded-circle w-25"
-                      src={replyOfReply.userPicture}
-                      style={{ maxWidth: "30px" }}
-                      alt=""
-                    />
-                    <label className="ms-3">{replyOfReply.nickName}</label>
+              <Fragment key={replyOfReply.id}>
+                <div
+                  key={replyOfReply.id}
+                  className="border-dark border-top border-bottom"
+                  style={{ paddingLeft: "100px", backgroundColor: "#FBF2EF" }}
+                >
+                  <div className="mt-3 mb-5 d-flex bg-transparent">
+                    <div className="col">
+                      <img
+                        className="rounded-circle w-25"
+                        src={replyOfReply.userPicture}
+                        style={{ maxWidth: "30px" }}
+                        alt=""
+                      />
+                      <label className="ms-3">{replyOfReply.nickName}</label>
+                    </div>
+                    <div className="col-6 justify-content-start">
+                      <p className="card-text d-inline p-2">
+                        <small className="text-muted">
+                          작성 : {replyOfReply.createDate}
+                        </small>
+                      </p>
+                      <p className="card-text d-inline p-2">
+                        <small className="text-muted">
+                          수정 : {replyOfReply.modifyDate}
+                        </small>
+                      </p>
+                    </div>
+                    {userdataParse.id == replyOfReply.userId && (
+                      <div className="col d-flex justify-content-end">
+                        <button className="btn btn-dark btn-sm">
+                          수정하기
+                        </button>
+                        <button
+                          id={replyOfReply.id}
+                          className="btn btn-danger btn-sm"
+                          onClick={(e) => {
+                            onClickDelteReply(
+                              "/auction-user/user/delete-reply/of-reply",
+                              replyOfReply.id
+                            );
+                          }}
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    )}
                   </div>
-                  <div className="col-6 justify-content-start">
-                    <p className="card-text d-inline p-2">
-                      <small className="text-muted">
-                        작성 : {replyOfReply.createDate}
-                      </small>
-                    </p>
-                    <p className="card-text d-inline p-2">
-                      <small className="text-muted">
-                        수정 : {replyOfReply.modifyDate}
-                      </small>
-                    </p>
-                  </div>
-                  <div className="col d-flex justify-content-end">
-                    <button className="btn btn-dark btn-sm">수정하기</button>
-                    <button
-                      id={replyOfReply.id}
-                      className="btn btn-danger btn-sm"
-                      onClick={(e) => {
-                        onClickDelteReply(
-                          "/auction-user/user/delete-reply/",
-                          replyOfReply.id
-                        );
-                      }}
-                    >
-                      삭제
-                    </button>
+                  <div className="mb-4 text-dark">
+                    <p className="card-text">{replyOfReply.content}</p>
                   </div>
                 </div>
-                <div className="mb-4 text-dark">
-                  <p className="card-text">{replyOfReply.content}</p>
-                </div>
-              </div>
+              </Fragment>
             );
           })}
       </div>
