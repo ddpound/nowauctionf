@@ -59,11 +59,11 @@ export default function ReplyWriteContainer({
     }
   };
 
-  console.log(userdata);
+  //console.log(userdata);
 
   const userdataParse = JSON.parse(userdata);
 
-  console.log(userdataParse);
+  //console.log(userdataParse);
 
   return (
     <div className="container">

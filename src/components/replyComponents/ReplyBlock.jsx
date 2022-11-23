@@ -73,8 +73,8 @@ const ReplyBlock = ({ reply, userdata }) => {
       });
   };
 
-  console.log("여기 대댓용 콘솔");
-  console.log(replyOfReply);
+  // console.log("여기 대댓용 콘솔");
+  // console.log(replyOfReply);
 
   return (
     <div className="container mt-2" key={reply.id}>
@@ -166,7 +166,7 @@ const ReplyBlock = ({ reply, userdata }) => {
                           className="btn btn-danger btn-sm"
                           onClick={(e) => {
                             onClickDelteReply(
-                              "/auction-user/user/delete-reply/of-reply",
+                              "/auction-user/user/delete-reply/of-reply/",
                               replyOfReply.id
                             );
                           }}

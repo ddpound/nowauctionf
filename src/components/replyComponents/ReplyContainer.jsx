@@ -19,29 +19,13 @@ export default function ReplyContainer({
   userdata,
   inputReplylist,
 }) {
+  // 전체 페이지
   const [replyList, setReplyList] = useState([]);
+
   const [newAndOld, setNewAndOld] = useState(1);
 
   // 페이징할 리스트 계속 +20 씩 넣을 예정 page가 변환할때 마다
   const [pagingList, setPagingList] = useState([]);
-
-  // 페이징 할 값
-  const pageNumber = 5;
-
-  const chageList = useCallback(async () => {
-    setLoading(true);
-    // 1~5, 6~10, 11~15,
-    setPagingList((prevState) => [
-      ...prevState,
-      replyList.slice(page - 1, page + pageNumber),
-    ]);
-    setLoading(false);
-  }, [page]);
-
-  // `getItems` 가 바뀔 때 마다 함수 실행
-  useEffect(() => {
-    chageList();
-  }, [chageList]);
 
   // 로딩중...
   const [loading, setLoading] = useState(false);
@@ -49,15 +33,40 @@ export default function ReplyContainer({
   // 페이지
   const [page, setPage] = useState(1);
 
-  // observer 사용, 해당 div가 보이면 view 로 작동됨
+  // 페이징 할 값
+  const pageNumber = 5;
+
   const [ref, inView] = useInView();
 
+  // observer 사용, 해당 div가 보이면 view 로 작동됨
   useEffect(() => {
     setReplyList(inputReplylist);
 
     // 시작하자마자 받아내야함
-    setPagingList(inputReplylist.slice(1, pageNumber));
+    setPagingList(inputReplylist.slice(0, pageNumber));
   }, []);
+
+  const chageList = useCallback(async () => {
+    if (page > replyList.length) {
+    } else {
+      setLoading(true);
+      // 1~5, 6~10, 11~15,
+      console.log("시작 페이지");
+      console.log(page - 1);
+      console.log("끝 페이지");
+      console.log(page + pageNumber);
+      setPagingList((prevState) => [
+        ...prevState,
+        ...replyList.slice(page - 1, page - 1 + pageNumber),
+      ]);
+      setLoading(false);
+    }
+  }, [page]);
+
+  // `getItems` 가 바뀔 때 마다 함수 실행
+  useEffect(() => {
+    chageList();
+  }, [chageList]);
 
   useEffect(() => {
     setNewAndOld(newAndOld);
@@ -66,8 +75,8 @@ export default function ReplyContainer({
   useEffect(() => {
     // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
     // 페이지 +1 해줌
-    if (inView && !loading) {
-      setPage((prevState) => prevState + (pageNumber - 1));
+    if (inView && !loading && page < replyList.length) {
+      setPage((prevState) => prevState + pageNumber);
     }
   }, [inView, loading]);
 
@@ -76,8 +85,9 @@ export default function ReplyContainer({
   };
 
   console.log("여기가 댓글");
-  console.log(replyList);
-  console.log(newAndOld);
+  console.log(pagingList);
+  // console.log(replyList);
+  // console.log(newAndOld);
   return (
     <div className="container">
       <div
@@ -127,24 +137,26 @@ export default function ReplyContainer({
           오래된 댓글
         </label>
       </div>
-      {!!replyList &&
+      {!!pagingList &&
         newAndOld == 1 &&
-        replyList.map((reply) => {
+        pagingList.map((list) => {
           return (
-            <Fragment ref={ref} key={reply.id}>
-              <ReplyBlock key={reply.id} reply={reply} userdata={userdata} />
+            <Fragment key={list.id}>
+              <ReplyBlock key={list.id} reply={list} userdata={userdata} />
             </Fragment>
           );
         })}
-      {!!replyList &&
+      {!!pagingList &&
         newAndOld == 3 &&
-        replyList.reverse().map((reply) => {
+        pagingList.reverse().map((list) => {
           return (
-            <Fragment ref={ref} key={reply.id}>
-              <ReplyBlock key={reply.id} reply={reply} userdata={userdata} />
+            <Fragment key={list.id}>
+              <ReplyBlock key={list.id} reply={list} userdata={userdata} />
             </Fragment>
           );
         })}
+
+      {!!pagingList && <div ref={ref}> 마지막이 되어야함 </div>}
     </div>
   );
 }
