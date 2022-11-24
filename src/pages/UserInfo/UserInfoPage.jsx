@@ -10,6 +10,8 @@ import {
   requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
+import DaumPostcodeEmbed from "react-daum-postcode";
+
 import {
   returnHeaderTokens,
   resetTokens,
@@ -89,6 +91,17 @@ function giveSeller(props, inputid, inputcode, userobject) {
   //   });
 }
 
+const saveAddress = ({ props, address, addAddress }) => {
+  const giveSellerRe = requestPostHaveToken(
+    "/auction-user/save-address",
+    props,
+    {
+      address: address,
+      addAdress: addAddress,
+    }
+  );
+};
+
 export default function UserInfoPage(props) {
   const [userobject, setUserOb] = useState({
     id: "",
@@ -97,6 +110,8 @@ export default function UserInfoPage(props) {
     role: "",
     picture: "",
   });
+
+  const [addressData, setAddressData] = useState();
 
   useEffect(() => {
     const returnResponse = requestGetHaveToken(
@@ -135,6 +150,24 @@ export default function UserInfoPage(props) {
       });
   }, []);
 
+  // 스타일 정의 code, (다음 주소입력 디자인)
+  const postCodeStyle = {
+    width: "400px",
+    height: "400px",
+    //display: modalState ? 'block' : 'none',
+  };
+
+  // 다음 주소 입력후 나오는 div의 디자인
+  const insertPostDiv = {};
+
+  const onCompletePost = (data) => {
+    console.log(data);
+    console.log(data.address);
+    console.log(data.zonecode);
+
+    setAddressData(data.address);
+  }; // onCompletePost 함수
+
   return (
     <div className="container mt-5 ">
       <div className="card" style={{ width: "28rem", margin: "auto" }}>
@@ -164,6 +197,19 @@ export default function UserInfoPage(props) {
                 data-bs-target="#sellerModalLabel"
               >
                 판매자 등록하기
+              </button>
+            </p>
+          )}
+
+          {userobject.role == "USER" && (
+            <p>
+              <button
+                type="button"
+                className="btn btn-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#adressModal"
+              >
+                주소 등록하기
               </button>
             </p>
           )}
@@ -301,6 +347,70 @@ export default function UserInfoPage(props) {
                 data-bs-dismiss="modal"
               >
                 등록하기
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="adressModal"
+        tabIndex="-1"
+        aria-labelledby="adressModal"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="adressModal">
+                주소 입력
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">주소 입력</div>
+            <DaumPostcodeEmbed
+              style={postCodeStyle}
+              onComplete={onCompletePost}
+            ></DaumPostcodeEmbed>
+            {!!addressData && (
+              <div className="container">
+                <div id="address">{addressData}</div>
+                <div>
+                  <label htmlFor="addAdress">자세한 주소 : </label>
+                  <input
+                    className="rounded-3 ms-2"
+                    id="addAdress"
+                    type="text"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                닫기
+              </button>
+              <button
+                onClick={() => {
+                  const address1 = document.getElementById("address").value;
+                  const address2 = document.getElementById("addAdress").value;
+                  saveAddress(props, address1, address2, userobject);
+                }}
+                type="button"
+                className="btn btn-dark"
+                data-bs-dismiss="modal"
+              >
+                주소 저장하기
               </button>
             </div>
           </div>

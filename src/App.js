@@ -42,6 +42,9 @@ import ProductShowPage from './pages/ShoppingMalls/ProductShowPage';
 // 판매자의 글 보기
 import SellerBoardShowPage from './pages/ShoppingMalls/SellerBoard/SellerBoardShowPage'
 
+// 판매자 제품 판매 관리 페이지
+import SellerPurcheseMgtMain from './pages/SellerPurcheseMgtMain/SellerPurcheseMgtMain'
+
 function App() {
 
   return (
@@ -66,6 +69,9 @@ function App() {
 
     {/* 제품 글쓰기 (판매자만 해당)*/}
     <SellerRoute path="/product-write" exact component={ProductRegistrationWrite}/>
+
+    {/* 판매자의 판매 관리 페이지 (판매자만 해당)*/}
+    <SellerRoute path="/seller/product-purchese-mgt-page/:id" exact component={SellerPurcheseMgtMain}/>
 
     <PublicRoute path="/profile" exact component={Profile} />
     

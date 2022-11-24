@@ -1,6 +1,7 @@
 import axios from "axios";
 import { React, useState, useEffect } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
+import { Link } from "react-router-dom";
 
 import { requestPostHaveToken } from "../../../commonFuntions/requestHaveToken";
 
@@ -89,7 +90,7 @@ export default function NewMakeShoppingMall({ props, inData }) {
 
     data && (document.getElementById("inputGroupFile02").value = data.thumnail);
 
-    data && setAddOrModifyButtonValue("수정");
+    data && setAddOrModifyButtonValue("수정하기");
   }, [data]);
 
   const preview = () => {
@@ -173,6 +174,13 @@ export default function NewMakeShoppingMall({ props, inData }) {
           >
             {addOrModifyButtonValue}
           </button>
+
+          <Link
+            className="btn btn-dark ms-3"
+            to={"/seller/product-purchese-mgt-page/:id"}
+          >
+            제품 예약 목록 페이지
+          </Link>
         </div>
       </div>
     </div>
