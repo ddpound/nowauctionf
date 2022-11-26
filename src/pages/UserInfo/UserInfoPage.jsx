@@ -91,15 +91,26 @@ function giveSeller(props, inputid, inputcode, userobject) {
   //   });
 }
 
-const saveAddress = ({ props, address, addAddress }) => {
+const saveAddress = (props, address, addAddress, userobject) => {
+  const data = new FormData();
+  data.append("address", address);
+  data.append("addAddress", addAddress);
+
   const giveSellerRe = requestPostHaveToken(
-    "/auction-user/save-address",
+    "/auction-user/user/save-address",
     props,
-    {
-      address: address,
-      addAdress: addAddress,
-    }
+    data
   );
+  giveSellerRe
+    .then((res) => {
+      console.log(res);
+      alert("주소저장완료");
+      window.location.reload();
+    })
+    .catch((Error) => {
+      console.log(Error);
+      alert("주소 저장 실패");
+    });
 };
 
 export default function UserInfoPage(props) {
@@ -109,6 +120,7 @@ export default function UserInfoPage(props) {
     nickName: "",
     role: "",
     picture: "",
+    address: "",
   });
 
   const [addressData, setAddressData] = useState();
@@ -121,6 +133,7 @@ export default function UserInfoPage(props) {
 
     returnResponse
       .then((responese) => {
+        console.log(responese.data);
         if (!!responese) {
           if (responese.data.role == "SELLER") {
             localStorage.setItem("sellerSuccess", responese.data.id);
@@ -139,6 +152,7 @@ export default function UserInfoPage(props) {
                 nickName: responese.data.nickName,
                 role: responese.data.role,
                 picture: responese.data.picture,
+                address: responese.data.address,
               };
             });
           }
@@ -175,6 +189,11 @@ export default function UserInfoPage(props) {
         <div className="card-body">
           <h5 className="card-title">{userobject.userName}</h5>
           <p className="card-text">{userobject.nickName}</p>
+          {!!userobject.address ? (
+            <p>{userobject.address}</p>
+          ) : (
+            <p>등록된 주소가 없습니다.</p>
+          )}
           <p className="card-text">
             {userobject.role == "USER" && "회원등급 : 일반유저"}
             {userobject.role == "SELLER" && "회원등급 : 판매자 "}
@@ -201,7 +220,15 @@ export default function UserInfoPage(props) {
             </p>
           )}
 
-          {userobject.role == "USER" && (
+          {userobject.role == "SELLER" && (
+            <p>
+              <Link className="btn btn-dark" to="/my-shoppingmall-page">
+                내 간이 쇼핑몰
+              </Link>
+            </p>
+          )}
+
+          {!!userobject && (
             <p>
               <button
                 type="button"
@@ -211,14 +238,6 @@ export default function UserInfoPage(props) {
               >
                 주소 등록하기
               </button>
-            </p>
-          )}
-
-          {userobject.role == "SELLER" && (
-            <p>
-              <Link className="btn btn-dark" to="/my-shoppingmall-page">
-                내 간이 쇼핑몰
-              </Link>
             </p>
           )}
 
@@ -380,12 +399,16 @@ export default function UserInfoPage(props) {
             ></DaumPostcodeEmbed>
             {!!addressData && (
               <div className="container">
-                <div id="address">{addressData}</div>
                 <div>
-                  <label htmlFor="addAdress">자세한 주소 : </label>
+                  <label id="address" value={addressData}>
+                    {addressData}
+                  </label>
+                </div>
+                <div>
+                  <label htmlFor="addAddress">자세한 주소 : </label>
                   <input
                     className="rounded-3 ms-2"
-                    id="addAdress"
+                    id="addAddress"
                     type="text"
                   />
                 </div>
@@ -402,8 +425,9 @@ export default function UserInfoPage(props) {
               </button>
               <button
                 onClick={() => {
-                  const address1 = document.getElementById("address").value;
-                  const address2 = document.getElementById("addAdress").value;
+                  const address1 = addressData;
+                  const address2 = document.getElementById("addAddress").value;
+
                   saveAddress(props, address1, address2, userobject);
                 }}
                 type="button"
