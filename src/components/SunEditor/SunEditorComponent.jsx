@@ -58,6 +58,10 @@ export default function SunEditorComponent({
 
   const editor = useRef();
 
+  const [option, setOption] = useState({ optionTitle: "", description: "" });
+
+  const [optionList, setOptionList] = useState([]);
+
   const handleImageUploadBefore = (files, info, uploadHandler) => {
     // uploadHandler is a function
     console.log(files, info);
@@ -82,6 +86,13 @@ export default function SunEditorComponent({
   useEffect(() => {
     setOpen(true);
   }, [splitThumnail]);
+
+  const optionChange = (e) => {
+    setOption({
+      ...option,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
     <div className="container mt-5">
@@ -128,6 +139,59 @@ export default function SunEditorComponent({
           defaultValue={!!modifyProduct ? modifyProduct.productQuantity : 1}
         />
       </div>
+      <div>
+        <p>옵션(필수가 아닙니다, 필요할 때 자유롭게 사용해주세요.)</p>
+        <p>
+          <button
+            className="btn btn-dark"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseExample"
+            aria-expanded="false"
+            aria-controls="collapseExample"
+          >
+            옵션추가하기
+          </button>
+        </p>
+        <div className="collapse mb-3" id="collapseExample">
+          <div className="card card-body">
+            <label htmlFor="optiontitle">옵션 : </label>
+            <input
+              name="optionTitle"
+              type="text"
+              aria-label="First name"
+              className="form-control"
+              onChange={optionChange}
+            />
+            <label htmlFor="description1">옵션 설명: </label>
+            <input
+              name="description"
+              type="text"
+              aria-label="Last name"
+              className="form-control"
+              onChange={optionChange}
+            />
+            <button
+              className="btn btn-dark mt-3"
+              onClick={() => {
+                console.log(option);
+                setOptionList([...optionList, option]);
+              }}
+            >
+              옵션추가
+            </button>
+            {!!optionList &&
+              optionList.map((res, index) => {
+                return (
+                  <div key={index}>
+                    옵션 : {res.optionTitle}, 설명 : {res.description}
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      </div>
+
       <div className="mb-3">
         <label htmlFor="formFileMultiple" className="form-label">
           <p>썸네일 사진은 꼭 넣어주셔야하며 최대 3장 입니다.</p>
@@ -276,13 +340,17 @@ export default function SunEditorComponent({
               productId = modifyProduct.id;
             }
 
+            // 임시 바로 수정바람
+            const optionsList = [];
+
             onSubmit(
               content,
               files,
               productname,
               productprice,
               productquantity,
-              productId
+              productId,
+              optionsList
             );
           }}
         >
