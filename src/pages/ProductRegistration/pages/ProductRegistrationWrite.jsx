@@ -101,7 +101,8 @@ export default function ProductRegistrationWrite({
     productname,
     productprice,
     productquantity,
-    productId
+    productId,
+    list
   ) => {
     const formData = new FormData();
 
@@ -118,6 +119,7 @@ export default function ProductRegistrationWrite({
     formData.append("productprice", productprice);
     formData.append("productquantity", productquantity);
     formData.append("content", content);
+    formData.append("optionList", JSON.stringify(list));
 
     if (!!files) {
       formData.append("thumbnail1", files[0]);

@@ -58,7 +58,10 @@ export default function SunEditorComponent({
 
   const editor = useRef();
 
-  const [option, setOption] = useState({ optionTitle: "", description: "" });
+  const [ProductOptions, setProductOptions] = useState({
+    optionTitle: "",
+    detailedDescription: "",
+  });
 
   const [optionList, setOptionList] = useState([]);
 
@@ -88,12 +91,12 @@ export default function SunEditorComponent({
   }, [splitThumnail]);
 
   const optionChange = (e) => {
-    setOption({
-      ...option,
+    setProductOptions({
+      ...ProductOptions,
       [e.target.name]: e.target.value,
     });
   };
-
+  console.log(optionList);
   return (
     <div className="container mt-5">
       <h2>{title}</h2>
@@ -163,9 +166,9 @@ export default function SunEditorComponent({
               className="form-control"
               onChange={optionChange}
             />
-            <label htmlFor="description1">옵션 설명: </label>
+            <label htmlFor="detailedDescription">옵션 설명: </label>
             <input
-              name="description"
+              name="detailedDescription"
               type="text"
               aria-label="Last name"
               className="form-control"
@@ -174,8 +177,8 @@ export default function SunEditorComponent({
             <button
               className="btn btn-dark mt-3"
               onClick={() => {
-                console.log(option);
-                setOptionList([...optionList, option]);
+                console.log(ProductOptions);
+                setOptionList([...optionList, ProductOptions]);
               }}
             >
               옵션추가
@@ -183,8 +186,13 @@ export default function SunEditorComponent({
             {!!optionList &&
               optionList.map((res, index) => {
                 return (
-                  <div key={index}>
-                    옵션 : {res.optionTitle}, 설명 : {res.description}
+                  <div className="card mt-2" key={index}>
+                    <div className="card-header bg-white">
+                      {index + 1}번 옵션 : {res.optionTitle}
+                    </div>
+                    <div className="card-body">
+                      설명 : {res.detailedDescription}
+                    </div>
                   </div>
                 );
               })}
@@ -340,8 +348,7 @@ export default function SunEditorComponent({
               productId = modifyProduct.id;
             }
 
-            // 임시 바로 수정바람
-            const optionsList = [];
+            const list = optionList;
 
             onSubmit(
               content,
@@ -350,7 +357,7 @@ export default function SunEditorComponent({
               productprice,
               productquantity,
               productId,
-              optionsList
+              list
             );
           }}
         >
