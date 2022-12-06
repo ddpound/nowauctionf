@@ -8,3 +8,8 @@
 .container{
     font-family: 'MICEGothic Bold';
 }
+
+.option-button :hover{
+    cursor: pointer;
+    color: orange;
+}

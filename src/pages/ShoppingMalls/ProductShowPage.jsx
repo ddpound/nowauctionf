@@ -5,6 +5,8 @@ import "bootstrap/dist/js/bootstrap.bundle";
 import SunEditor from "suneditor-react";
 import { Viewer } from "@toast-ui/react-editor";
 
+import ReservationDetails from "../../classObjects/ReservationDetails";
+
 import ProductRegistrationWrite from "../ProductRegistration/pages/ProductRegistrationWrite";
 
 import {
@@ -21,6 +23,49 @@ export default function ProductShowPage(props) {
   const productId = props.match.params.id;
 
   const [product, setProduct] = useState(...[]);
+
+  const userdata = localStorage.getItem("userdata");
+
+  const [optionchoiceList, setOptionchoiceList] = useState([]);
+
+  const [buyerQuantity, setBuyerQuantity] = useState(1);
+
+  const addList = (option, optionIdList, setOptionIdList) => {
+    let duplication = false;
+
+    optionIdList.map((optionlist) => {
+      if (optionlist.id == option.id) {
+        duplication = true;
+      }
+    });
+
+    if (!duplication) {
+      setOptionIdList([...optionIdList, option]);
+    }
+  };
+
+  const deleteList = (option, optionIdList, setOptionIdList) => {
+    setOptionIdList(
+      optionIdList.filter((listoption) => listoption.id != option.id)
+    );
+  };
+
+  // 제품, 구매할 수량, 옵션
+  const saveReservation = (product, quantity, optionList, userData) => {
+    ReservationDetails = new ReservationDetails(
+      product.id,
+      quantity,
+      product.shoppingMall.id,
+      userData.id,
+      optionList
+    );
+
+    const requestSave = requestPostHaveToken(
+      "/auction-user/user/save-reservation",
+      props,
+      ReservationDetails
+    );
+  };
 
   /**
    * declare 선언하다
@@ -39,10 +84,20 @@ export default function ProductShowPage(props) {
         setProduct(res.data);
       });
   }, []);
+
+  const onChangeQuantity = (e) => {
+    setBuyerQuantity({
+      ...buyerQuantity,
+      [e.target.name]: Number(e.target.value),
+    });
+  };
+
   console.log(product);
+  console.log(buyerQuantity);
+
   return (
     <div className="container mt-5">
-      {!sellerIn && (
+      {!sellerIn && !!userdata && (
         <button
           className="btn btn-dark"
           type="button"
@@ -133,52 +188,83 @@ export default function ProductShowPage(props) {
               <p>수량 : {product.productQuantity}</p>
             </div>
             <hr />
-            <label htmlFor="basic-url" className="form-label">
+            <label htmlFor="buy-quantity" className="form-label">
               구매 할 수량
             </label>
             <div className="input-group mb-3">
               <input
                 type="number"
+                name="buyerQuantity"
                 className="form-control"
-                id="basic-url"
+                id="buy-quantity"
                 aria-describedby="basic-addon3"
+                onChange={onChangeQuantity}
               />
             </div>
-            <div className="accordion" id="accordionExample">
-              {!!product.productOptionList &&
-                product.productOptionList.map((option, idx) => {
+            <p>옵션</p>
+            {!!product.productOptionList &&
+              product.productOptionList.map((option) => {
+                return (
+                  <div
+                    id={option.id}
+                    key={option.id}
+                    onClick={(e) => {
+                      console.log(optionchoiceList);
+                      addList(option, optionchoiceList, setOptionchoiceList);
+                    }}
+                    className="option-button"
+                  >
+                    <div className="row">
+                      <div className="col">{option.id}. </div>
+                      <div className="col">{option.optionTitle}</div>
+
+                      <div className="col">{option.detailedDescription}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            {optionchoiceList.length > 0 && (
+              <div>
+                <hr />
+                <p>선택된 옵션</p>
+                {optionchoiceList.map((option) => {
                   return (
-                    <div key={idx} className="accordion-item">
-                      <h2 className="accordion-header" id="headingOne">
-                        <button
-                          className="accordion-button"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapseOne"
-                          aria-expanded="true"
-                          aria-controls="collapseOne"
-                        >
-                          {option.optionTitle}
-                        </button>
-                      </h2>
-                      <div
-                        id="collapseOne"
-                        className="accordion-collapse collapse show"
-                        aria-labelledby="headingOne"
-                        data-bs-parent="#accordionExample"
-                      >
-                        <div className="accordion-body">
-                          {option.detailedDescription}
-                        </div>
-                      </div>
+                    <div
+                      key={option.id}
+                      onClick={() => {
+                        deleteList(
+                          option,
+                          optionchoiceList,
+                          setOptionchoiceList
+                        );
+                      }}
+                      className="option-button row"
+                    >
+                      <div className="col">{option.id}. </div>
+                      <div className="col">{option.optionTitle}</div>
+
+                      <div className="col">{option.detailedDescription}</div>
                     </div>
                   );
-                })}{" "}
-            </div>
+                })}
+              </div>
+            )}
           </div>
+
           <hr />
           <div>
-            <button type="button" className="btn btn-dark">
+            <button
+              type="button"
+              onClick={() => {
+                saveReservation(
+                  product,
+                  buyerQuantity,
+                  optionchoiceList,
+                  userdata
+                );
+              }}
+              className="btn btn-dark"
+            >
               구매 예약
             </button>
           </div>
