@@ -15,7 +15,6 @@ export default function MyShoppingMallPage(props) {
 
   useEffect(() => {
     requestGetHaveToken("/auction-seller/seller/check-mall", "").then((res) => {
-      console.log(res);
       setShoppingMalldata(res);
     });
   }, []);

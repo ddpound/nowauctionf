@@ -53,7 +53,7 @@ function registerChatRoom(props) {
     });
 }
 
-export default function ProductRegistrationMain({ props }) {
+export default function ProductRegistrationMain({ props, inData }) {
   return (
     <div className="container mt-5">
       <div>
@@ -62,6 +62,13 @@ export default function ProductRegistrationMain({ props }) {
         </Link>
         <Link className="btn btn-dark ms-3" to={"/seller-write"}>
           글 작성하기
+        </Link>
+
+        <Link
+          className="btn btn-dark ms-3"
+          to={"/seller/product-purchese-mgt-page/" + inData.id}
+        >
+          제품 예약 목록 페이지
         </Link>
       </div>
       <div className="accordion mt-5" id="accordionExample">

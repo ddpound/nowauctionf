@@ -5,8 +5,6 @@ import "bootstrap/dist/js/bootstrap.bundle";
 import SunEditor from "suneditor-react";
 import { Viewer } from "@toast-ui/react-editor";
 
-import ReservationDetails from "../../classObjects/ReservationDetails";
-
 import ProductRegistrationWrite from "../ProductRegistration/pages/ProductRegistrationWrite";
 
 import {
@@ -52,19 +50,37 @@ export default function ProductShowPage(props) {
 
   // 제품, 구매할 수량, 옵션
   const saveReservation = (product, quantity, optionList, userData) => {
-    ReservationDetails = new ReservationDetails(
-      product.id,
-      quantity,
-      product.shoppingMall.id,
-      userData.id,
-      optionList
-    );
+    const jsonUserData = JSON.parse(userData);
+
+    const reservationDetails = {
+      productId: product.id,
+      quantity: quantity.buyerQuantity,
+      shoppingMallId: product.shoppingMall.id,
+      buyerId: jsonUserData.id,
+      buyerNickName: jsonUserData.nickName,
+      optionList: optionList,
+    };
 
     const requestSave = requestPostHaveToken(
       "/auction-user/user/save-reservation",
       props,
-      ReservationDetails
+      reservationDetails
     );
+
+    requestSave
+      .then((res) => {
+        console.log(res);
+
+        if (res.status === 200) {
+          alert("구매 예약 완료");
+          document.location.reload();
+        }
+      })
+      .catch((Error) => {
+        console.log(Error);
+
+        alert("저장 실패, 다시 시도 해주세요");
+      });
   };
 
   /**

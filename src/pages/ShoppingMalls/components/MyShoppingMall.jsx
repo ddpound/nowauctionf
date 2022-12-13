@@ -9,7 +9,7 @@ export default function MyShoppingMall({ props, data }) {
     <div className="container mt-5">
       <h3>{data.shoppingMallName}</h3>
       <NewMakeShoppingMall props={props} inData={data} />
-      <ProductRegistrationMain />
+      <ProductRegistrationMain props={props} inData={data} />
     </div>
   );
 }

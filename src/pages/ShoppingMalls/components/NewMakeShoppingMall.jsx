@@ -42,7 +42,6 @@ function addShoppingmall(props, modify) {
       const requestAddShop = requestPostHaveToken(reqyestUrl, "", formData);
       requestAddShop.then(() => {
         alert("등록을 완료했습니다.");
-        console.log(props);
         props.history.push("/");
       });
     }
@@ -174,13 +173,6 @@ export default function NewMakeShoppingMall({ props, inData }) {
           >
             {addOrModifyButtonValue}
           </button>
-
-          <Link
-            className="btn btn-dark ms-3"
-            to={"/seller/product-purchese-mgt-page/:id"}
-          >
-            제품 예약 목록 페이지
-          </Link>
         </div>
       </div>
     </div>
