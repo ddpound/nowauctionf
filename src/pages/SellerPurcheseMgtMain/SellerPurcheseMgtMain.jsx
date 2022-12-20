@@ -1,7 +1,10 @@
 import axios from "axios";
 import { React, useState, useEffect, useRef, Fragment } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
-import { requestGetHaveToken } from "../../commonFuntions/requestHaveToken";
+import {
+  requestGetHaveToken,
+  requestPostHaveToken,
+} from "../../commonFuntions/requestHaveToken";
 
 /**
  * 판매자가 구매 예약들의 관리를 해주는
@@ -26,6 +29,18 @@ const SellerPurcheseMgtMain = (props) => {
       setProductReservationList(res.data);
     });
   }, []);
+
+  const changeRequestStatus = (productReservation, statusNum) => {
+    // 백엔드 -> 없음,판매완료,취소,보류 (0,1,2,3)
+    const requestPostStatus = requestPostHaveToken(
+      "/auction-seller/seller/change-reservation/" + statusNum,
+      props,
+      productReservation
+    ).then((res) => {
+      console.log(res);
+    });
+  };
+
   return (
     <div className="container">
       <div>판매자 구매 관리 페이지</div>
@@ -38,6 +53,7 @@ const SellerPurcheseMgtMain = (props) => {
             <th scope="col">수량</th>
             <th scope="col">구매날짜</th>
             <th scope="col">처리</th>
+            <th scope="col">상태</th>
           </tr>
         </thead>
         <tbody>
@@ -53,14 +69,39 @@ const SellerPurcheseMgtMain = (props) => {
                   <td>
                     <button
                       id={productReservation.id}
-                      className="btn btn-danger"
+                      className="btn btn-dark me-2"
+                      onClick={() => {
+                        changeRequestStatus(productReservation, 1);
+                      }}
+                    >
+                      판매완료
+                    </button>
+                    <button
+                      id={productReservation.id}
+                      className="btn btn-dark me-2"
+                      onClick={() => {
+                        changeRequestStatus(productReservation, 3);
+                      }}
+                    >
+                      보류
+                    </button>
+                    <button
+                      id={productReservation.id}
+                      className="btn btn-dark me-2"
+                      onClick={() => {
+                        changeRequestStatus(productReservation, 2);
+                      }}
+                    >
+                      취소
+                    </button>
+                    <button
+                      id={productReservation.id}
+                      className="btn btn-danger me-2"
                     >
                       삭제
                     </button>
-                    <button id={productReservation.id} className="btn btn-dark">
-                      배송완료
-                    </button>
                   </td>
+                  <td>{productReservation.reservationStatus}</td>
                 </tr>
               );
             })}
