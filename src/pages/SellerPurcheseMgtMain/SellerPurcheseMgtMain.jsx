@@ -38,12 +38,38 @@ const SellerPurcheseMgtMain = (props) => {
       productReservation
     ).then((res) => {
       console.log(res);
+      document.location.reload();
     });
   };
 
   return (
     <div className="container">
-      <div>판매자 구매 관리 페이지</div>
+      <div className="d-flex mt-3 mb-3">
+        <div className="float-end w-50">
+          <h1>판매자 구매 관리 페이지</h1>
+        </div>
+        <div className="float-end w-50">
+          <button className="btn btn-dark">판매완료통</button>
+          <button className="btn btn-dark">휴지통</button>
+        </div>
+      </div>
+      <div>
+        <div className="d-flex">
+          <input className="rounded-3 w-50" type="text" />
+          <select
+            className="form-select w-25"
+            defaultValue={0}
+            aria-label="Default select example"
+          >
+            <option value={0}>선택안함</option>
+            <option value={1}>판매제품</option>
+            <option value={2}>구매자</option>
+            <option value={3}>구매날짜</option>
+            <option value={4}>상태</option>
+          </select>
+          <button className="btn btn-dark">검색</button>
+        </div>
+      </div>
       <table className="table">
         <thead>
           <tr>
