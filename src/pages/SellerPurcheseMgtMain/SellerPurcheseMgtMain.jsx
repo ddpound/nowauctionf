@@ -20,6 +20,39 @@ const SellerPurcheseMgtMain = (props) => {
   const shoppingMallId = props.match.params.id;
   const [productReservationList, setProductReservationList] = useState([]);
 
+  const [searchingObject, setSearchingObject] = useState({
+    shoppingMallId: 0,
+    word: "",
+    filter: 0,
+  });
+
+  const onChangeSearchObject = (e) => {
+    setSearchingObject({
+      ...searchingObject,
+      [e.target.name]: e.target.value,
+      shoppingMallId: shoppingMallId,
+    });
+  };
+
+  const searchingProductList = (searchingObject) => {
+    console.log(searchingObject);
+    console.log(searchingObject.filter);
+    console.log(searchingObject.word);
+    console.log(searchingObject.shoppingMallId);
+
+    const url1 = "?filter=" + searchingObject.filter;
+    const url2 = "&word=" + searchingObject.word;
+    const url3 = "&shoppingMallId=" + searchingObject.shoppingMallId;
+
+    requestGetHaveToken(
+      "/auction-seller/seller/search" + url1 + url2 + url3,
+      props
+    ).then((res) => {
+      console.log(res);
+      setProductReservationList(res.data);
+    });
+  };
+
   useEffect(() => {
     const requestGetProductList = requestGetHaveToken(
       "/auction-seller/seller/find-all-reservation/" + shoppingMallId,
@@ -42,6 +75,8 @@ const SellerPurcheseMgtMain = (props) => {
     });
   };
 
+  console.log(searchingObject);
+
   return (
     <div className="container">
       <div className="d-flex mt-3 mb-3">
@@ -55,11 +90,22 @@ const SellerPurcheseMgtMain = (props) => {
       </div>
       <div>
         <div className="d-flex">
-          <input className="rounded-3 w-50" type="text" />
+          <input
+            name="word"
+            className="rounded-3 w-50"
+            type="text"
+            onChange={(e) => {
+              onChangeSearchObject(e);
+            }}
+          />
           <select
+            name="filter"
             className="form-select w-25"
             defaultValue={0}
             aria-label="Default select example"
+            onChange={(e) => {
+              onChangeSearchObject(e);
+            }}
           >
             <option value={0}>선택안함</option>
             <option value={1}>판매제품</option>
@@ -67,7 +113,14 @@ const SellerPurcheseMgtMain = (props) => {
             <option value={3}>구매날짜</option>
             <option value={4}>상태</option>
           </select>
-          <button className="btn btn-dark">검색</button>
+          <button
+            className="btn btn-dark"
+            onClick={() => {
+              searchingProductList(searchingObject);
+            }}
+          >
+            검색
+          </button>
         </div>
       </div>
       <table className="table">
