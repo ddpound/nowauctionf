@@ -7,6 +7,8 @@ import { Viewer } from "@toast-ui/react-editor";
 
 import ProductRegistrationWrite from "../ProductRegistration/pages/ProductRegistrationWrite";
 
+import DaumPostcodeEmbed from "react-daum-postcode";
+
 import {
   requestPostHaveToken,
   requestGetHaveToken,
@@ -49,7 +51,14 @@ export default function ProductShowPage(props) {
   };
 
   // 제품, 구매할 수량, 옵션
-  const saveReservation = (product, quantity, optionList, userData) => {
+  const saveReservation = (
+    product,
+    quantity,
+    optionList,
+    userData,
+    addressData,
+    addAddress
+  ) => {
     const jsonUserData = JSON.parse(userData);
 
     const reservationDetails = {
@@ -59,6 +68,7 @@ export default function ProductShowPage(props) {
       buyerId: jsonUserData.id,
       buyerNickName: jsonUserData.nickName,
       optionList: optionList,
+      address: addressData + "," + addAddress,
     };
 
     const requestSave = requestPostHaveToken(
@@ -108,9 +118,23 @@ export default function ProductShowPage(props) {
     });
   };
 
-  console.log(product);
-  console.log(buyerQuantity);
+  const [addressData, setAddressData] = useState();
+  const [addAddress, setAddAddress] = useState();
+  const postCodeStyle = {
+    margin: "20px auto",
+    width: "300px",
+    height: "300px",
+    //display: modalState ? 'block' : 'none',
+  };
+  const onCompletePost = (data) => {
+    setAddressData(data.address);
+  }; // onCompletePost 함수
 
+  const changeAddAddress = (e) => {
+    setAddAddress(e.target.value);
+  };
+  console.log("추가 어드레스");
+  console.log(addAddress);
   return (
     <div className="container mt-5">
       {!sellerIn && !!userdata && (
@@ -120,6 +144,19 @@ export default function ProductShowPage(props) {
           data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasRight"
           aria-controls="offcanvasRight"
+          onClick={() => {
+            requestGetHaveToken("/auction-user/user/check-address", props).then(
+              (res) => {
+                if (res.data.length > 1) {
+                  const dataArray = res.data.split(",");
+                  setAddressData(dataArray[0]);
+                  setAddAddress(dataArray[1]);
+                } else {
+                  alert("기본 등록된 주소가 없습니다.");
+                }
+              }
+            );
+          }}
         >
           구매 예약하기
         </button>
@@ -265,6 +302,45 @@ export default function ProductShowPage(props) {
                 })}
               </div>
             )}
+            <hr />
+            <p>새 주소를 입력하지 않으면 기본주소로 입력됩니다.</p>
+            <p>
+              <button
+                className="btn btn-dark"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseExample"
+                aria-expanded="false"
+                aria-controls="collapseExample"
+              >
+                새 주소 입력
+              </button>
+            </p>
+            <div className="collapse" id="collapseExample">
+              <DaumPostcodeEmbed
+                style={postCodeStyle}
+                onComplete={onCompletePost}
+              ></DaumPostcodeEmbed>
+            </div>
+            {!!addressData && (
+              <div className="container">
+                <div>
+                  <label id="address" value={addressData}>
+                    {addressData}
+                  </label>
+                </div>
+                <div>
+                  <label htmlFor="addAddress">자세한 주소 : </label>
+                  <input
+                    className="rounded-3 ms-2"
+                    id="addAddress"
+                    type="text"
+                    onChange={changeAddAddress}
+                    defaultValue={addAddress}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <hr />
@@ -276,7 +352,9 @@ export default function ProductShowPage(props) {
                   product,
                   buyerQuantity,
                   optionchoiceList,
-                  userdata
+                  userdata,
+                  addressData,
+                  addAddress
                 );
               }}
               className="btn btn-dark"
