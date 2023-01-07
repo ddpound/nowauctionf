@@ -2,7 +2,7 @@ import axios from "axios";
 import { React, useState, useEffect, useRef, Fragment } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+
 import {
   requestGetHaveToken,
   requestPostHaveToken,
@@ -121,7 +121,27 @@ const SellerPurcheseMgtMain = (props) => {
 
           {searchFilterState == 3 && (
             <div>
-              <Calendar onChange={onChangeCalendar} value={calendarValue} />
+              <div className="calendar-container">
+                <Calendar
+                  onChange={onChangeCalendar}
+                  value={calendarValue}
+                  selectRange={true}
+                />
+              </div>
+              {calendarValue.length > 0 ? (
+                <p className="text-center">
+                  <span className="bold">Start:</span>
+                  {calendarValue[0].toDateString()}
+                  &nbsp;|&nbsp;
+                  <span className="bold">End:</span>
+                  {calendarValue[1].toDateString()}
+                </p>
+              ) : (
+                <p className="text-center">
+                  <span className="bold">Default selected date:</span>
+                  {calendarValue.toDateString()}
+                </p>
+              )}
             </div>
           )}
           <select
@@ -150,7 +170,7 @@ const SellerPurcheseMgtMain = (props) => {
           </button>
         </div>
       </div>
-      <table className="table">
+      <table className="table mt-5">
         <thead>
           <tr>
             <th scope="col">id</th>
