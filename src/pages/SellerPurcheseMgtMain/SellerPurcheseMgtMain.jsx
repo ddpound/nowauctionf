@@ -2,7 +2,7 @@ import axios from "axios";
 import { React, useState, useEffect, useRef, Fragment } from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 import Calendar from "react-calendar";
-
+import "react-calendar/dist/Calendar.css";
 import {
   requestGetHaveToken,
   requestPostHaveToken,
@@ -22,11 +22,15 @@ const SellerPurcheseMgtMain = (props) => {
   const shoppingMallId = props.match.params.id;
   const [productReservationList, setProductReservationList] = useState([]);
 
+  const [calendarValue, onChangeCalendar] = useState(new Date());
+
   const [searchingObject, setSearchingObject] = useState({
     shoppingMallId: 0,
     word: "",
     filter: 0,
   });
+
+  const [searchFilterState, setSearchFilterState] = useState(0);
 
   const onChangeSearchObject = (e) => {
     setSearchingObject({
@@ -78,9 +82,9 @@ const SellerPurcheseMgtMain = (props) => {
   };
 
   console.log(searchingObject);
-
+  console.log(searchFilterState);
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="d-flex mt-3 mb-3">
         <div className="float-end w-50">
           <h1>판매자 구매 관리 페이지</h1>
@@ -92,14 +96,34 @@ const SellerPurcheseMgtMain = (props) => {
       </div>
       <div>
         <div className="d-flex">
-          <input
-            name="word"
-            className="rounded-3 w-50"
-            type="text"
-            onChange={(e) => {
-              onChangeSearchObject(e);
-            }}
-          />
+          {searchFilterState < 3 && (
+            <input
+              name="word"
+              className="rounded-3 w-50"
+              type="text"
+              onChange={(e) => {
+                onChangeSearchObject(e);
+              }}
+            />
+          )}
+
+          {searchFilterState == 4 && (
+            <select
+              className="form-select"
+              defaultValue={0}
+              aria-label="Default select example"
+            >
+              <option value="1">판매완료</option>
+              <option value="2">보류</option>
+              <option value="3">취소</option>
+            </select>
+          )}
+
+          {searchFilterState == 3 && (
+            <div>
+              <Calendar onChange={onChangeCalendar} value={calendarValue} />
+            </div>
+          )}
           <select
             name="filter"
             className="form-select w-25"
@@ -107,6 +131,7 @@ const SellerPurcheseMgtMain = (props) => {
             aria-label="Default select example"
             onChange={(e) => {
               onChangeSearchObject(e);
+              setSearchFilterState(e.target.value);
             }}
           >
             <option value={0}>선택안함</option>
@@ -133,6 +158,7 @@ const SellerPurcheseMgtMain = (props) => {
             <th scope="col">구매자</th>
             <th scope="col">수량</th>
             <th scope="col">구매날짜</th>
+            <th scope="col">주소</th>
             <th scope="col">처리</th>
             <th scope="col">상태</th>
           </tr>
@@ -147,6 +173,7 @@ const SellerPurcheseMgtMain = (props) => {
                   <td>{productReservation.buyerNickName}</td>
                   <td>{productReservation.quantity}</td>
                   <td>{productReservation.createDate}</td>
+                  <td>{productReservation.address}</td>
                   <td>
                     <button
                       id={productReservation.id}
