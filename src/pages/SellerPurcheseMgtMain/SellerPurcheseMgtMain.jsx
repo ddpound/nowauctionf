@@ -81,8 +81,25 @@ const SellerPurcheseMgtMain = (props) => {
     });
   };
 
+  const leftPad = (value) => {
+    if (value >= 10) {
+      return value;
+    }
+
+    return `0${value}`;
+  };
+
+  const toStringByFormatting = (source, delimiter = "-") => {
+    const year = source.getFullYear();
+    const month = leftPad(source.getMonth() + 1);
+    const day = leftPad(source.getDate());
+
+    return [year, month, day].join(delimiter);
+  };
+
   console.log(searchingObject);
   console.log(searchFilterState);
+  console.log(calendarValue);
   return (
     <div className="container-fluid">
       <div className="d-flex mt-3 mb-3">
@@ -130,11 +147,19 @@ const SellerPurcheseMgtMain = (props) => {
               </div>
               {calendarValue.length > 0 ? (
                 <p className="text-center">
-                  <span className="bold">Start:</span>
-                  {calendarValue[0].toDateString()}
+                  <span className="bold">시작일: </span>
+                  <input
+                    type="text"
+                    value={toStringByFormatting(calendarValue[0], ".")}
+                    onChange={(event) => this.inputChangedHandler(event)}
+                  />
                   &nbsp;|&nbsp;
-                  <span className="bold">End:</span>
-                  {calendarValue[1].toDateString()}
+                  <span className="bold">끝: </span>
+                  <input
+                    type="text"
+                    value={toStringByFormatting(calendarValue[1], ".")}
+                    onChange={(event) => this.inputChangedHandler(event)}
+                  />
                 </p>
               ) : (
                 <p className="text-center">
