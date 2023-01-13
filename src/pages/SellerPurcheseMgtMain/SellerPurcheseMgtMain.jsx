@@ -32,6 +32,8 @@ const SellerPurcheseMgtMain = (props) => {
 
   const [searchFilterState, setSearchFilterState] = useState(0);
 
+  const [searchProductState, setSearchProductState] = useState("없음");
+
   const onChangeSearchObject = (e) => {
     setSearchingObject({
       ...searchingObject,
@@ -47,11 +49,34 @@ const SellerPurcheseMgtMain = (props) => {
     console.log(searchingObject.shoppingMallId);
 
     const url1 = "?filter=" + searchingObject.filter;
-    const url2 = "&word=" + searchingObject.word;
     const url3 = "&shoppingMallId=" + searchingObject.shoppingMallId;
+    const url4 = "&searchProductState=" + searchProductState;
+    var url2 = "&word=" + searchingObject.word;
+    var urlDate1;
+    var urlDate2;
+    var resulturl;
+
+    if (searchingObject.filter == 3) {
+      urlDate1 = "&start=" + toStringByFormatting(calendarValue[0], "-");
+      urlDate2 = "&end=" + toStringByFormatting(calendarValue[1], "-");
+      url2 = "&word= ";
+    } else {
+      urlDate1 = "&start=" + toStringByFormatting(new Date(), "-");
+      urlDate2 = "&end=" + toStringByFormatting(new Date(), "-");
+    }
+
+    resulturl =
+      url1 +
+      url2 +
+      urlDate1 +
+      " 00:00:00" +
+      urlDate2 +
+      " 00:00:00" +
+      url4 +
+      url3;
 
     requestGetHaveToken(
-      "/auction-seller/seller/search" + url1 + url2 + url3,
+      "/auction-seller/seller/search" + resulturl,
       props
     ).then((res) => {
       console.log(res);
@@ -129,10 +154,14 @@ const SellerPurcheseMgtMain = (props) => {
               className="form-select"
               defaultValue={0}
               aria-label="Default select example"
+              onChange={(e) => {
+                setSearchProductState(e.target.value);
+              }}
             >
-              <option value="1">판매완료</option>
-              <option value="2">보류</option>
-              <option value="3">취소</option>
+              <option value="없음">없음</option>
+              <option value="판매완료">판매완료</option>
+              <option value="보류">보류</option>
+              <option value="취소">취소</option>
             </select>
           )}
 
@@ -151,14 +180,18 @@ const SellerPurcheseMgtMain = (props) => {
                   <input
                     type="text"
                     value={toStringByFormatting(calendarValue[0], ".")}
-                    onChange={(event) => this.inputChangedHandler(event)}
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                    }}
                   />
                   &nbsp;|&nbsp;
                   <span className="bold">끝: </span>
                   <input
                     type="text"
                     value={toStringByFormatting(calendarValue[1], ".")}
-                    onChange={(event) => this.inputChangedHandler(event)}
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                    }}
                   />
                 </p>
               ) : (
@@ -195,7 +228,89 @@ const SellerPurcheseMgtMain = (props) => {
           </button>
         </div>
       </div>
-      <table className="table mt-5">
+      <div className="container mt-5">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value=""
+          id="idRowCheckBox"
+          defaultChecked
+        />
+        <label className="form-check-label me-2" htmlFor="idRowCheckBox">
+          ID
+        </label>
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value=""
+          id="productCheckBox"
+          defaultChecked
+        />
+        <label className="form-check-label me-2" htmlFor="productCheckBox">
+          판매제품
+        </label>
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value=""
+          id="buyerCheckBox"
+          defaultChecked
+        />
+        <label className="form-check-label me-2" htmlFor="buyerCheckBox">
+          구매자
+        </label>
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value=""
+          id="quantityCheckBox"
+          defaultChecked
+        />
+        <label className="form-check-label me-2" htmlFor="quantityCheckBox">
+          수량
+        </label>
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value=""
+          id="buyDateCheckBox"
+          defaultChecked
+        />
+        <label className="form-check-label me-2" htmlFor="buyDateCheckBox">
+          구매날짜
+        </label>
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value=""
+          id="addressCheckBox"
+          defaultChecked
+        />
+        <label className="form-check-label me-2" htmlFor="addressCheckBox">
+          주소
+        </label>
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value=""
+          id="processingCheckBox"
+          defaultChecked
+        />
+        <label className="form-check-label me-2" htmlFor="processingCheckBox">
+          처리
+        </label>
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value=""
+          id="stateCheckBox"
+          defaultChecked
+        />
+        <label className="form-check-label me-2" htmlFor="stateCheckBox">
+          상태
+        </label>
+      </div>
+      <table className="table">
         <thead>
           <tr>
             <th scope="col">id</th>
