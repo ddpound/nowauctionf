@@ -42,6 +42,23 @@ const SellerPurcheseMgtMain = (props) => {
     });
   };
 
+  const [showCheckBox, setShowCheckBox] = useState([
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+  ]);
+
+  const setChangeCheckBox = (idx, check) => {
+    let checkCopy = [...showCheckBox];
+    checkCopy[idx] = check;
+    setShowCheckBox(checkCopy);
+  };
+
   const searchingProductList = (searchingObject) => {
     console.log(searchingObject);
     console.log(searchingObject.filter);
@@ -232,9 +249,12 @@ const SellerPurcheseMgtMain = (props) => {
         <input
           className="form-check-input"
           type="checkbox"
-          value=""
+          value="checkId"
           id="idRowCheckBox"
           defaultChecked
+          onChange={(e) => {
+            setChangeCheckBox(0, e.target.checked);
+          }}
         />
         <label className="form-check-label me-2" htmlFor="idRowCheckBox">
           ID
@@ -245,6 +265,9 @@ const SellerPurcheseMgtMain = (props) => {
           value=""
           id="productCheckBox"
           defaultChecked
+          onChange={(e) => {
+            setChangeCheckBox(1, e.target.checked);
+          }}
         />
         <label className="form-check-label me-2" htmlFor="productCheckBox">
           판매제품
@@ -255,6 +278,9 @@ const SellerPurcheseMgtMain = (props) => {
           value=""
           id="buyerCheckBox"
           defaultChecked
+          onChange={(e) => {
+            setChangeCheckBox(2, e.target.checked);
+          }}
         />
         <label className="form-check-label me-2" htmlFor="buyerCheckBox">
           구매자
@@ -265,6 +291,9 @@ const SellerPurcheseMgtMain = (props) => {
           value=""
           id="quantityCheckBox"
           defaultChecked
+          onChange={(e) => {
+            setChangeCheckBox(3, e.target.checked);
+          }}
         />
         <label className="form-check-label me-2" htmlFor="quantityCheckBox">
           수량
@@ -275,6 +304,9 @@ const SellerPurcheseMgtMain = (props) => {
           value=""
           id="buyDateCheckBox"
           defaultChecked
+          onChange={(e) => {
+            setChangeCheckBox(4, e.target.checked);
+          }}
         />
         <label className="form-check-label me-2" htmlFor="buyDateCheckBox">
           구매날짜
@@ -285,6 +317,9 @@ const SellerPurcheseMgtMain = (props) => {
           value=""
           id="addressCheckBox"
           defaultChecked
+          onChange={(e) => {
+            setChangeCheckBox(5, e.target.checked);
+          }}
         />
         <label className="form-check-label me-2" htmlFor="addressCheckBox">
           주소
@@ -295,6 +330,9 @@ const SellerPurcheseMgtMain = (props) => {
           value=""
           id="processingCheckBox"
           defaultChecked
+          onChange={(e) => {
+            setChangeCheckBox(6, e.target.checked);
+          }}
         />
         <label className="form-check-label me-2" htmlFor="processingCheckBox">
           처리
@@ -305,6 +343,9 @@ const SellerPurcheseMgtMain = (props) => {
           value=""
           id="stateCheckBox"
           defaultChecked
+          onChange={(e) => {
+            setChangeCheckBox(7, e.target.checked);
+          }}
         />
         <label className="form-check-label me-2" htmlFor="stateCheckBox">
           상태
@@ -313,14 +354,14 @@ const SellerPurcheseMgtMain = (props) => {
       <table className="table">
         <thead>
           <tr>
-            <th scope="col">id</th>
-            <th scope="col">판매제품(링크)</th>
-            <th scope="col">구매자</th>
-            <th scope="col">수량</th>
-            <th scope="col">구매날짜</th>
-            <th scope="col">주소</th>
-            <th scope="col">처리</th>
-            <th scope="col">상태</th>
+            {showCheckBox[0] && <th scope="col">id</th>}
+            {showCheckBox[1] && <th scope="col">판매제품(링크)</th>}
+            {showCheckBox[2] && <th scope="col">구매자</th>}
+            {showCheckBox[3] && <th scope="col">수량</th>}
+            {showCheckBox[4] && <th scope="col">구매날짜</th>}
+            {showCheckBox[5] && <th scope="col">주소</th>}
+            {showCheckBox[6] && <th scope="col">처리</th>}
+            {showCheckBox[7] && <th scope="col">상태</th>}
           </tr>
         </thead>
         <tbody>
@@ -328,48 +369,58 @@ const SellerPurcheseMgtMain = (props) => {
             productReservationList.map((productReservation) => {
               return (
                 <tr key={productReservation.id}>
-                  <th scope="row">{productReservation.id}</th>
-                  <td>{productReservation.productId.productName}</td>
-                  <td>{productReservation.buyerNickName}</td>
-                  <td>{productReservation.quantity}</td>
-                  <td>{productReservation.createDate}</td>
-                  <td>{productReservation.address}</td>
-                  <td>
-                    <button
-                      id={productReservation.id}
-                      className="btn btn-dark me-2"
-                      onClick={() => {
-                        changeRequestStatus(productReservation, 1);
-                      }}
-                    >
-                      판매완료
-                    </button>
-                    <button
-                      id={productReservation.id}
-                      className="btn btn-dark me-2"
-                      onClick={() => {
-                        changeRequestStatus(productReservation, 3);
-                      }}
-                    >
-                      보류
-                    </button>
-                    <button
-                      id={productReservation.id}
-                      className="btn btn-dark me-2"
-                      onClick={() => {
-                        changeRequestStatus(productReservation, 2);
-                      }}
-                    >
-                      취소
-                    </button>
-                    <button
-                      id={productReservation.id}
-                      className="btn btn-danger me-2"
-                    >
-                      삭제
-                    </button>
-                  </td>
-                  <td>{productReservation.reservationStatus}</td>
+                  {showCheckBox[0] && (
+                    <th scope="row">{productReservation.id}</th>
+                  )}
+                  {showCheckBox[1] && (
+                    <td>{productReservation.productId.productName}</td>
+                  )}
+                  {showCheckBox[2] && (
+                    <td>{productReservation.buyerNickName}</td>
+                  )}
+                  {showCheckBox[3] && <td>{productReservation.quantity}</td>}
+                  {showCheckBox[4] && <td>{productReservation.createDate}</td>}
+                  {showCheckBox[5] && <td>{productReservation.address}</td>}
+                  {showCheckBox[6] && (
+                    <td>
+                      <button
+                        id={productReservation.id}
+                        className="btn btn-dark me-2"
+                        onClick={() => {
+                          changeRequestStatus(productReservation, 1);
+                        }}
+                      >
+                        판매완료
+                      </button>
+                      <button
+                        id={productReservation.id}
+                        className="btn btn-dark me-2"
+                        onClick={() => {
+                          changeRequestStatus(productReservation, 3);
+                        }}
+                      >
+                        보류
+                      </button>
+                      <button
+                        id={productReservation.id}
+                        className="btn btn-dark me-2"
+                        onClick={() => {
+                          changeRequestStatus(productReservation, 2);
+                        }}
+                      >
+                        취소
+                      </button>
+                      <button
+                        id={productReservation.id}
+                        className="btn btn-danger me-2"
+                      >
+                        삭제
+                      </button>
+                    </td>
+                  )}
+                  {showCheckBox[7] && (
+                    <td>{productReservation.reservationStatus}</td>
+                  )}
                 </tr>
               );
             })}
