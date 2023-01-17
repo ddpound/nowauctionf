@@ -53,6 +53,28 @@ const SellerPurcheseMgtMain = (props) => {
     true,
   ]);
 
+  const [checkItems, setCheckItems] = useState([]);
+
+  const singleCheck = (checked, id) => {
+    if (checked) {
+      setCheckItems((prev) => [...prev, id]);
+    } else {
+      setCheckItems(checkItems.filter((el) => el !== id));
+    }
+  };
+
+  const allCheck = (checked) => {
+    if (checked) {
+      const idArray = [];
+      productReservationList.forEach((el) => {
+        idArray.push(el.id);
+      });
+      setCheckItems(idArray);
+    } else {
+      setCheckItems([]);
+    }
+  };
+
   const setChangeCheckBox = (idx, check) => {
     let checkCopy = [...showCheckBox];
     checkCopy[idx] = check;
@@ -113,10 +135,22 @@ const SellerPurcheseMgtMain = (props) => {
 
   const changeRequestStatus = (productReservation, statusNum) => {
     // 백엔드 -> 없음,판매완료,취소,보류 (0,1,2,3)
-    const requestPostStatus = requestPostHaveToken(
+    requestPostHaveToken(
       "/auction-seller/seller/change-reservation/" + statusNum,
       props,
       productReservation
+    ).then((res) => {
+      console.log(res);
+      document.location.reload();
+    });
+  };
+
+  const changeRequestStatusList = (reservationIdList, status) => {
+    console.log(reservationIdList);
+    requestPostHaveToken(
+      "/auction-seller/seller/change-reservation-list",
+      props,
+      { reservationList: reservationIdList, status: status }
     ).then((res) => {
       console.log(res);
       document.location.reload();
@@ -142,6 +176,7 @@ const SellerPurcheseMgtMain = (props) => {
   console.log(searchingObject);
   console.log(searchFilterState);
   console.log(calendarValue);
+  console.log(checkItems);
   return (
     <div className="container-fluid">
       <div className="d-flex mt-3 mb-3">
@@ -351,9 +386,53 @@ const SellerPurcheseMgtMain = (props) => {
           상태
         </label>
       </div>
+      <div className="mt-3">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          style={{ zoom: "1.5" }}
+          value=""
+          id="allCheck"
+          onChange={(e) => {
+            allCheck(e.target.checked);
+          }}
+          checked={
+            checkItems.length === productReservationList.length ? true : false
+          }
+        />
+        <label className="form-check-label me-2" htmlFor="allCheck">
+          전체선택
+        </label>
+        <button
+          className="btn btn-dark me-2"
+          onClick={() => {
+            changeRequestStatusList(checkItems, 1);
+          }}
+        >
+          판매완료
+        </button>
+        <button
+          className="btn btn-dark me-2"
+          onClick={() => {
+            changeRequestStatusList(checkItems, 2);
+          }}
+        >
+          보류
+        </button>
+        <button
+          className="btn btn-dark me-2"
+          onClick={() => {
+            changeRequestStatusList(checkItems, 3);
+          }}
+        >
+          취소
+        </button>
+        <button className="btn btn-danger me-2">휴지통</button>
+      </div>
       <table className="table">
         <thead>
           <tr>
+            <th scope="col">체크</th>
             {showCheckBox[0] && <th scope="col">id</th>}
             {showCheckBox[1] && <th scope="col">판매제품(링크)</th>}
             {showCheckBox[2] && <th scope="col">구매자</th>}
@@ -369,6 +448,22 @@ const SellerPurcheseMgtMain = (props) => {
             productReservationList.map((productReservation) => {
               return (
                 <tr key={productReservation.id}>
+                  <th>
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value={productReservation.id}
+                      style={{ zoom: "1.8" }}
+                      checked={
+                        checkItems.includes(productReservation.id)
+                          ? true
+                          : false
+                      }
+                      onChange={(e) => {
+                        singleCheck(e.target.checked, productReservation.id);
+                      }}
+                    />
+                  </th>
                   {showCheckBox[0] && (
                     <th scope="row">{productReservation.id}</th>
                   )}
@@ -414,7 +509,7 @@ const SellerPurcheseMgtMain = (props) => {
                         id={productReservation.id}
                         className="btn btn-danger me-2"
                       >
-                        삭제
+                        휴지통
                       </button>
                     </td>
                   )}
