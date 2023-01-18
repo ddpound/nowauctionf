@@ -7,6 +7,7 @@ import {
   requestGetHaveToken,
   requestPostHaveToken,
 } from "../../commonFuntions/requestHaveToken";
+import { Link } from "react-router-dom";
 
 /**
  * 판매자가 구매 예약들의 관리를 해주는
@@ -20,6 +21,7 @@ import {
  */
 const SellerPurcheseMgtMain = (props) => {
   const shoppingMallId = props.match.params.id;
+
   const [productReservationList, setProductReservationList] = useState([]);
 
   const [calendarValue, onChangeCalendar] = useState(new Date());
@@ -119,7 +121,11 @@ const SellerPurcheseMgtMain = (props) => {
       props
     ).then((res) => {
       console.log(res);
-      setProductReservationList(res.data);
+      setProductReservationList(
+        res.data.filter(
+          (reservation) => reservation.reservationStatus !== "휴지통"
+        )
+      );
     });
   };
 
@@ -129,7 +135,11 @@ const SellerPurcheseMgtMain = (props) => {
       props
     ).then((res) => {
       console.log(res);
-      setProductReservationList(res.data);
+      setProductReservationList(
+        res.data.filter(
+          (reservation) => reservation.reservationStatus !== "휴지통"
+        )
+      );
     });
   }, []);
 
@@ -181,11 +191,19 @@ const SellerPurcheseMgtMain = (props) => {
     <div className="container-fluid">
       <div className="d-flex mt-3 mb-3">
         <div className="float-end w-50">
-          <h1>판매자 구매 관리 페이지</h1>
+          <h1>판매자 구매관리 페이지</h1>
         </div>
-        <div className="float-end w-50">
-          <button className="btn btn-dark">판매완료통</button>
-          <button className="btn btn-dark">휴지통</button>
+        <div className="float-end d-block w-50">
+          <Link
+            to={
+              "/seller/product-purchese-mgt-page/" +
+              shoppingMallId +
+              "/recycle-bin"
+            }
+            className="btn btn-white"
+          >
+            <img src="/imgs/recycle-bin.png" alt="" />
+          </Link>
         </div>
       </div>
       <div>
@@ -508,6 +526,9 @@ const SellerPurcheseMgtMain = (props) => {
                       <button
                         id={productReservation.id}
                         className="btn btn-danger me-2"
+                        onClick={() => {
+                          changeRequestStatus(productReservation, 4);
+                        }}
                       >
                         휴지통
                       </button>

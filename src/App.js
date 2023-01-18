@@ -45,6 +45,9 @@ import SellerBoardShowPage from './pages/ShoppingMalls/SellerBoard/SellerBoardSh
 // 판매자 제품 판매 관리 페이지
 import SellerPurcheseMgtMain from './pages/SellerPurcheseMgtMain/SellerPurcheseMgtMain'
 
+// 판매자 제품판매 관리 페이지 -> 휴지통
+import RecycleBin from './pages/SellerPurcheseMgtMain/RecycleBin';
+
 function App() {
 
   return (
@@ -72,6 +75,9 @@ function App() {
 
     {/* 판매자의 판매 관리 페이지 (판매자만 해당)*/}
     <SellerRoute path="/seller/product-purchese-mgt-page/:id" exact component={SellerPurcheseMgtMain}/>
+
+    {/* 휴지통 (판매자만 해당)*/}
+    <SellerRoute path="/seller/product-purchese-mgt-page/:id/recycle-bin" exact component={RecycleBin}/>
 
     <PublicRoute path="/profile" exact component={Profile} />
     
