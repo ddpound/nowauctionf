@@ -445,7 +445,14 @@ const SellerPurcheseMgtMain = (props) => {
         >
           취소
         </button>
-        <button className="btn btn-danger me-2">휴지통</button>
+        <button
+          className="btn btn-danger me-2"
+          onClick={() => {
+            changeRequestStatusList(checkItems, 4);
+          }}
+        >
+          휴지통
+        </button>
       </div>
       <table className="table">
         <thead>

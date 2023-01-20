@@ -6,6 +6,7 @@ import {
   requestPostHaveToken,
   requestGetHaveToken,
   requestDeleteHaveToken,
+  requestDeleteHaveTokenBody,
 } from "../../commonFuntions/requestHaveToken";
 import { Link } from "react-router-dom";
 
@@ -135,9 +136,26 @@ const RecycleBin = (props) => {
     }
   };
 
-  const deleteRecycle = (productReservation) => {};
+  const deleteRecycle = (productReservation) => {
+    requestDeleteHaveToken(
+      "/auction-seller/seller/delete-reservation/" + productReservation.id,
+      props
+    ).then((res) => {
+      console.log(res);
+      document.location.reload();
+    });
+  };
 
-  const deleteRecycleList = (recycleList) => {};
+  const deleteRecycleList = (checkItems, status) => {
+    requestDeleteHaveTokenBody(
+      "/auction-seller/seller/delete-reservation-list",
+      props,
+      { reservationList: checkItems, status: status }
+    ).then((res) => {
+      console.log(res);
+      document.location.reload();
+    });
+  };
 
   useEffect(() => {
     const requestGetProductList = requestGetHaveToken(
@@ -152,6 +170,8 @@ const RecycleBin = (props) => {
       );
     });
   }, []);
+
+  console.log(checkItems);
 
   return (
     <div className="container-fluid">
@@ -366,7 +386,7 @@ const RecycleBin = (props) => {
         <button
           className="btn btn-danger"
           onClick={() => {
-            deleteRecycleList(recycleList);
+            deleteRecycleList(checkItems, 4);
           }}
         >
           선택삭제
