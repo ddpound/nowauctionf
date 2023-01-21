@@ -53,6 +53,7 @@ const SellerPurcheseMgtMain = (props) => {
     true,
     true,
     true,
+    false,
   ]);
 
   const [checkItems, setCheckItems] = useState([]);
@@ -403,6 +404,18 @@ const SellerPurcheseMgtMain = (props) => {
         <label className="form-check-label me-2" htmlFor="stateCheckBox">
           상태
         </label>
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value=""
+          id="stateCheckBox"
+          onChange={(e) => {
+            setChangeCheckBox(8, e.target.checked);
+          }}
+        />
+        <label className="form-check-label me-2" htmlFor="stateCheckBox">
+          옵션
+        </label>
       </div>
       <div className="mt-3">
         <input
@@ -464,6 +477,7 @@ const SellerPurcheseMgtMain = (props) => {
             {showCheckBox[3] && <th scope="col">수량</th>}
             {showCheckBox[4] && <th scope="col">구매날짜</th>}
             {showCheckBox[5] && <th scope="col">주소</th>}
+            {showCheckBox[8] && <th scope="col">옵션</th>}
             {showCheckBox[6] && <th scope="col">처리</th>}
             {showCheckBox[7] && <th scope="col">상태</th>}
           </tr>
@@ -501,6 +515,20 @@ const SellerPurcheseMgtMain = (props) => {
                   {showCheckBox[3] && <td>{productReservation.quantity}</td>}
                   {showCheckBox[4] && <td>{productReservation.createDate}</td>}
                   {showCheckBox[5] && <td>{productReservation.address}</td>}
+                  {showCheckBox[8] && (
+                    <td>
+                      {productReservation.options.map((res, idx) => {
+                        return (
+                          <div key={res.id}>
+                            <div>
+                              {idx + 1} : {res.optionTitle}
+                            </div>
+                            <div>{res.detailedDescription}</div>
+                          </div>
+                        );
+                      })}
+                    </td>
+                  )}
                   {showCheckBox[6] && (
                     <td>
                       <button
