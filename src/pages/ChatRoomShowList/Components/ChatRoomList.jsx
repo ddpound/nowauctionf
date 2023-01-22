@@ -7,6 +7,7 @@ import ChatRoomDivComponents from "./ChatRoomDivComponents";
 import ListPageNation from "../../../components/PageNation/ListPageNation";
 
 import { Link } from "react-router-dom";
+import { requestPostHaveToken } from "../../../commonFuntions/requestHaveToken";
 
 export default function ChatRoomList({ props, onePagePostNumber }) {
   const [chatRoomList, setChatRoomList] = useState([]);
@@ -19,6 +20,18 @@ export default function ChatRoomList({ props, onePagePostNumber }) {
     const requestList = axios.get("/auction-chat/auth/find-all-chat-room");
     requestList.then((res) => {
       setChatRoomList(res.data.reverse());
+    });
+
+    const testRequest2 = requestPostHaveToken(
+      "/auction-chat/auth/chat",
+      props,
+      {
+        sender: "sj",
+        receiver: "king",
+        msg: "안녕하세요 테스트합니다.",
+      }
+    ).then((res) => {
+      console.log(res);
     });
   }, []);
 

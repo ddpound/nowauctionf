@@ -113,7 +113,7 @@ const SellerPurcheseMgtMain = (props) => {
       urlDate1 +
       " 00:00:00" +
       urlDate2 +
-      " 00:00:00" +
+      " 24:00:00" +
       url4 +
       url3;
 
@@ -408,12 +408,12 @@ const SellerPurcheseMgtMain = (props) => {
           className="form-check-input"
           type="checkbox"
           value=""
-          id="stateCheckBox"
+          id="optionCheckBox"
           onChange={(e) => {
             setChangeCheckBox(8, e.target.checked);
           }}
         />
-        <label className="form-check-label me-2" htmlFor="stateCheckBox">
+        <label className="form-check-label me-2" htmlFor="optionCheckBox">
           옵션
         </label>
       </div>
@@ -472,7 +472,7 @@ const SellerPurcheseMgtMain = (props) => {
           <tr>
             <th scope="col">체크</th>
             {showCheckBox[0] && <th scope="col">id</th>}
-            {showCheckBox[1] && <th scope="col">판매제품(링크)</th>}
+            {showCheckBox[1] && <th scope="col">판매제품</th>}
             {showCheckBox[2] && <th scope="col">구매자</th>}
             {showCheckBox[3] && <th scope="col">수량</th>}
             {showCheckBox[4] && <th scope="col">구매날짜</th>}
