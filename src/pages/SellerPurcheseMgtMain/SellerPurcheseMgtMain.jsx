@@ -8,6 +8,7 @@ import {
   requestPostHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 import { Link } from "react-router-dom";
+import ListPageNation from "../../components/PageNation/ListPageNation";
 
 /**
  * 판매자가 구매 예약들의 관리를 해주는
@@ -184,10 +185,19 @@ const SellerPurcheseMgtMain = (props) => {
     return [year, month, day].join(delimiter);
   };
 
+  // 페이지 네이션에 필요한 요소들
+  const [postingNumber, setPostingNumber] = useState(10);
+  const [page, setPage] = useState(1);
+  //const [offset, setOffset] = useState((page - 1) * postingNumber);
+
+  const offset = (page - 1) * postingNumber;
+
+  // 페이지 네이션에 필요한 요소들
   console.log(searchingObject);
   console.log(searchFilterState);
   console.log(calendarValue);
   console.log(checkItems);
+
   return (
     <div className="container-fluid">
       <div className="d-flex mt-3 mb-3">
@@ -434,6 +444,19 @@ const SellerPurcheseMgtMain = (props) => {
         <label className="form-check-label me-2" htmlFor="allCheck">
           전체선택
         </label>
+        <select
+          className="form-select"
+          defaultValue={0}
+          aria-label="Default select example"
+          onChange={(e) => {
+            setPostingNumber(e.target.value);
+          }}
+        >
+          <option value="10">10개씩보기</option>
+          <option value="20">20개씩보기</option>
+          <option value="50">50개씩보기</option>
+          <option value="100">100개씩보기</option>
+        </select>
         <button
           className="btn btn-dark me-2"
           onClick={() => {
@@ -484,99 +507,112 @@ const SellerPurcheseMgtMain = (props) => {
         </thead>
         <tbody>
           {setProductReservationList.length > 0 &&
-            productReservationList.map((productReservation) => {
-              return (
-                <tr key={productReservation.id}>
-                  <th>
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value={productReservation.id}
-                      style={{ zoom: "1.8" }}
-                      checked={
-                        checkItems.includes(productReservation.id)
-                          ? true
-                          : false
-                      }
-                      onChange={(e) => {
-                        singleCheck(e.target.checked, productReservation.id);
-                      }}
-                    />
-                  </th>
-                  {showCheckBox[0] && (
-                    <th scope="row">{productReservation.id}</th>
-                  )}
-                  {showCheckBox[1] && (
-                    <td>{productReservation.productId.productName}</td>
-                  )}
-                  {showCheckBox[2] && (
-                    <td>{productReservation.buyerNickName}</td>
-                  )}
-                  {showCheckBox[3] && <td>{productReservation.quantity}</td>}
-                  {showCheckBox[4] && <td>{productReservation.createDate}</td>}
-                  {showCheckBox[5] && <td>{productReservation.address}</td>}
-                  {showCheckBox[8] && (
-                    <td>
-                      {productReservation.options.map((res, idx) => {
-                        return (
-                          <div key={res.id}>
-                            <div>
-                              {idx + 1} : {res.optionTitle}
+            productReservationList
+              .slice(offset, offset + postingNumber)
+              .map((productReservation) => {
+                return (
+                  <tr key={productReservation.id}>
+                    <th>
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={productReservation.id}
+                        style={{ zoom: "1.8" }}
+                        checked={
+                          checkItems.includes(productReservation.id)
+                            ? true
+                            : false
+                        }
+                        onChange={(e) => {
+                          singleCheck(e.target.checked, productReservation.id);
+                        }}
+                      />
+                    </th>
+                    {showCheckBox[0] && (
+                      <th scope="row">{productReservation.id}</th>
+                    )}
+                    {showCheckBox[1] && (
+                      <td>{productReservation.productId.productName}</td>
+                    )}
+                    {showCheckBox[2] && (
+                      <td>{productReservation.buyerNickName}</td>
+                    )}
+                    {showCheckBox[3] && <td>{productReservation.quantity}</td>}
+                    {showCheckBox[4] && (
+                      <td>{productReservation.createDate}</td>
+                    )}
+                    {showCheckBox[5] && <td>{productReservation.address}</td>}
+                    {showCheckBox[8] && (
+                      <td>
+                        {productReservation.options.map((res, idx) => {
+                          return (
+                            <div key={res.id}>
+                              <div>
+                                {idx + 1} : {res.optionTitle}
+                              </div>
+                              <div>{res.detailedDescription}</div>
                             </div>
-                            <div>{res.detailedDescription}</div>
-                          </div>
-                        );
-                      })}
-                    </td>
-                  )}
-                  {showCheckBox[6] && (
-                    <td>
-                      <button
-                        id={productReservation.id}
-                        className="btn btn-dark me-2"
-                        onClick={() => {
-                          changeRequestStatus(productReservation, 1);
-                        }}
-                      >
-                        판매완료
-                      </button>
-                      <button
-                        id={productReservation.id}
-                        className="btn btn-dark me-2"
-                        onClick={() => {
-                          changeRequestStatus(productReservation, 3);
-                        }}
-                      >
-                        보류
-                      </button>
-                      <button
-                        id={productReservation.id}
-                        className="btn btn-dark me-2"
-                        onClick={() => {
-                          changeRequestStatus(productReservation, 2);
-                        }}
-                      >
-                        취소
-                      </button>
-                      <button
-                        id={productReservation.id}
-                        className="btn btn-danger me-2"
-                        onClick={() => {
-                          changeRequestStatus(productReservation, 4);
-                        }}
-                      >
-                        휴지통
-                      </button>
-                    </td>
-                  )}
-                  {showCheckBox[7] && (
-                    <td>{productReservation.reservationStatus}</td>
-                  )}
-                </tr>
-              );
-            })}
+                          );
+                        })}
+                      </td>
+                    )}
+                    {showCheckBox[6] && (
+                      <td>
+                        <button
+                          id={productReservation.id}
+                          className="btn btn-dark me-2"
+                          onClick={() => {
+                            changeRequestStatus(productReservation, 1);
+                          }}
+                        >
+                          판매완료
+                        </button>
+                        <button
+                          id={productReservation.id}
+                          className="btn btn-dark me-2"
+                          onClick={() => {
+                            changeRequestStatus(productReservation, 3);
+                          }}
+                        >
+                          보류
+                        </button>
+                        <button
+                          id={productReservation.id}
+                          className="btn btn-dark me-2"
+                          onClick={() => {
+                            changeRequestStatus(productReservation, 2);
+                          }}
+                        >
+                          취소
+                        </button>
+                        <button
+                          id={productReservation.id}
+                          className="btn btn-danger me-2"
+                          onClick={() => {
+                            changeRequestStatus(productReservation, 4);
+                          }}
+                        >
+                          휴지통
+                        </button>
+                      </td>
+                    )}
+                    {showCheckBox[7] && (
+                      <td>{productReservation.reservationStatus}</td>
+                    )}
+                  </tr>
+                );
+              })}
         </tbody>
       </table>
+      {productReservationList.length > 0 && (
+        <ListPageNation
+          postLength={productReservationList.length}
+          oneViewNumber={postingNumber}
+          page={page}
+          setPage={setPage}
+          inMaxPageListNumber={10}
+        ></ListPageNation>
+      )}
     </div>
   );
 };

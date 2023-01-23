@@ -21,18 +21,6 @@ export default function ChatRoomList({ props, onePagePostNumber }) {
     requestList.then((res) => {
       setChatRoomList(res.data.reverse());
     });
-
-    const testRequest2 = requestPostHaveToken(
-      "/auction-chat/auth/chat",
-      props,
-      {
-        sender: "sj",
-        receiver: "king",
-        msg: "안녕하세요 테스트합니다.",
-      }
-    ).then((res) => {
-      console.log(res);
-    });
   }, []);
 
   return (
