@@ -6,7 +6,7 @@ import Qnaboardmain from './pages/Qnaboardmain';
 import BoardPage from './pages/BoardPage'
 import Footer from './components/footerandheader/Footer';
 import Header from './components/footerandheader/Header';
-import ChatRoom from './pages/ChatRoom';
+import ChatRoom from './pages/ChatRooms/ChatRoom';
 import LoginTryPage from './pages/LoginTryPage';
 import UserInfoPage from './pages/UserInfo/UserInfoPage';
 import AdminInPage from './pages/AdminPages/AdminInPage';

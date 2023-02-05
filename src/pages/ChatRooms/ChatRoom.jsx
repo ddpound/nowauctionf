@@ -14,7 +14,11 @@ export default function ChatRoom(props) {
             <div className="row-sm">컨트롤러가 있는 div 버튼들 포함</div>
           </div>
           <div className="row h-50">
-            <div className="col-sm">채팅창</div>
+            <div className="col-sm chat-ground">채팅창</div>
+            <div className="chat-input-div">
+              <input className="chat-input" type="text" />
+              <button className="btn btn-dark">입력</button>
+            </div>
           </div>
         </div>
       </div>
