@@ -19,7 +19,9 @@ export default function ChatRoomList({ props, onePagePostNumber }) {
     // 무조건 딱 한번 리스트를 받아와서 페이징해줌
     const requestList = axios.get("/auction-chat/auth/find-all-chat-room");
     requestList.then((res) => {
-      setChatRoomList(res.data.reverse());
+      console.log(res);
+      console.log(res.data);
+      //setChatRoomList(res.data.reverse());
     });
   }, []);
 
@@ -27,7 +29,7 @@ export default function ChatRoomList({ props, onePagePostNumber }) {
     <div className="container mt-5">
       <h2>[현재 경매중인 사이트]</h2>
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {chatRoomList.length > 0 &&
+        {/* {chatRoomList.length > 0 &&
           chatRoomList
             .slice(offset, offset + postingNumber)
             .map((chatRoomList) => {
@@ -38,7 +40,7 @@ export default function ChatRoomList({ props, onePagePostNumber }) {
                   host={chatRoomList.userModel.nickname}
                 />
               );
-            })}
+            })} */}
 
         {chatRoomList.length === 0 && (
           <div>

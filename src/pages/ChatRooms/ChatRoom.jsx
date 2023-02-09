@@ -1,6 +1,6 @@
 import "./ChatRoom.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import {
   requestPostHaveToken,
@@ -8,10 +8,16 @@ import {
   requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
+import ChatBox from "./ChatBox";
+
 export default function ChatRoom(props) {
   const id = props.match.params.id;
 
   const [inputMessage, setInputMessage] = useState("");
+
+  const [chatBoxList, setChatBoxList] = useState([]);
+
+  const chatBoxScroll = useRef();
 
   const onChange = (e) => {
     setInputMessage(e.target.value);
@@ -30,15 +36,20 @@ export default function ChatRoom(props) {
 
   const sendMessage = () => {
     let formData = new FormData();
+    formData.append("roomNum", id);
     formData.append("sender", userdata.nickName);
     formData.append("msg", inputMessage);
-    formData.append("roomNum", id);
 
     const requestProduct = requestPostHaveToken(
       "/auction-chat/user/send-message",
       props,
       formData
     );
+
+    setInputMessage("");
+    requestProduct.then(() => {
+      chatBoxScroll.current.scrollTop = chatBoxScroll.current.scrollHeight;
+    });
   };
 
   useEffect(() => {
@@ -48,11 +59,6 @@ export default function ChatRoom(props) {
       console.log("로그인 정보없음");
     }
 
-    // requestGetHaveToken("/auction-chat/auth/find-room/" + id).then((data) => {
-    //   console.log("data");
-    //   console.log(data);
-    // });
-
     const eventSource = new EventSource(
       "http://localhost:8000/auction-chat/auth/find-room/" + id
     );
@@ -61,8 +67,19 @@ export default function ChatRoom(props) {
       console.log(1, event);
       const data = JSON.parse(event.data);
       console.log(2, data);
+
+      setChatBoxList((preChatList) => [...preChatList, data]);
+      chatBoxScroll.current.scrollTop = chatBoxScroll.current.scrollHeight;
     };
+
+    // requestGetHaveToken("/auction-chat/auth/find-room/" + id).then((data) => {
+    //   console.log("data");
+    //   console.log(data);
+    // });
   }, []);
+
+  console.log("리스트");
+  console.log(chatBoxList);
 
   return (
     <div className="container-fluid">
@@ -74,7 +91,17 @@ export default function ChatRoom(props) {
             <div className="row-sm">컨트롤러가 있는 div 버튼들 포함</div>
           </div>
           <div className="row h-50">
-            <div className="col-sm chat-ground">채팅창</div>
+            <div
+              className="chat-box-div col-sm chat-ground"
+              ref={chatBoxScroll}
+            >
+              {chatBoxList.length > 0 &&
+                chatBoxList.map((data, idx) => {
+                  return (
+                    <ChatBox key={idx} msg={data.msg} sender={data.sender} />
+                  );
+                })}
+            </div>
             <div className="chat-input-div">
               <input
                 className="chat-input"

@@ -40,29 +40,31 @@ export default function ProductRegistrationMain({ props, inData }) {
 
     const chatRoomTitle = document.getElementById("chatRoomTitle").value;
 
-    console.log("유저데이터 닉네임");
-    console.log(userdata.nickName);
+    if (!!userdata) {
+      console.log("유저데이터 닉네임");
+      console.log(userdata.nickName);
 
-    formData.append("roomTitle", chatRoomTitle);
-    formData.append("sender", userdata.nickName);
-    formData.append("chief ", userdata.nickName);
-    formData.append("msg", "경매장을 열었습니다.");
+      formData.append("roomTitle", chatRoomTitle);
+      formData.append("sender", userdata.nickName);
+      formData.append("chief ", userdata.nickName);
+      formData.append("msg", "경매장을 열었습니다.");
 
-    const requestProduct = requestPostHaveToken(
-      "/auction-chat/seller/make-room",
-      props,
-      formData
-    );
+      const requestProduct = requestPostHaveToken(
+        "/auction-chat/seller/make-room",
+        props,
+        formData
+      );
 
-    requestProduct
-      .then((res) => {
-        alert("경매를 시작합니다.");
-        console.log(res);
-        goChatRoom("/chat-room/" + res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+      requestProduct
+        .then((res) => {
+          alert("경매를 시작합니다.");
+          console.log(res);
+          goChatRoom.push("/chat-room/" + res.data.roomNum);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
   };
 
   useEffect(() => {
