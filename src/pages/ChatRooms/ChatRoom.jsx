@@ -83,8 +83,8 @@ export default function ChatRoom(props) {
   console.log(chatBoxList);
 
   return (
-    <div className="container-fluid">
-      <div className="row">
+    <div className="chat-main-container container-fluid ">
+      <div className="chat-main-child-container row">
         <div className="col-sm vh-100 min-vh-60">방송화면div</div>
         <div className="col-sm">
           <div className="row h-50">

@@ -1,9 +1,17 @@
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 
 
+.chat-main-container{
+    height: 1500px;
+}
+
+.chat-main-child-container{
+    height: 100%;
+}
+
 .chat-ground{
     width: 100%;
-    height: 90%;
+    height: 95%;
     border: 2px solid;
     border-radius: 10px;
 }

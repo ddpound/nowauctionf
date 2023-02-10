@@ -12,8 +12,8 @@ const ChatBox = ({ msg, profile, sender, userdata }) => {
   if (userdata.nickName === sender) {
     return (
       <div>
-        <div>
-          <img className="chat-profile" src={userdata.picture} alt="" />{" "}
+        <div className="chat-box-me">
+          <img className="chat-profile" src={userdata.picture} alt="" />
           {sender} : {msg}
         </div>
       </div>
