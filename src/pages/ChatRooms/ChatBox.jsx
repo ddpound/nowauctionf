@@ -8,14 +8,25 @@ import {
   requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
-const ChatBox = ({ msg, sender }) => {
-  return (
-    <div>
+const ChatBox = ({ msg, profile, sender, userdata }) => {
+  if (userdata.nickName === sender) {
+    return (
       <div>
-        {sender} : {msg}
+        <div>
+          <img className="chat-profile" src={userdata.picture} alt="" />{" "}
+          {sender} : {msg}
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div>
+        <div>
+          <img className="chat-profile" src={profile} alt="" /> {sender} : {msg}
+        </div>
+      </div>
+    );
+  }
 };
 
 export default ChatBox;

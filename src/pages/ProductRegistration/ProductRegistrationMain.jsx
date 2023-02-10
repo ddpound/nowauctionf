@@ -47,6 +47,8 @@ export default function ProductRegistrationMain({ props, inData }) {
       formData.append("roomTitle", chatRoomTitle);
       formData.append("sender", userdata.nickName);
       formData.append("chief ", userdata.nickName);
+      formData.append("thumbnail", userdata.picture);
+
       formData.append("msg", "경매장을 열었습니다.");
 
       const requestProduct = requestPostHaveToken(

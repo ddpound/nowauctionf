@@ -39,6 +39,7 @@ export default function ChatRoom(props) {
     formData.append("roomNum", id);
     formData.append("sender", userdata.nickName);
     formData.append("msg", inputMessage);
+    formData.append("profile", userdata.picture);
 
     const requestProduct = requestPostHaveToken(
       "/auction-chat/user/send-message",
@@ -98,7 +99,13 @@ export default function ChatRoom(props) {
               {chatBoxList.length > 0 &&
                 chatBoxList.map((data, idx) => {
                   return (
-                    <ChatBox key={idx} msg={data.msg} sender={data.sender} />
+                    <ChatBox
+                      key={idx}
+                      msg={data.msg}
+                      profile={data.profile}
+                      userdata={userdata}
+                      sender={data.sender}
+                    />
                   );
                 })}
             </div>
