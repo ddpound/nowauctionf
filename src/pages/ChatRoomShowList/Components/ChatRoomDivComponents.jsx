@@ -4,13 +4,13 @@ import "bootstrap/dist/js/bootstrap.bundle";
 
 import { Link } from "react-router-dom";
 
-export default function ChatRoomDivComponents({ title, host }) {
+export default function ChatRoomDivComponents({ title, host, thumbnail }) {
   return (
     <div className="col">
       <div className="card shadow-sm">
         <Link to="/chat-room/1">
           <img
-            src="thumbnail/jangThumbnail.png"
+            src={thumbnail}
             className="card-img-top bd-placeholder-img"
             width="100%"
             height="225"

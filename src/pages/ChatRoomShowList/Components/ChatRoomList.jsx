@@ -21,7 +21,7 @@ export default function ChatRoomList({ props, onePagePostNumber }) {
     requestList.then((res) => {
       console.log(res);
       console.log(res.data);
-      //setChatRoomList(res.data.reverse());
+      setChatRoomList(res.data);
     });
   }, []);
 
@@ -29,18 +29,19 @@ export default function ChatRoomList({ props, onePagePostNumber }) {
     <div className="container mt-5">
       <h2>[현재 경매중인 사이트]</h2>
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {/* {chatRoomList.length > 0 &&
+        {chatRoomList.length > 0 &&
           chatRoomList
             .slice(offset, offset + postingNumber)
             .map((chatRoomList) => {
               return (
                 <ChatRoomDivComponents
                   key={chatRoomList.id}
-                  title={chatRoomList.title}
-                  host={chatRoomList.userModel.nickname}
+                  title={chatRoomList.roomTitle}
+                  host={chatRoomList.chief}
+                  thumbnail={chatRoomList.thumbnail}
                 />
               );
-            })} */}
+            })}
 
         {chatRoomList.length === 0 && (
           <div>
