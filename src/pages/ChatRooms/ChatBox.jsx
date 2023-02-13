@@ -11,18 +11,25 @@ import {
 const ChatBox = ({ msg, profile, sender, userdata }) => {
   if (userdata.nickName === sender) {
     return (
-      <div>
-        <div className="chat-box-me">
+      <div className="ChatBox-compoenet">
+        <div className="ChatBox-profile-Box">
           <img className="chat-profile" src={userdata.picture} alt="" />
-          {sender} : {msg}
+          <label>{sender}</label>
+        </div>
+        <div>
+          <label>{msg}</label>
         </div>
       </div>
     );
   } else {
     return (
-      <div>
+      <div className="ChatBox-compoenet">
+        <div className="ChatBox-profile-Box">
+          <img className="chat-profile" src={profile} alt="" />
+          <label>{sender}</label>
+        </div>
         <div>
-          <img className="chat-profile" src={profile} alt="" /> {sender} : {msg}
+          <label>{msg}</label>
         </div>
       </div>
     );

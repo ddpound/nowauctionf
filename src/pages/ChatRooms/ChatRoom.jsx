@@ -47,7 +47,7 @@ export default function ChatRoom(props) {
       formData
     );
 
-    setInputMessage("");
+    setInputMessage(" ");
     requestProduct.then(() => {
       chatBoxScroll.current.scrollTop = chatBoxScroll.current.scrollHeight;
     });
@@ -85,39 +85,40 @@ export default function ChatRoom(props) {
   return (
     <div className="chat-main-container container-fluid ">
       <div className="chat-main-child-container row">
-        <div className="col-sm vh-100 min-vh-60">방송화면div</div>
-        <div className="col-sm">
-          <div className="row h-50">
-            <div className="row-sm">현재 판매 물품 내용</div>
-            <div className="row-sm">컨트롤러가 있는 div 버튼들 포함</div>
+        <div className="col-sm vh-100 min-vh-60">
+          현재 판매 물품 내용,컨트롤러가 있는 div 버튼들 포함
+        </div>
+        <div className="col h-100">
+          <div className="chat-box-div col-sm chat-ground" ref={chatBoxScroll}>
+            {chatBoxList.length > 0 &&
+              chatBoxList.map((data, idx) => {
+                return (
+                  <ChatBox
+                    key={idx}
+                    msg={data.msg}
+                    profile={data.profile}
+                    userdata={userdata}
+                    sender={data.sender}
+                  />
+                );
+              })}
           </div>
-          <div className="row h-50">
-            <div
-              className="chat-box-div col-sm chat-ground"
-              ref={chatBoxScroll}
+          <div className="chat-input-div">
+            <input
+              className="chat-input"
+              onKeyDown={handlekeyPress}
+              onChange={onChange}
+              value={inputMessage}
+              type="text"
+            />
+            <button
+              onClick={() => {
+                sendMessage();
+              }}
+              className="btn btn-dark"
             >
-              {chatBoxList.length > 0 &&
-                chatBoxList.map((data, idx) => {
-                  return (
-                    <ChatBox
-                      key={idx}
-                      msg={data.msg}
-                      profile={data.profile}
-                      userdata={userdata}
-                      sender={data.sender}
-                    />
-                  );
-                })}
-            </div>
-            <div className="chat-input-div">
-              <input
-                className="chat-input"
-                onKeyDown={handlekeyPress}
-                onChange={onChange}
-                type="text"
-              />
-              <button className="btn btn-dark">입력</button>
-            </div>
+              입력
+            </button>
           </div>
         </div>
       </div>
