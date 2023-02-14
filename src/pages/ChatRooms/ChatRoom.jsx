@@ -8,6 +8,8 @@ import {
   requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
+import ReactPlayer from "react-player";
+
 import ChatBox from "./ChatBox";
 
 export default function ChatRoom(props) {
@@ -16,6 +18,21 @@ export default function ChatRoom(props) {
   const [inputMessage, setInputMessage] = useState("");
 
   const [chatBoxList, setChatBoxList] = useState([]);
+
+  const [viedeoUrl, setVideoUrl] = useState("");
+
+  const changeVideoUrl = (e) => {
+    setVideoUrl(e.target.value);
+  };
+
+  const [product, setProduct] = useState({
+    name: "",
+    price: 0,
+    seller: 0,
+    quantity: 1,
+  });
+
+  const productOnChage = (e) => {};
 
   const chatBoxScroll = useRef();
 
@@ -26,6 +43,8 @@ export default function ChatRoom(props) {
   // 유저데이터가 있는지 체크
 
   const userdata = JSON.parse(localStorage.getItem("userdata"));
+
+  const sellerRight = localStorage.getItem("sellerSuccess");
 
   const handlekeyPress = (e) => {
     if (e.key == "Enter") {
@@ -56,6 +75,15 @@ export default function ChatRoom(props) {
   useEffect(() => {
     if (!!userdata) {
       console.log("로그인 되어있습니다.");
+
+      if (!!sellerRight) {
+        setProduct({
+          name: "",
+          price: 0,
+          seller: Number(sellerRight),
+          quantity: 1,
+        });
+      }
     } else {
       console.log("로그인 정보없음");
     }
@@ -81,12 +109,47 @@ export default function ChatRoom(props) {
 
   console.log("리스트");
   console.log(chatBoxList);
+  console.log(product);
 
   return (
     <div className="chat-main-container container-fluid ">
       <div className="chat-main-child-container row">
         <div className="col-sm vh-100 min-vh-60">
-          현재 판매 물품 내용,컨트롤러가 있는 div 버튼들 포함
+          {!!sellerRight && (
+            <div>
+              <div>
+                {viedeoUrl.length < 1 && (
+                  <div>
+                    <p>
+                      만약 방송중이시라면 링크입력해주셔서 동시에 확인해주세요
+                    </p>
+                    <label htmlFor="videoUrl">라이브 링크</label>
+                    <input
+                      onChange={changeVideoUrl}
+                      id="videoUrl"
+                      type="text"
+                    />
+                    <button className="btn btn-dark">입력</button>
+                  </div>
+                )}
+              </div>
+              {viedeoUrl.length > 1 && (
+                <div className="player-box">
+                  <ReactPlayer url={viedeoUrl} />
+                </div>
+              )}
+              <div>
+                <label htmlFor="productName">제품이름</label>
+                <input id="productName" type="text" />
+                <label htmlFor="productPrice">제품가격</label>
+                <input id="productPrice" type="number" />
+                <button className="btn btn-dark">제품 올리기</button>
+              </div>
+              판매자가 물건리스트, 판매 삭제하는 컨트롤러
+            </div>
+          )}
+
+          <div>지금 판매물품 내용, 경매 실시간 반영</div>
         </div>
         <div className="col h-100">
           <div className="chat-box-div col-sm chat-ground" ref={chatBoxScroll}>
