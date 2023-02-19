@@ -39,6 +39,7 @@ export default function ProductRegistrationMain({ props, inData }) {
     let formData = new FormData();
 
     const chatRoomTitle = document.getElementById("chatRoomTitle").value;
+    const videoUrl = document.getElementById("video-url").value;
 
     if (!!userdata) {
       console.log("유저데이터 닉네임");
@@ -48,6 +49,7 @@ export default function ProductRegistrationMain({ props, inData }) {
       formData.append("sender", userdata.nickName);
       formData.append("chief ", userdata.nickName);
       formData.append("thumbnail", userdata.picture);
+      formData.append("videoUrl", videoUrl);
 
       formData.append("msg", "경매장을 열었습니다.");
 
@@ -118,6 +120,15 @@ export default function ProductRegistrationMain({ props, inData }) {
                   type="text"
                   className="form-control"
                   placeholder="방제"
+                  aria-label="Username"
+                  aria-describedby="addon-wrapping"
+                />
+                <label htmlFor="video-url">생방송 링크</label>
+                <input
+                  id="video-url"
+                  type="text"
+                  className="form-control"
+                  placeholder="video-url"
                   aria-label="Username"
                   aria-describedby="addon-wrapping"
                 />

@@ -9,6 +9,7 @@ import {
 } from "../../commonFuntions/requestHaveToken";
 
 import ReactPlayer from "react-player";
+import ReactHlsPlayer from "react-hls-player/dist";
 
 import ChatBox from "./ChatBox";
 
@@ -67,7 +68,10 @@ export default function ChatRoom(props) {
     );
 
     setInputMessage(" ");
-    requestProduct.then(() => {
+    requestProduct.then((res) => {
+      if (res.data == null) {
+        alert("종료된 채팅방입니다. 홈으로가주세요");
+      }
       chatBoxScroll.current.scrollTop = chatBoxScroll.current.scrollHeight;
     });
   };
@@ -83,6 +87,8 @@ export default function ChatRoom(props) {
           seller: Number(sellerRight),
           quantity: 1,
         });
+
+        // 판매자는 url을 받을필요가 없음
       }
     } else {
       console.log("로그인 정보없음");
@@ -97,62 +103,99 @@ export default function ChatRoom(props) {
       const data = JSON.parse(event.data);
       console.log(2, data);
 
-      setChatBoxList((preChatList) => [...preChatList, data]);
-      chatBoxScroll.current.scrollTop = chatBoxScroll.current.scrollHeight;
+      setChatBoxList((preChatList) => [...preChatList, data.body]);
     };
 
-    // requestGetHaveToken("/auction-chat/auth/find-room/" + id).then((data) => {
-    //   console.log("data");
-    //   console.log(data);
-    // });
+    requestGetHaveToken(
+      "http://localhost:8000/auction-chat/auth/find-room/" +
+        id +
+        "/check-video-url",
+      props
+    ).then((res) => {
+      console.log("방 체크, 방 url검사를 위해서");
+
+      setVideoUrl(res.data.videoUrl);
+    });
   }, []);
 
-  console.log("리스트");
-  console.log(chatBoxList);
-  console.log(product);
+  useEffect(() => {
+    chatBoxScroll.current.scrollTop = chatBoxScroll.current.scrollHeight;
+  }, [chatBoxList]);
 
   return (
-    <div className="chat-main-container container-fluid ">
+    <div className="chat-main-container ">
       <div className="chat-main-child-container row">
         <div className="col-sm vh-100 min-vh-60">
           {!!sellerRight && (
-            <div>
-              <div>
-                {viedeoUrl.length < 1 && (
+            <div className="seller-main-controller">
+              <p>
+                만약 방송중이시라면 링크입력해주세요. 주소 변경시 다른 유저들도
+                새로고침하셔야합니다.
+              </p>
+              <div className="sellerLiveController">
+                <div>
                   <div>
-                    <p>
-                      만약 방송중이시라면 링크입력해주셔서 동시에 확인해주세요
-                    </p>
                     <label htmlFor="videoUrl">라이브 링크</label>
                     <input
                       onChange={changeVideoUrl}
                       id="videoUrl"
                       type="text"
                     />
-                    <button className="btn btn-dark">입력</button>
+
+                    <button className="btn btn-dark">입력 및 수정</button>
                   </div>
-                )}
-              </div>
-              {viedeoUrl.length > 1 && (
-                <div className="player-box">
-                  <ReactPlayer url={viedeoUrl} />
                 </div>
-              )}
-              <div>
-                <label htmlFor="productName">제품이름</label>
-                <input id="productName" type="text" />
-                <label htmlFor="productPrice">제품가격</label>
-                <input id="productPrice" type="number" />
-                <button className="btn btn-dark">제품 올리기</button>
+                <div>
+                  <label htmlFor="productName">제품이름</label>
+                  <input id="productName" type="text" />
+                  <label htmlFor="productPrice">제품가격</label>
+                  <input id="productPrice" type="number" />
+                  <button className="btn btn-dark">제품 올리기</button>
+                </div>
+                <div>물건 리스트</div>
               </div>
-              판매자가 물건리스트, 판매 삭제하는 컨트롤러
+            </div>
+          )}
+          {viedeoUrl.length > 1 && (
+            <div className="accordion mt-2 " id="accordionExample">
+              <div className="accordion-item ">
+                <h2 className="accordion-header" id="headingOne">
+                  <button
+                    className="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                  >
+                    동영상 보이기/숨기기
+                  </button>
+                </h2>
+                <div
+                  id="collapseOne"
+                  className="accordion-collapse  collapse show "
+                  aria-labelledby="headingOne"
+                  data-bs-parent="#accordionExample"
+                >
+                  <div className="accordion-body ">
+                    <div className="player-box">
+                      <ReactPlayer
+                        width={"100%"}
+                        height={"100%"}
+                        playing={true}
+                        url={viedeoUrl}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
           <div>지금 판매물품 내용, 경매 실시간 반영</div>
         </div>
         <div className="col h-100">
-          <div className="chat-box-div col-sm chat-ground" ref={chatBoxScroll}>
+          <div className="chat-box-div col-sm" ref={chatBoxScroll}>
             {chatBoxList.length > 0 &&
               chatBoxList.map((data, idx) => {
                 return (

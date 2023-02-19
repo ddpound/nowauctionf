@@ -35,7 +35,8 @@ export default function ChatRoomList({ props, onePagePostNumber }) {
             .map((chatRoomList) => {
               return (
                 <ChatRoomDivComponents
-                  key={chatRoomList.id}
+                  key={chatRoomList.roomNum}
+                  roomNum={chatRoomList.roomNum}
                   title={chatRoomList.roomTitle}
                   host={chatRoomList.chief}
                   thumbnail={chatRoomList.thumbnail}

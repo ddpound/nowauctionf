@@ -3,18 +3,11 @@
 
 .chat-main-container{
     margin: 20px auto;
-    height: 500px;
+   
 }
 
 .chat-main-child-container{
     height: 100%;
-}
-
-.chat-ground{
-    width: 100%;
-    height: 95%;
-    border: 2px solid;
-    border-radius: 10px;
 }
 
 
@@ -35,7 +28,9 @@
 
 .chat-box-div{
     overflow: auto;
-    height: 95%;
+    height: 550px;
+    border: 2px solid;
+    border-radius: 10px;
 
 }
 
@@ -84,4 +79,44 @@
 
 .player-box{
     width: 100%;
+    height: 500px;
+}
+
+.video-accordion-div{
+    height: 50%;
+}
+
+.seller-main-controller{
+    width: 100%;
+    height: 44%;
+}
+
+.sellerLiveController{
+    width: 100%;
+    height: 90%;
+    border: 2px  black solid;
+    border-radius: 10px;
+    display: flex;
+}
+
+.sellerLiveController div:nth-child(1){
+    width: 33%;
+}
+
+.sellerLiveController div:nth-child(2){
+    width: 33%;
+    
+}
+.sellerLiveController div:nth-child(3){
+    width: 33%;
+    overflow: auto;
+}
+
+
+.sellerLiveController input{
+    display: block;
+}
+
+.sellerLiveController button{
+    display: block;
 }
