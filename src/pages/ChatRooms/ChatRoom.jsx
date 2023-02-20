@@ -12,8 +12,10 @@ import ReactPlayer from "react-player";
 import ReactHlsPlayer from "react-hls-player/dist";
 
 import ChatBox from "./ChatBox";
+import ProductBox from "./ProductBox";
 
 export default function ChatRoom(props) {
+  // 방 ID
   const id = props.match.params.id;
 
   const [inputMessage, setInputMessage] = useState("");
@@ -31,9 +33,27 @@ export default function ChatRoom(props) {
     price: 0,
     seller: 0,
     quantity: 1,
+    roomNum: id,
+    auction: false,
   });
 
-  const productOnChage = (e) => {};
+  const productOnChage = (e) => {
+    const { value, name } = e.target;
+    setProduct({
+      ...product,
+      [name]: value,
+    });
+  };
+
+  const [productList, setProductList] = useState([]);
+
+  const saveProduct = () => {
+    const saveProduct = requestPostHaveToken(
+      "/auction-chat/seller/product/save",
+      props,
+      product
+    );
+  };
 
   const chatBoxScroll = useRef();
 
@@ -86,6 +106,8 @@ export default function ChatRoom(props) {
           price: 0,
           seller: Number(sellerRight),
           quantity: 1,
+          roomNum: id,
+          auction: false,
         });
 
         // 판매자는 url을 받을필요가 없음
@@ -99,11 +121,24 @@ export default function ChatRoom(props) {
     );
 
     eventSource.onmessage = (event) => {
+      // console.log(1, event);
+      const data = JSON.parse(event.data);
+      // console.log(2, data);
+
+      setChatBoxList((preChatList) => [...preChatList, data.body]);
+    };
+
+    // 제품 SSE 부분
+    const eventSourceProductCheck = new EventSource(
+      "http://localhost:8000/auction-chat/auth/find-product/" + id
+    );
+
+    eventSourceProductCheck.onmessage = (event) => {
       console.log(1, event);
       const data = JSON.parse(event.data);
       console.log(2, data);
 
-      setChatBoxList((preChatList) => [...preChatList, data.body]);
+      setProductList((productList) => [...productList, data.body]);
     };
 
     requestGetHaveToken(
@@ -122,37 +157,86 @@ export default function ChatRoom(props) {
     chatBoxScroll.current.scrollTop = chatBoxScroll.current.scrollHeight;
   }, [chatBoxList]);
 
+  console.log(productList);
   return (
     <div className="chat-main-container ">
       <div className="chat-main-child-container row">
         <div className="col-sm vh-100 min-vh-60">
           {!!sellerRight && (
-            <div className="seller-main-controller">
-              <p>
-                만약 방송중이시라면 링크입력해주세요. 주소 변경시 다른 유저들도
-                새로고침하셔야합니다.
-              </p>
-              <div className="sellerLiveController">
-                <div>
-                  <div>
-                    <label htmlFor="videoUrl">라이브 링크</label>
-                    <input
-                      onChange={changeVideoUrl}
-                      id="videoUrl"
-                      type="text"
-                    />
+            <div className="accordion mt-2 " id="accordionExample">
+              <div className="accordion-item ">
+                <h2 className="accordion-header" id="headingOne">
+                  <button
+                    className="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#seller-controller"
+                    aria-expanded="true"
+                    aria-controls="seller-controller"
+                  >
+                    관리창 펼치기/접기
+                  </button>
+                </h2>
+                <div
+                  id="seller-controller"
+                  className="accordion-collapse  collapse show "
+                  aria-labelledby="headingOne"
+                  data-bs-parent="#accordionExample"
+                >
+                  <div className="accordion-body ">
+                    <div className="seller-main-controller">
+                      <p>
+                        만약 방송중이시라면 링크입력해주세요. 주소 변경시 다른
+                        유저들도 새로고침하셔야합니다.
+                      </p>
+                      <div className="sellerLiveController">
+                        <div>
+                          <div>
+                            <label htmlFor="videoUrl">라이브 링크</label>
+                            <input
+                              onChange={changeVideoUrl}
+                              id="videoUrl"
+                              type="text"
+                            />
 
-                    <button className="btn btn-dark">입력 및 수정</button>
+                            <button className="btn btn-dark">
+                              입력 및 수정
+                            </button>
+                          </div>
+                        </div>
+                        <div>
+                          <label htmlFor="productName">제품이름</label>
+                          <input
+                            id="productName"
+                            name="name"
+                            onChange={productOnChage}
+                            type="text"
+                          />
+                          <label htmlFor="productPrice">제품가격</label>
+                          <input
+                            id="productPrice"
+                            name="price"
+                            onChange={productOnChage}
+                            type="number"
+                          />
+                          <button
+                            onClick={saveProduct}
+                            className="btn btn-dark"
+                          >
+                            제품 올리기
+                          </button>
+                        </div>
+                        <div>
+                          물건 리스트
+                          {productList.length > 0 &&
+                            productList.map((product) => {
+                              return <div>{product.name}</div>;
+                            })}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <label htmlFor="productName">제품이름</label>
-                  <input id="productName" type="text" />
-                  <label htmlFor="productPrice">제품가격</label>
-                  <input id="productPrice" type="number" />
-                  <button className="btn btn-dark">제품 올리기</button>
-                </div>
-                <div>물건 리스트</div>
               </div>
             </div>
           )}
@@ -191,8 +275,33 @@ export default function ChatRoom(props) {
               </div>
             </div>
           )}
-
-          <div>지금 판매물품 내용, 경매 실시간 반영</div>
+          <div className="accordion mt-2 " id="accordionExample">
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingOne">
+                <button
+                  className="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#sell-product"
+                  aria-expanded="true"
+                  aria-controls="sell-product"
+                >
+                  판매물품 보기/접기
+                </button>
+              </h2>
+              <div
+                id="sell-product"
+                className="accordion-collapse  collapse show "
+                aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body ">
+                  <div>지금 판매물품 내용, 경매 실시간 반영</div>
+                  <ProductBox productList={productList} roomNum={id} />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="col h-100">
           <div className="chat-box-div col-sm" ref={chatBoxScroll}>
