@@ -8,14 +8,39 @@ import {
   requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
-const ProductBox = ({ roomNum, productList }) => {
+const ProductBox = ({ roomNum, productList, userdata }) => {
   console.log(productList);
   let product = productList[productList.length - 1];
   console.log(product);
+
+  const [order, setOrder] = useState({
+    seller: 0,
+    buyer: 0,
+    price: 0,
+    quantity: 0,
+  });
+
+  useEffect(() => {
+    if (!!product) {
+      setOrder({
+        seller: product.seller,
+        quantity: product.quantity,
+        productModel: product,
+        buyer: userdata.id,
+      });
+    }
+  }, [product]);
+
+  console.log(order);
+
   return (
     <div>
       {!!productList && productList.length > 0 && (
-        <div key={product.id}>{product.name}</div>
+        <div key={product.id}>
+          <p>이름 : {product.name}</p>
+          <p>가격 : {product.price}</p>
+          <button className="btn btn-dark">구매하기</button>
+        </div>
       )}
     </div>
   );

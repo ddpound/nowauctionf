@@ -1,6 +1,7 @@
 import "./ChatRoom.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
 import { useEffect, useState, useRef } from "react";
+import { useHistory } from "react-router-dom";
 
 import {
   requestPostHaveToken,
@@ -62,7 +63,6 @@ export default function ChatRoom(props) {
   };
 
   // 유저데이터가 있는지 체크
-
   const userdata = JSON.parse(localStorage.getItem("userdata"));
 
   const sellerRight = localStorage.getItem("sellerSuccess");
@@ -116,31 +116,6 @@ export default function ChatRoom(props) {
       console.log("로그인 정보없음");
     }
 
-    const eventSource = new EventSource(
-      "http://localhost:8000/auction-chat/auth/find-room/" + id
-    );
-
-    eventSource.onmessage = (event) => {
-      // console.log(1, event);
-      const data = JSON.parse(event.data);
-      // console.log(2, data);
-
-      setChatBoxList((preChatList) => [...preChatList, data.body]);
-    };
-
-    // 제품 SSE 부분
-    const eventSourceProductCheck = new EventSource(
-      "http://localhost:8000/auction-chat/auth/find-product/" + id
-    );
-
-    eventSourceProductCheck.onmessage = (event) => {
-      console.log(1, event);
-      const data = JSON.parse(event.data);
-      console.log(2, data);
-
-      setProductList((productList) => [...productList, data.body]);
-    };
-
     requestGetHaveToken(
       "http://localhost:8000/auction-chat/auth/find-room/" +
         id +
@@ -157,7 +132,65 @@ export default function ChatRoom(props) {
     chatBoxScroll.current.scrollTop = chatBoxScroll.current.scrollHeight;
   }, [chatBoxList]);
 
-  console.log(productList);
+  const [locationKeys, setLocationKeys] = useState([]);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    const eventSource = new EventSource(
+      "http://localhost:8000/auction-chat/auth/find-room/" + id
+    );
+
+    // 제품 SSE 부분
+    const eventSourceProductCheck = new EventSource(
+      "http://localhost:8000/auction-chat/auth/find-product/" + id
+    );
+
+    eventSource.onmessage = (event) => {
+      // console.log(1, event);
+      const data = JSON.parse(event.data);
+      // console.log(2, data);
+
+      setChatBoxList((preChatList) => [...preChatList, data.body]);
+    };
+
+    eventSourceProductCheck.onmessage = (event) => {
+      //console.log(1, event);
+      const data = JSON.parse(event.data);
+      //console.log(2, data);
+
+      setProductList((productList) => [...productList, data.body]);
+    };
+
+    return history.listen((location) => {
+      if (history.action === "PUSH") {
+        setLocationKeys([location.key]);
+        console.log("다른링크");
+
+        eventSource.close();
+        eventSourceProductCheck.close();
+      }
+
+      if (history.action === "POP") {
+        if (locationKeys[1] === location.key) {
+          setLocationKeys(([_, ...keys]) => keys);
+
+          // 앞으로 가기
+          console.log("앞으로가기");
+          eventSource.close();
+          eventSourceProductCheck.close();
+        } else {
+          setLocationKeys((keys) => [location.key, ...keys]);
+
+          // 뒤로 가기
+          console.log("뒤로가기");
+          eventSource.close();
+          eventSourceProductCheck.close();
+        }
+      }
+    });
+  }, [locationKeys, history]);
+
   return (
     <div className="chat-main-container ">
       <div className="chat-main-child-container row">
@@ -219,6 +252,13 @@ export default function ChatRoom(props) {
                             onChange={productOnChage}
                             type="number"
                           />
+                          <label htmlFor="auction">경매</label>
+                          <input
+                            id="auction"
+                            name="auction"
+                            onChange={productOnChage}
+                            type="checkbox"
+                          />
                           <button
                             onClick={saveProduct}
                             className="btn btn-dark"
@@ -230,7 +270,7 @@ export default function ChatRoom(props) {
                           물건 리스트
                           {productList.length > 0 &&
                             productList.map((product) => {
-                              return <div>{product.name}</div>;
+                              return <p>{product.name}</p>;
                             })}
                         </div>
                       </div>
@@ -297,7 +337,11 @@ export default function ChatRoom(props) {
               >
                 <div className="accordion-body ">
                   <div>지금 판매물품 내용, 경매 실시간 반영</div>
-                  <ProductBox productList={productList} roomNum={id} />
+                  <ProductBox
+                    productList={productList}
+                    roomNum={id}
+                    userdata={userdata}
+                  />
                 </div>
               </div>
             </div>
