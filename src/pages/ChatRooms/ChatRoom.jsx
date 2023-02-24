@@ -351,15 +351,17 @@ export default function ChatRoom(props) {
           <div className="chat-box-div col-sm" ref={chatBoxScroll}>
             {chatBoxList.length > 0 &&
               chatBoxList.map((data, idx) => {
-                return (
-                  <ChatBox
-                    key={idx}
-                    msg={data.msg}
-                    profile={data.profile}
-                    userdata={userdata}
-                    sender={data.sender}
-                  />
-                );
+                if (!!data) {
+                  return (
+                    <ChatBox
+                      key={idx}
+                      msg={data.msg}
+                      profile={data.profile}
+                      userdata={userdata}
+                      sender={data.sender}
+                    />
+                  );
+                }
               })}
           </div>
           <div className="chat-input-div">
