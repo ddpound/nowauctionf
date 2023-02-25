@@ -75,25 +75,29 @@ export default function ChatRoom(props) {
   };
 
   const sendMessage = () => {
-    let formData = new FormData();
-    formData.append("roomNum", id);
-    formData.append("sender", userdata.nickName);
-    formData.append("msg", inputMessage);
-    formData.append("profile", userdata.picture);
+    if (!!userdata) {
+      let formData = new FormData();
+      formData.append("roomNum", id);
+      formData.append("sender", userdata.nickName);
+      formData.append("msg", inputMessage);
+      formData.append("profile", userdata.picture);
 
-    const requestProduct = requestPostHaveToken(
-      "/auction-chat/user/send-message",
-      props,
-      formData
-    );
+      const requestProduct = requestPostHaveToken(
+        "/auction-chat/user/send-message",
+        props,
+        formData
+      );
 
-    setInputMessage(" ");
-    requestProduct.then((res) => {
-      if (res.data == null) {
-        alert("종료된 채팅방입니다. 홈으로가주세요");
-      }
-      chatBoxScroll.current.scrollTop = chatBoxScroll.current.scrollHeight;
-    });
+      setInputMessage(" ");
+      requestProduct.then((res) => {
+        if (res.data == null) {
+          alert("종료된 채팅방입니다. 홈으로가주세요");
+        }
+        chatBoxScroll.current.scrollTop = chatBoxScroll.current.scrollHeight;
+      });
+    } else {
+      alert("로그인이 필요합니다.");
+    }
   };
 
   useEffect(() => {
