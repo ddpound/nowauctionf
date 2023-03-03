@@ -8,7 +8,7 @@ import {
   requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
-const ProductBox = ({ roomNum, productList, userdata }) => {
+const ProductBox = ({ roomNum, productList, userdata, props }) => {
   console.log(productList);
   let product = productList[productList.length - 1];
   console.log(product);
@@ -17,8 +17,23 @@ const ProductBox = ({ roomNum, productList, userdata }) => {
     seller: 0,
     buyer: 0,
     price: 0,
+    productModel: {
+      name: "",
+      price: 0,
+      seller: 0,
+      quantity: 1,
+      auction: false,
+    },
     quantity: 0,
   });
+
+  const saveOrder = () => {
+    requestPostHaveToken("/auction-chat/user/order/save", props, order).then(
+      (res) => {
+        console.log(res);
+      }
+    );
+  };
 
   useEffect(() => {
     if (!!product) {
@@ -39,7 +54,9 @@ const ProductBox = ({ roomNum, productList, userdata }) => {
         <div key={product.id}>
           <p>이름 : {product.name}</p>
           <p>가격 : {product.price}</p>
-          <button className="btn btn-dark">구매하기</button>
+          <button onClick={saveOrder} className="btn btn-dark">
+            구매하기
+          </button>
         </div>
       )}
     </div>

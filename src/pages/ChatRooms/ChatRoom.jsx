@@ -169,7 +169,6 @@ export default function ChatRoom(props) {
     return history.listen((location) => {
       if (history.action === "PUSH") {
         setLocationKeys([location.key]);
-        console.log("다른링크");
 
         eventSource.close();
         eventSourceProductCheck.close();
@@ -179,15 +178,11 @@ export default function ChatRoom(props) {
         if (locationKeys[1] === location.key) {
           setLocationKeys(([_, ...keys]) => keys);
 
-          // 앞으로 가기
-          console.log("앞으로가기");
           eventSource.close();
           eventSourceProductCheck.close();
         } else {
           setLocationKeys((keys) => [location.key, ...keys]);
 
-          // 뒤로 가기
-          console.log("뒤로가기");
           eventSource.close();
           eventSourceProductCheck.close();
         }
@@ -340,10 +335,10 @@ export default function ChatRoom(props) {
                 data-bs-parent="#accordionExample"
               >
                 <div className="accordion-body ">
-                  <div>지금 판매물품 내용, 경매 실시간 반영</div>
                   <ProductBox
                     productList={productList}
                     roomNum={id}
+                    props={props}
                     userdata={userdata}
                   />
                 </div>
