@@ -9,9 +9,8 @@ import {
 } from "../../commonFuntions/requestHaveToken";
 
 const ProductBox = ({ roomNum, productList, userdata, props }) => {
-  console.log(productList);
+  // 마지막 제품만 보여줌
   let product = productList[productList.length - 1];
-  console.log(product);
 
   const [order, setOrder] = useState({
     seller: 0,
@@ -26,6 +25,15 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
     quantity: 0,
   });
 
+  const raisePriceProduct = () => {
+    requestPostHaveToken("/auction-chat/user/order/raise", props, {
+      product: product,
+      raisePrice: 0,
+    }).then((res) => {
+      console.log(res);
+    });
+  };
+
   const saveOrder = () => {
     requestPostHaveToken("/auction-chat/user/order/save", props, order).then(
       (res) => {
@@ -35,29 +43,44 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
   };
 
   useEffect(() => {
-    if (!!product) {
+    if (!!product && !!userdata) {
       setOrder({
         seller: product.seller,
         quantity: product.quantity,
         productModel: product,
         buyer: userdata.id,
+        auction: product.auction,
       });
     }
   }, [product]);
-
-  console.log(order);
 
   return (
     <div>
       {!!productList && productList.length > 0 && (
         <div key={product.id}>
           <p>이름 : {product.name}</p>
-          <p>가격 : {product.price}</p>
+          {!product.auction && <p> 가격 : {product.price}</p>}
+          {product.auction && <p> 최고가 : {product.price}</p>}
+          {product.auction && <p> 최고 입찰자 : {product.price}</p>}
           <p>
             <label htmlFor="input-quantity">수량 : </label>
-            <input id="input-quantity" type="number" />
+            <input
+              id="input-quantity"
+              type="number"
+              style={{ marginLeft: "10px;" }}
+            />
           </p>
-
+          {product.auction && (
+            <div>
+              <label htmlFor="input-raise-price">입찰가 : </label>
+              <input
+                id="input-raise-price"
+                type="number"
+                style={{ marginLeft: "10px;" }}
+              />
+              <button className="btn btn-dark">입찰</button>
+            </div>
+          )}
           <button onClick={saveOrder} className="btn btn-dark">
             구매하기
           </button>

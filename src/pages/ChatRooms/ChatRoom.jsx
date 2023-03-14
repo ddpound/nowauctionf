@@ -48,11 +48,18 @@ export default function ChatRoom(props) {
     auction: false,
   });
 
-  const productOnChage = (e) => {
+  const productOnChange = (e) => {
     const { value, name } = e.target;
     setProduct({
       ...product,
       [name]: value,
+    });
+  };
+
+  const auctionOnChange = (e) => {
+    setProduct({
+      ...product,
+      auction: e.target.checked,
     });
   };
 
@@ -203,6 +210,8 @@ export default function ChatRoom(props) {
     });
   }, [locationKeys, history]);
 
+  console.log(product);
+
   return (
     <div className="chat-main-container ">
       <div className="chat-main-child-container row">
@@ -254,21 +263,21 @@ export default function ChatRoom(props) {
                           <input
                             id="productName"
                             name="name"
-                            onChange={productOnChage}
+                            onChange={productOnChange}
                             type="text"
                           />
                           <label htmlFor="productPrice">제품가격</label>
                           <input
                             id="productPrice"
                             name="price"
-                            onChange={productOnChage}
+                            onChange={productOnChange}
                             type="number"
                           />
                           <label htmlFor="auction">경매</label>
                           <input
                             id="auction"
                             name="auction"
-                            onChange={productOnChage}
+                            onChange={auctionOnChange}
                             type="checkbox"
                           />
                           <button

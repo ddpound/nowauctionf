@@ -16,7 +16,13 @@ import { requestGetHaveToken } from "../../commonFuntions/requestHaveToken";
 function couponDelete(id) {
   console.log(id);
   axios
-    .delete("/auction-user/admin/delete-one-coupon/" + id, returnHeaderTokens)
+    .delete("/auction-user/admin/delete-one-coupon/" + id, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("google-login-success"),
+        Refreshtoken:
+          "Bearer " + localStorage.getItem("google-login-success-re"),
+      },
+    })
     .then((res) => {
       resetTokens(res);
       console.log("삭제완료");
