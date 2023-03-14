@@ -10,7 +10,6 @@ import {
 } from "../../commonFuntions/requestHaveToken";
 
 import ReactPlayer from "react-player";
-import ReactHlsPlayer from "react-hls-player/dist";
 
 import ChatBox from "./ChatBox";
 import ProductBox from "./ProductBox";
@@ -24,6 +23,17 @@ export default function ChatRoom(props) {
   const [chatBoxList, setChatBoxList] = useState([]);
 
   const [viedeoUrl, setVideoUrl] = useState("");
+
+  const [chatRoom, setChatRoom] = useState({
+    chief: "",
+    chiefId: 0,
+    createAt: {},
+    id: "",
+    roomNum: 0,
+    roomTitle: "",
+    thumbnail: "",
+    videoUrl: "",
+  });
 
   const changeVideoUrl = (e) => {
     setVideoUrl(e.target.value);
@@ -65,6 +75,7 @@ export default function ChatRoom(props) {
   // 유저데이터가 있는지 체크
   const userdata = JSON.parse(localStorage.getItem("userdata"));
 
+  // 판매자이면, 방 만든사람과 판매자를 구별해내서 검사해야함
   const sellerRight = localStorage.getItem("sellerSuccess");
 
   const handlekeyPress = (e) => {
@@ -127,7 +138,9 @@ export default function ChatRoom(props) {
       props
     ).then((res) => {
       console.log("방 체크, 방 url검사를 위해서");
+      console.log(res);
 
+      setChatRoom(res.data);
       setVideoUrl(res.data.videoUrl);
     });
   }, []);
@@ -151,9 +164,9 @@ export default function ChatRoom(props) {
     );
 
     eventSource.onmessage = (event) => {
-      // console.log(1, event);
+      //console.log(1, event);
       const data = JSON.parse(event.data);
-      // console.log(2, data);
+      //console.log(2, data);
 
       setChatBoxList((preChatList) => [...preChatList, data.body]);
     };
@@ -194,7 +207,7 @@ export default function ChatRoom(props) {
     <div className="chat-main-container ">
       <div className="chat-main-child-container row">
         <div className="col-sm vh-100 min-vh-60">
-          {!!sellerRight && (
+          {!!sellerRight && userdata.nickName === chatRoom.chief && (
             <div className="accordion mt-2 " id="accordionExample">
               <div className="accordion-item ">
                 <h2 className="accordion-header" id="headingOne">

@@ -16,7 +16,6 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
   const [order, setOrder] = useState({
     seller: 0,
     buyer: 0,
-    price: 0,
     productModel: {
       name: "",
       price: 0,
@@ -54,6 +53,11 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
         <div key={product.id}>
           <p>이름 : {product.name}</p>
           <p>가격 : {product.price}</p>
+          <p>
+            <label htmlFor="input-quantity">수량 : </label>
+            <input id="input-quantity" type="number" />
+          </p>
+
           <button onClick={saveOrder} className="btn btn-dark">
             구매하기
           </button>
