@@ -173,17 +173,18 @@ export default function ChatRoom(props) {
     eventSource.onmessage = (event) => {
       //console.log(1, event);
       const data = JSON.parse(event.data);
-      //console.log(2, data);
+      console.log("레이즈 값 변경 체크");
+      console.log(2, data);
 
       setChatBoxList((preChatList) => [...preChatList, data.body]);
     };
 
     eventSourceProductCheck.onmessage = (event) => {
-      //console.log(1, event);
+      console.log(1, event);
       const data = JSON.parse(event.data);
-      //console.log(2, data);
+      console.log(2, data);
 
-      setProductList((productList) => [...productList, data.body]);
+      setProductList((productList) => [...productList, data]);
     };
 
     return history.listen((location) => {
@@ -210,7 +211,7 @@ export default function ChatRoom(props) {
     });
   }, [locationKeys, history]);
 
-  console.log(product);
+  console.log(productList);
 
   return (
     <div className="chat-main-container ">
@@ -336,37 +337,39 @@ export default function ChatRoom(props) {
               </div>
             </div>
           )}
-          <div className="accordion mt-2 " id="accordionExample">
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="headingOne">
-                <button
-                  className="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#sell-product"
-                  aria-expanded="true"
-                  aria-controls="sell-product"
+          {!!userdata && (
+            <div className="accordion mt-2 " id="accordionExample">
+              <div className="accordion-item">
+                <h2 className="accordion-header" id="headingOne">
+                  <button
+                    className="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#sell-product"
+                    aria-expanded="true"
+                    aria-controls="sell-product"
+                  >
+                    판매물품 보기/접기
+                  </button>
+                </h2>
+                <div
+                  id="sell-product"
+                  className="accordion-collapse  collapse show "
+                  aria-labelledby="headingOne"
+                  data-bs-parent="#accordionExample"
                 >
-                  판매물품 보기/접기
-                </button>
-              </h2>
-              <div
-                id="sell-product"
-                className="accordion-collapse  collapse show "
-                aria-labelledby="headingOne"
-                data-bs-parent="#accordionExample"
-              >
-                <div className="accordion-body ">
-                  <ProductBox
-                    productList={productList}
-                    roomNum={id}
-                    props={props}
-                    userdata={userdata}
-                  />
+                  <div className="accordion-body ">
+                    <ProductBox
+                      productList={productList}
+                      roomNum={id}
+                      props={props}
+                      userdata={userdata}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="col h-100">
           <div className="chat-box-div col-sm" ref={chatBoxScroll}>
