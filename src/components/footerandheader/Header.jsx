@@ -13,10 +13,10 @@ function checkUserName() {
 export default function Header(props) {
   return (
     <header>
-      <nav className="navbar navbar-expand-lg navbar-dark">
+      <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
-            <h2>장</h2>
+            <img src="/imgs/JangMain.png" alt="" />
           </Link>
           <button
             className="navbar-toggler"
@@ -88,7 +88,7 @@ export default function Header(props) {
                 placeholder="Search"
                 aria-label="Search"
               />
-              <button className="btn btn-outline-light" type="submit">
+              <button className="btn btn-outline-dark" type="submit">
                 Search
               </button>
             </form>

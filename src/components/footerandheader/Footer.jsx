@@ -1,5 +1,6 @@
 import "./Footer.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -30,6 +31,11 @@ export default function Footer() {
             <a href="#" className="nav-link px-2 text-muted">
               About
             </a>
+          </li>
+          <li>
+            <Link to="https://www.flaticon.com/kr/free-icons/" title=" 아이콘">
+              아이콘 제작자: uicon - Flaticon
+            </Link>
           </li>
         </ul>
         <p className="text-center text-muted">© 2022 Company, Inc</p>
