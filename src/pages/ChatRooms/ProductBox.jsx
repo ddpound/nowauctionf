@@ -41,11 +41,11 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
       return;
     }
 
-    // 버튼을 비활성화하고 5초 후 다시 활성화
+    // 버튼을 비활성화하고 2초 후 다시 활성화
     setDisabled(true);
     setTimeout(() => {
       setDisabled(false);
-    }, 5000);
+    }, 2000);
 
     requestPostHaveToken("/auction-chat/user/order/raise", props, {
       product: product,

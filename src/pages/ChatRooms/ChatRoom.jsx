@@ -65,6 +65,8 @@ export default function ChatRoom(props) {
 
   const [productList, setProductList] = useState([]);
 
+  const [checkChangeProductList, setCheckChangeProductList] = useState();
+
   const saveProduct = () => {
     const saveProduct = requestPostHaveToken(
       "/auction-chat/seller/product/save",
@@ -161,6 +163,24 @@ export default function ChatRoom(props) {
   const history = useHistory();
 
   useEffect(() => {
+    console.log("제품 리스트 왜 at작동안해?");
+    console.log(productList);
+    console.log(productList.length);
+
+    if (productList.length > 0) {
+      let lastProduct = productList.at(-1);
+      let oldProduct = productList.at(-2);
+      console.log("이잉 작동해~");
+      console.log(productList);
+      console.log(oldProduct);
+
+      if (lastProduct.id === oldProduct.id) {
+        setProductList(productList.splice(productList.length - 2, 1));
+      }
+    }
+  }, [checkChangeProductList]);
+
+  useEffect(() => {
     const eventSource = new EventSource(
       "http://localhost:8000/auction-chat/auth/find-room/" + id
     );
@@ -173,18 +193,29 @@ export default function ChatRoom(props) {
     eventSource.onmessage = (event) => {
       //console.log(1, event);
       const data = JSON.parse(event.data);
-      console.log("레이즈 값 변경 체크");
-      console.log(2, data);
+
+      //console.log(2, data);
 
       setChatBoxList((preChatList) => [...preChatList, data.body]);
     };
 
     eventSourceProductCheck.onmessage = (event) => {
-      console.log(1, event);
+      //console.log(1, event);
       const data = JSON.parse(event.data);
-      console.log(2, data);
 
-      setProductList((productList) => [...productList, data]);
+      //console.log(2, data);
+
+      setProductList((productList) => {
+        console.log(productList.length);
+
+        if (productList.length > 0) {
+          if (productList[productList.length - 1].id == data.body.id) {
+            productList.pop();
+          }
+        }
+
+        return [...productList, data.body];
+      });
     };
 
     return history.listen((location) => {
