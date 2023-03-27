@@ -6,7 +6,9 @@ import NowShoppingMallList from "../../pages/ShoppingMalls/components/NowShoppin
 export default function MainSellerPageList({ props }) {
   return (
     <div className="container mt-5">
-      <h2>[판매 사이트 리스트]</h2>
+      <h2>
+        <img src="/imgs/shopping-mall.png" alt="" /> 판매 사이트 리스트
+      </h2>
       <NowShoppingMallList props={props} />
     </div>
   );

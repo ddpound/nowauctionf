@@ -1,7 +1,7 @@
 /* 현재 정해진 테마코드 최대한 심플하고 간단하게 구성하기 */
 
 /*  테마 색 코드 #27AE60 */
-@import "../../../node_modules/bootstrap/scss/bootstrap";
+//@import "../../../node_modules/bootstrap/scss/bootstrap";
 
 /*  태나다 체 */
 @font-face {
@@ -21,3 +21,7 @@ header{
     color: black;
 }
 
+
+header img:first-child{
+    width: 48px;
+}

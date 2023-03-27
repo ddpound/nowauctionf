@@ -1,9 +1,10 @@
 // 이런식의 css 임포트도 가능
+
 import "./Header.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
 import GoogleLogoutButton from "../buttons/GoogleLogInOutButton";
 import { Link } from "react-router-dom";
-
+import "../../custom/custom.scss";
 // 여기서 로컬 정보 찾기
 function checkUserName() {
   const userModel = JSON.parse(localStorage.getItem("userdata"));

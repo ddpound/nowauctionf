@@ -10,6 +10,7 @@ import {
 
 const ProductBox = ({ roomNum, productList, userdata, props }) => {
   // 마지막 제품만 보여줌
+
   let product = productList[productList.length - 1];
 
   // 버튼활성화
@@ -29,6 +30,7 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
       price: 0,
       seller: 0,
       quantity: 1,
+      buyerId: 0,
       auction: false,
     },
     quantity: 0,
@@ -88,11 +90,7 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
           {product.auction && <p> 최고 입찰자 : {product.finalBuyer}</p>}
           <p>
             <label htmlFor="input-quantity">수량 : </label>
-            <input
-              id="input-quantity"
-              type="number"
-              style={{ marginLeft: "10px;" }}
-            />
+            <input id="input-quantity" type="number" />
           </p>
 
           <button onClick={saveOrder} className="btn btn-dark">
@@ -101,17 +99,19 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
         </div>
       )}
 
-      <div>
-        <label htmlFor="input-raise-price">입찰가 : </label>
-        <input
-          id="input-raise-price"
-          type="number"
-          onChange={inputChangePrice}
-        />
-        <button onClick={raisePriceProduct} className="btn btn-dark">
-          입찰
-        </button>
-      </div>
+      {!!product && product.auctionState && (
+        <div>
+          <label htmlFor="input-raise-price">입찰가 : </label>
+          <input
+            id="input-raise-price"
+            type="number"
+            onChange={inputChangePrice}
+          />
+          <button onClick={raisePriceProduct} className="btn btn-dark">
+            입찰
+          </button>
+        </div>
+      )}
     </div>
   );
 };

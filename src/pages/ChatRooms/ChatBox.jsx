@@ -8,12 +8,21 @@ import {
   requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
-const ChatBox = ({ msg, profile, sender, userdata }) => {
+const ChatBox = ({
+  msg,
+  profile,
+  sender,
+  userdata,
+  changeUserInfoAccordion,
+}) => {
   if (!!userdata) {
     if (userdata.nickName === sender) {
       return (
         <div className="ChatBox-compoenet">
-          <div className="ChatBox-profile-Box">
+          <div
+            onClick={changeUserInfoAccordion}
+            className="ChatBox-profile-Box"
+          >
             <img className="chat-profile" src={userdata.picture} alt="" />
             <label>{sender}</label>
           </div>

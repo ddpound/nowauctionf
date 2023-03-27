@@ -26,9 +26,12 @@ export default function ChatRoomList({ props, onePagePostNumber }) {
   }, []);
 
   return (
-    <div className="container mt-5">
-      <h2>[현재 경매중인 사이트]</h2>
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <div className="container-fluid mt-5">
+      <h2>
+        <img style={{ width: "64px" }} src="/imgs/auction.png" alt="" /> 현재
+        경매중인 사이트
+      </h2>
+      <div className="row row-cols-1 row-cols-sm-2 mt-4 row-cols-md-3 g-3">
         {chatRoomList.length > 0 &&
           chatRoomList
             .slice(offset, offset + postingNumber)

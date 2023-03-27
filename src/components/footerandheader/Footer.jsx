@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <div className="bd-footer container-fluid">
       <footer className="py-3 my-4 bg-white">
-        <ul className="nav justify-content-center border-bottom pb-3 mb-3 ">
+        <ul className="nav justify-content-center border-top pb-2 ">
           <li className="nav-item">
             <a href="/" className="nav-link px-2 text-muted">
               홈
@@ -32,13 +32,21 @@ export default function Footer() {
               About
             </a>
           </li>
-          <li>
-            <Link to="https://www.flaticon.com/kr/free-icons/" title=" 아이콘">
+        </ul>
+        <ul className="nav justify-content-center pb-2 ">
+          <li className="nav-item">
+            <a
+              className="nav-link px-2 text-muted"
+              href="https://www.flaticon.com/kr/free-icons/"
+              title=" 아이콘"
+            >
               아이콘 제작자: uicon - Flaticon
-            </Link>
+            </a>
           </li>
         </ul>
-        <p className="text-center text-muted">© 2022 Company, Inc</p>
+        <p className="text-center border-bottom text-muted">
+          © 2022 Company, Inc
+        </p>
       </footer>
     </div>
   );

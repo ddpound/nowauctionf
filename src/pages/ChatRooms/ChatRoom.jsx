@@ -1,7 +1,8 @@
-import "./ChatRoom.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
+
 import { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
+import "./ChatRoom.scss";
 
 import {
   requestPostHaveToken,
@@ -24,6 +25,17 @@ export default function ChatRoom(props) {
 
   const [viedeoUrl, setVideoUrl] = useState("");
 
+  const [userInfoAccordion, setUserInfoAccordion] = useState(true);
+
+  const [userInfoChatDiv, setUserInfoChatDiv] = useState({
+    sender: "",
+  });
+
+  const changeUserInfoAccordion = () => {
+    console.log("작동확인");
+    setUserInfoAccordion(!userInfoAccordion);
+  };
+
   const [chatRoom, setChatRoom] = useState({
     chief: "",
     chiefId: 0,
@@ -45,6 +57,7 @@ export default function ChatRoom(props) {
     seller: 0,
     quantity: 1,
     roomNum: id,
+    auctionState: false,
     auction: false,
   });
 
@@ -65,14 +78,26 @@ export default function ChatRoom(props) {
 
   const [productList, setProductList] = useState([]);
 
-  const [checkChangeProductList, setCheckChangeProductList] = useState();
-
   const saveProduct = () => {
-    const saveProduct = requestPostHaveToken(
-      "/auction-chat/seller/product/save",
-      props,
-      product
-    );
+    requestPostHaveToken("/auction-chat/seller/product/save", props, product);
+  };
+
+  const changeAuctionState = () => {
+    if (productList.length > 0) {
+      requestPostHaveToken(
+        "/auction-chat/seller/product/change-auction",
+        props,
+        {
+          product: productList[productList.length - 1],
+          raisePrice: 0,
+          userdata: userdata,
+        }
+      ).then((res) => {
+        console.log(res);
+      });
+    } else {
+      alert("등록된 제품이 없습니다.");
+    }
   };
 
   const chatBoxScroll = useRef();
@@ -131,7 +156,7 @@ export default function ChatRoom(props) {
           seller: Number(sellerRight),
           quantity: 1,
           roomNum: id,
-          auction: false,
+          auctionState: false,
         });
 
         // 판매자는 url을 받을필요가 없음
@@ -161,24 +186,6 @@ export default function ChatRoom(props) {
   const [locationKeys, setLocationKeys] = useState([]);
 
   const history = useHistory();
-
-  useEffect(() => {
-    console.log("제품 리스트 왜 at작동안해?");
-    console.log(productList);
-    console.log(productList.length);
-
-    if (productList.length > 0) {
-      let lastProduct = productList.at(-1);
-      let oldProduct = productList.at(-2);
-      console.log("이잉 작동해~");
-      console.log(productList);
-      console.log(oldProduct);
-
-      if (lastProduct.id === oldProduct.id) {
-        setProductList(productList.splice(productList.length - 2, 1));
-      }
-    }
-  }, [checkChangeProductList]);
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -249,7 +256,7 @@ export default function ChatRoom(props) {
       <div className="chat-main-child-container row">
         <div className="col-sm vh-100 min-vh-60">
           {!!sellerRight && userdata.nickName === chatRoom.chief && (
-            <div className="accordion mt-2 " id="accordionExample">
+            <div className="accordion mt-2" id="accordionExample">
               <div className="accordion-item ">
                 <h2 className="accordion-header" id="headingOne">
                   <button
@@ -276,7 +283,7 @@ export default function ChatRoom(props) {
                         유저들도 새로고침하셔야합니다.
                       </p>
                       <div className="sellerLiveController">
-                        <div>
+                        {/* <div>
                           <div>
                             <label htmlFor="videoUrl">라이브 링크</label>
                             <input
@@ -289,7 +296,7 @@ export default function ChatRoom(props) {
                               입력 및 수정
                             </button>
                           </div>
-                        </div>
+                        </div> */}
                         <div>
                           <label htmlFor="productName">제품이름</label>
                           <input
@@ -318,12 +325,38 @@ export default function ChatRoom(props) {
                           >
                             제품 올리기
                           </button>
+                          {productList.length > 0 &&
+                            !!productList[productList.length - 1].auction && (
+                              <div style={{ marginTop: "10px" }}>
+                                <button
+                                  onClick={changeAuctionState}
+                                  className="btn btn-dark"
+                                >
+                                  {productList[productList.length - 1]
+                                    .auctionState ? (
+                                    <label>경매중지</label>
+                                  ) : (
+                                    <label>경매시작</label>
+                                  )}
+                                </button>
+                                {productList[productList.length - 1]
+                                  .auctionState ? (
+                                  <p style={{ color: "red" }}>
+                                    경매가 진행중입니다.
+                                  </p>
+                                ) : (
+                                  <p style={{ color: "red" }}>
+                                    경매가 중지 됐습니다.
+                                  </p>
+                                )}
+                              </div>
+                            )}
                         </div>
                         <div>
                           물건 리스트
                           {productList.length > 0 &&
                             productList.map((product) => {
-                              return <p>{product.name}</p>;
+                              return <p key={product.id}>{product.name}</p>;
                             })}
                         </div>
                       </div>
@@ -414,10 +447,14 @@ export default function ChatRoom(props) {
                       profile={data.profile}
                       userdata={userdata}
                       sender={data.sender}
+                      changeUserInfoAccordion={changeUserInfoAccordion}
                     />
                   );
                 }
               })}
+            <div hidden={userInfoAccordion} className="user-chat-info-absolute">
+              유저 정보 클릭시 보여주기
+            </div>
           </div>
           <div className="chat-input-div">
             <input
