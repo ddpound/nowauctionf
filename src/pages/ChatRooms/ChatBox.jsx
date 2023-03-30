@@ -8,6 +8,8 @@ import {
   requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
+import "./ChatRoom.scss";
+
 const ChatBox = ({
   msg,
   profile,
@@ -20,7 +22,9 @@ const ChatBox = ({
       return (
         <div className="ChatBox-compoenet">
           <div
-            onClick={changeUserInfoAccordion}
+            onClick={() => {
+              changeUserInfoAccordion(sender);
+            }}
             className="ChatBox-profile-Box"
           >
             <img className="chat-profile" src={userdata.picture} alt="" />
@@ -36,7 +40,12 @@ const ChatBox = ({
 
   return (
     <div className="ChatBox-compoenet">
-      <div className="ChatBox-profile-Box">
+      <div
+        onClick={() => {
+          changeUserInfoAccordion(sender);
+        }}
+        className="ChatBox-profile-Box"
+      >
         <img className="chat-profile" src={profile} alt="" />
         <label>{sender}</label>
       </div>

@@ -17,7 +17,7 @@ export default function ShoppingMallBlockComponent({
   return (
     <div className="col">
       <div className="card border border-dark shadow-sm">
-        <Link to={url}>
+        <Link className="custom-link" to={url}>
           <img
             src={src}
             className="card-img-top bd-placeholder-img"

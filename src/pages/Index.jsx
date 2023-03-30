@@ -4,6 +4,8 @@ import MainSellerPageList from "../components/MainSellerPageList/MainSellerPageL
 
 import ChatRoomList from "./ChatRoomShowList/Components/ChatRoomList";
 
+import "./Index.scss";
+
 // 백엔드 쪽에 요청한다. 보드 리스트를 axios 사용예정
 function requestBoardList() {
   return null;

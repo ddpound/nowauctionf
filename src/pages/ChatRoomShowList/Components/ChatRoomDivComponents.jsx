@@ -4,6 +4,8 @@ import "bootstrap/dist/js/bootstrap.bundle";
 
 import { Link } from "react-router-dom";
 
+import "./chatRoomList.scss";
+
 export default function ChatRoomDivComponents({
   title,
   host,
@@ -15,7 +17,7 @@ export default function ChatRoomDivComponents({
   return (
     <div className="col">
       <div className="card shadow-sm">
-        <Link to={url}>
+        <Link className="custom-link" to={url}>
           <img
             src={thumbnail}
             className="card-img-top bd-placeholder-img"

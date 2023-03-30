@@ -1,12 +1,10 @@
-@import "../../node_modules/bootstrap/scss/bootstrap";
-
-
-.custom-link{
-    color: black;
+a {
     text-decoration: none;
+    color: black;
     transition: .2s;
 
     &:hover{
         color: purple;
     }
 }
+

@@ -2,7 +2,6 @@ import "bootstrap/dist/js/bootstrap.bundle";
 
 import { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import "./ChatRoom.scss";
 
 import {
   requestPostHaveToken,
@@ -15,6 +14,8 @@ import ReactPlayer from "react-player";
 import ChatBox from "./ChatBox";
 import ProductBox from "./ProductBox";
 
+import "./ChatRoom.scss";
+
 export default function ChatRoom(props) {
   // 방 ID
   const id = props.match.params.id;
@@ -26,14 +27,13 @@ export default function ChatRoom(props) {
   const [viedeoUrl, setVideoUrl] = useState("");
 
   const [userInfoAccordion, setUserInfoAccordion] = useState(true);
-
   const [userInfoChatDiv, setUserInfoChatDiv] = useState({
     sender: "",
   });
 
-  const changeUserInfoAccordion = () => {
-    console.log("작동확인");
-    setUserInfoAccordion(!userInfoAccordion);
+  const changeUserInfoAccordion = (sender) => {
+    setUserInfoChatDiv({ sender: sender });
+    setUserInfoAccordion(false);
   };
 
   const [chatRoom, setChatRoom] = useState({
@@ -77,6 +77,19 @@ export default function ChatRoom(props) {
   };
 
   const [productList, setProductList] = useState([]);
+
+  const [chatUserList, setChatUserList] = useState([]);
+
+  const chatUserIsDuplicate = (sender) => {
+    return chatUserList.some((user) => user === sender);
+  };
+
+  const addChatUserList = (sender) => {
+    if (!chatUserIsDuplicate(sender)) {
+      console.log(sender);
+      setChatUserList((chatUserList) => [...chatUserList, sender]);
+    }
+  };
 
   const saveProduct = () => {
     requestPostHaveToken("/auction-chat/seller/product/save", props, product);
@@ -181,6 +194,26 @@ export default function ChatRoom(props) {
 
   useEffect(() => {
     chatBoxScroll.current.scrollTop = chatBoxScroll.current.scrollHeight;
+
+    if (!!chatBoxList && chatBoxList.length > 0) {
+      chatBoxList.map((chat) => {
+        console.log(chat.sender);
+
+        if (chatUserList.length > 0) {
+          if (!chatUserList.some((sender) => sender === chat.sender)) {
+            return setChatUserList((chatUserList) => [
+              ...chatUserList,
+              chat.sender,
+            ]);
+          }
+        } else {
+          return setChatUserList((chatUserList) => [
+            ...chatUserList,
+            chat.sender,
+          ]);
+        }
+      });
+    }
   }, [chatBoxList]);
 
   const [locationKeys, setLocationKeys] = useState([]);
@@ -249,14 +282,15 @@ export default function ChatRoom(props) {
     });
   }, [locationKeys, history]);
 
-  console.log(productList);
-
   return (
     <div className="chat-main-container ">
       <div className="chat-main-child-container row">
         <div className="col-sm vh-100 min-vh-60">
           {!!sellerRight && userdata.nickName === chatRoom.chief && (
-            <div className="accordion mt-2" id="accordionExample">
+            <div
+              className="custom-accordion accordion mt-2"
+              id="accordionExample"
+            >
               <div className="accordion-item ">
                 <h2 className="accordion-header" id="headingOne">
                   <button
@@ -278,10 +312,10 @@ export default function ChatRoom(props) {
                 >
                   <div className="accordion-body ">
                     <div className="seller-main-controller">
-                      <p>
+                      {/* <p>
                         만약 방송중이시라면 링크입력해주세요. 주소 변경시 다른
                         유저들도 새로고침하셔야합니다.
-                      </p>
+                      </p> */}
                       <div className="sellerLiveController">
                         {/* <div>
                           <div>
@@ -359,6 +393,14 @@ export default function ChatRoom(props) {
                               return <p key={product.id}>{product.name}</p>;
                             })}
                         </div>
+                        <div>
+                          <p>채팅 참가자</p>
+                          {!!chatUserList &&
+                            chatUserList.length > 0 &&
+                            chatUserList.map((user, idx) => {
+                              return <p key={idx}>{user}</p>;
+                            })}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -367,7 +409,10 @@ export default function ChatRoom(props) {
             </div>
           )}
           {viedeoUrl.length > 1 && (
-            <div className="accordion mt-2 " id="accordionExample">
+            <div
+              className="custom-accordion accordion mt-2 "
+              id="accordionExample"
+            >
               <div className="accordion-item ">
                 <h2 className="accordion-header" id="headingOne">
                   <button
@@ -402,7 +447,10 @@ export default function ChatRoom(props) {
             </div>
           )}
           {!!userdata && (
-            <div className="accordion mt-2 " id="accordionExample">
+            <div
+              className="custom-accordion accordion mt-2 "
+              id="accordionExample"
+            >
               <div className="accordion-item">
                 <h2 className="accordion-header" id="headingOne">
                   <button
@@ -453,7 +501,18 @@ export default function ChatRoom(props) {
                 }
               })}
             <div hidden={userInfoAccordion} className="user-chat-info-absolute">
-              유저 정보 클릭시 보여주기
+              <div>유저 정보 클릭시 보여주기</div>
+              <div>{userInfoChatDiv.sender}</div>
+              <button className="btn btn-info">채팅금지하기</button>
+              <button className="btn btn-danger">강퇴하기</button>
+              <button
+                onClick={() => {
+                  setUserInfoAccordion(true);
+                }}
+                className="btn btn-dark"
+              >
+                닫기
+              </button>
             </div>
           </div>
           <div className="chat-input-div">
