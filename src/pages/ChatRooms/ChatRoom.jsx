@@ -233,9 +233,7 @@ export default function ChatRoom(props) {
     eventSource.onmessage = (event) => {
       //console.log(1, event);
       const data = JSON.parse(event.data);
-
       //console.log(2, data);
-
       setChatBoxList((preChatList) => [...preChatList, data.body]);
     };
 
@@ -343,6 +341,13 @@ export default function ChatRoom(props) {
                           <input
                             id="productPrice"
                             name="price"
+                            onChange={productOnChange}
+                            type="number"
+                          />
+                          <label htmlFor="productQuantity">제품수량</label>
+                          <input
+                            id="productQuantity"
+                            name="quantity"
                             onChange={productOnChange}
                             type="number"
                           />

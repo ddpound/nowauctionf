@@ -26,6 +26,7 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
     seller: 0,
     buyer: 0,
     productModel: {
+      id: "",
       name: "",
       price: 0,
       seller: 0,
@@ -36,10 +37,17 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
     quantity: 0,
   });
 
+  const onChangeQuantity = (e) => {
+    setOrder({
+      ...order,
+      quantity: e.target.value,
+    });
+  };
+
   const raisePriceProduct = () => {
     // 버튼이 이미 비활성화되어 있는 경우
     if (disabled) {
-      console.log("버튼이 비활성화 상태입니다.");
+      alert("너무빠릅니다! 버튼은 2초간격으로 눌러주세요!");
       return;
     }
 
@@ -61,6 +69,10 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
   const saveOrder = () => {
     requestPostHaveToken("/auction-chat/user/order/save", props, order).then(
       (res) => {
+        setOrder({
+          ...order,
+          quantity: 0,
+        });
         console.log(res);
       }
     );
@@ -70,7 +82,7 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
     if (!!product && !!userdata) {
       setOrder({
         seller: product.seller,
-        quantity: product.quantity,
+        quantity: 0,
         productModel: product,
         buyer: userdata.id,
         auction: product.auction,
@@ -86,11 +98,18 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
         <div key={product.id}>
           <p>이름 : {product.name}</p>
           {!product.auction && <p> 가격 : {product.price}</p>}
+          {!product.auction && <p> 남은수량 : {product.quantity}</p>}
           {product.auction && <p> 최고가 : {product.price}</p>}
           {product.auction && <p> 최고 입찰자 : {product.finalBuyer}</p>}
           <p>
             <label htmlFor="input-quantity">수량 : </label>
-            <input id="input-quantity" type="number" />
+            <input
+              id="input-quantity"
+              onChange={onChangeQuantity}
+              value={order.quantity}
+              name="quantity"
+              type="number"
+            />
           </p>
 
           <button onClick={saveOrder} className="btn btn-dark">
