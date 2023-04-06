@@ -48,6 +48,8 @@ import SellerPurcheseMgtMain from './pages/SellerPurcheseMgtMain/SellerPurcheseM
 // 판매자 제품판매 관리 페이지 -> 휴지통
 import RecycleBin from './pages/SellerPurcheseMgtMain/RecycleBin';
 
+import PurchaseDetailsMain from './pages/PurchaseDetails/PurchaseDetailsMain';
+
 function App() {
 
   return (
@@ -56,6 +58,8 @@ function App() {
     <Switch>
     
     <PrivateRoute  path="/user-info" exact component={UserInfoPage}/>
+
+    <PrivateRoute  path="/user-purchase" exact component={PurchaseDetailsMain}/>
     
     <PrivateRoute  path="/admin-page-try/:password" exact component={AdminInPage}/>
     

@@ -66,7 +66,7 @@ export default function Header(props) {
                       </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/user-info">
+                      <a className="dropdown-item" href="/user-purchase">
                         구매내역
                       </a>
                     </li>
