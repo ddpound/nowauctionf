@@ -92,7 +92,16 @@ export default function ChatRoom(props) {
   };
 
   const saveProduct = () => {
-    requestPostHaveToken("/auction-chat/seller/product/save", props, product);
+    requestPostHaveToken(
+      "/auction-chat/seller/product/save",
+      props,
+      product
+    ).then((res) => {
+      setProduct({
+        ...product,
+        auction: false,
+      });
+    });
   };
 
   const changeAuctionState = () => {
@@ -133,6 +142,11 @@ export default function ChatRoom(props) {
   };
 
   const sendMessage = () => {
+    if (inputMessage == "" || inputMessage.length == 0) {
+      alert("한 글자라도 입력해주세요!");
+      return;
+    }
+
     if (!!userdata) {
       let formData = new FormData();
       formData.append("roomNum", id);
@@ -146,7 +160,7 @@ export default function ChatRoom(props) {
         formData
       );
 
-      setInputMessage(" ");
+      setInputMessage("");
       requestProduct.then((res) => {
         if (res.data == null) {
           alert("종료된 채팅방입니다. 홈으로가주세요");
@@ -329,45 +343,65 @@ export default function ChatRoom(props) {
                             </button>
                           </div>
                         </div> */}
+
                         <div>
-                          <label htmlFor="productName">제품이름</label>
-                          <input
-                            id="productName"
-                            name="name"
-                            onChange={productOnChange}
-                            type="text"
-                          />
-                          <label htmlFor="productPrice">제품가격</label>
-                          <input
-                            id="productPrice"
-                            name="price"
-                            onChange={productOnChange}
-                            type="number"
-                          />
-                          <label htmlFor="productQuantity">제품수량</label>
-                          <input
-                            id="productQuantity"
-                            name="quantity"
-                            onChange={productOnChange}
-                            type="number"
-                          />
-                          <label htmlFor="auction">경매</label>
-                          <input
-                            id="auction"
-                            name="auction"
-                            onChange={auctionOnChange}
-                            type="checkbox"
-                          />
-                          <button
-                            onClick={saveProduct}
-                            className="btn btn-dark"
-                          >
-                            제품 올리기
-                          </button>
+                          {productList.length > 0 &&
+                            !!productList[productList.length - 1].auction &&
+                            !productList[productList.length - 1]
+                              .auctionState && (
+                              <div
+                                style={{ width: "100%", margin: "10px 20px" }}
+                              >
+                                <label htmlFor="productName">제품이름</label>
+                                <input
+                                  id="productName"
+                                  name="name"
+                                  onChange={productOnChange}
+                                  type="text"
+                                />
+
+                                <label htmlFor="productPrice">제품가격</label>
+                                <input
+                                  id="productPrice"
+                                  name="price"
+                                  onChange={productOnChange}
+                                  type="number"
+                                />
+
+                                {!product.auction && (
+                                  <div>
+                                    <label htmlFor="productQuantity">
+                                      제품수량
+                                    </label>
+                                    <input
+                                      id="productQuantity"
+                                      name="quantity"
+                                      onChange={productOnChange}
+                                      type="number"
+                                    />
+                                  </div>
+                                )}
+                                <label htmlFor="auction">경매</label>
+                                <input
+                                  id="auction"
+                                  name="auction"
+                                  onChange={auctionOnChange}
+                                  type="checkbox"
+                                />
+                                <button
+                                  onClick={saveProduct}
+                                  className="btn btn-dark"
+                                >
+                                  제품 올리기
+                                </button>
+                              </div>
+                            )}
+
                           {productList.length > 0 &&
                             !!productList[productList.length - 1].auction && (
-                              <div style={{ marginTop: "10px" }}>
+                              <div style={{ width: "100%", marginTop: "10px" }}>
                                 <button
+                                  style={{ margin: "10px 20px", width: "50%" }}
                                   onClick={changeAuctionState}
                                   className="btn btn-dark"
                                 >
@@ -378,21 +412,39 @@ export default function ChatRoom(props) {
                                     <label>경매시작</label>
                                   )}
                                 </button>
+
                                 {productList[productList.length - 1]
                                   .auctionState ? (
-                                  <p style={{ color: "red" }}>
+                                  <p
+                                    style={{
+                                      margin: "10px 20px",
+                                      color: "red",
+                                    }}
+                                  >
                                     경매가 진행중입니다.
                                   </p>
                                 ) : (
-                                  <p style={{ color: "red" }}>
+                                  <p
+                                    style={{
+                                      margin: "10px 20px",
+                                      color: "red",
+                                    }}
+                                  >
                                     경매가 중지 됐습니다.
                                   </p>
                                 )}
+                                <p
+                                  style={{ margin: "10px 20px", color: "red" }}
+                                >
+                                  경매 중지를 누르시고 <br />
+                                  다음제품을 추가시키면 <br />
+                                  경매가 자동적으로 종료됩니다.
+                                </p>
                               </div>
                             )}
                         </div>
-                        <div>
-                          물건 리스트
+                        <div className="product-list-div">
+                          <p>물건 리스트</p>
                           {productList.length > 0 &&
                             productList.map((product) => {
                               return <p key={product.id}>{product.name}</p>;

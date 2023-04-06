@@ -16,7 +16,7 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
   // 버튼활성화
   const [disabled, setDisabled] = useState(false);
 
-  const [raisePrice, setRaisePrice] = useState();
+  const [raisePrice, setRaisePrice] = useState(0);
 
   const inputChangePrice = (e) => {
     setRaisePrice(e.target.value);
@@ -57,6 +57,11 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
       setDisabled(false);
     }, 2000);
 
+    if (raisePrice <= 0) {
+      alert("입찰 가격을 0보다 크게 해주세요");
+      return;
+    }
+
     requestPostHaveToken("/auction-chat/user/order/raise", props, {
       product: product,
       raisePrice: raisePrice,
@@ -93,7 +98,7 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
   console.log(product);
 
   return (
-    <div>
+    <div className="product-div">
       {!!productList && productList.length > 0 && (
         <div key={product.id}>
           <p>이름 : {product.name}</p>
@@ -101,25 +106,26 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
           {!product.auction && <p> 남은수량 : {product.quantity}</p>}
           {product.auction && <p> 최고가 : {product.price}</p>}
           {product.auction && <p> 최고 입찰자 : {product.finalBuyer}</p>}
-          <p>
-            <label htmlFor="input-quantity">수량 : </label>
-            <input
-              id="input-quantity"
-              onChange={onChangeQuantity}
-              value={order.quantity}
-              name="quantity"
-              type="number"
-            />
-          </p>
-
-          <button onClick={saveOrder} className="btn btn-dark">
-            구매하기
-          </button>
+          {!product.auction && (
+            <p>
+              <label htmlFor="input-quantity">수량 : </label>
+              <input
+                id="input-quantity"
+                onChange={onChangeQuantity}
+                value={order.quantity}
+                name="quantity"
+                type="number"
+              />
+              <button onClick={saveOrder} className="btn btn-dark">
+                구매하기
+              </button>
+            </p>
+          )}
         </div>
       )}
 
       {!!product && product.auctionState && (
-        <div>
+        <div className="bid-div">
           <label htmlFor="input-raise-price">입찰가 : </label>
           <input
             id="input-raise-price"
