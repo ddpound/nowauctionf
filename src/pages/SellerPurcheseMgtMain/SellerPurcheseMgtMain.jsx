@@ -146,7 +146,7 @@ const SellerPurcheseMgtMain = (props) => {
   }, []);
 
   const changeRequestStatus = (productReservation, statusNum) => {
-    // 백엔드 -> 없음,판매완료,취소,보류 (0,1,2,3)
+    // 백엔드 -> 없음,판매완료,취소,보류 (0,1,2,3,4)
     requestPostHaveToken(
       "/auction-seller/seller/change-reservation/" + statusNum,
       props,
@@ -468,7 +468,7 @@ const SellerPurcheseMgtMain = (props) => {
         <button
           className="btn btn-dark me-2"
           onClick={() => {
-            changeRequestStatusList(checkItems, 2);
+            changeRequestStatusList(checkItems, 3);
           }}
         >
           보류
@@ -476,7 +476,7 @@ const SellerPurcheseMgtMain = (props) => {
         <button
           className="btn btn-dark me-2"
           onClick={() => {
-            changeRequestStatusList(checkItems, 3);
+            changeRequestStatusList(checkItems, 2);
           }}
         >
           취소

@@ -100,6 +100,7 @@ export default function ChatRoom(props) {
       setProduct({
         ...product,
         auction: false,
+        auctionState: false,
       });
     });
   };
@@ -343,12 +344,54 @@ export default function ChatRoom(props) {
                             </button>
                           </div>
                         </div> */}
+                        {productList.length == 0 ? (
+                          <div style={{ width: "100%", margin: "10px 20px" }}>
+                            <label htmlFor="productName">제품이름</label>
+                            <input
+                              id="productName"
+                              name="name"
+                              onChange={productOnChange}
+                              type="text"
+                            />
 
-                        <div>
-                          {productList.length > 0 &&
-                            !!productList[productList.length - 1].auction &&
-                            !productList[productList.length - 1]
-                              .auctionState && (
+                            <label htmlFor="productPrice">제품가격</label>
+                            <input
+                              id="productPrice"
+                              name="price"
+                              onChange={productOnChange}
+                              type="number"
+                            />
+
+                            {!product.auction && (
+                              <div>
+                                <label htmlFor="productQuantity">
+                                  제품수량
+                                </label>
+                                <input
+                                  id="productQuantity"
+                                  name="quantity"
+                                  onChange={productOnChange}
+                                  type="number"
+                                />
+                              </div>
+                            )}
+                            <label htmlFor="auction">경매</label>
+                            <input
+                              id="auction"
+                              name="auction"
+                              onChange={auctionOnChange}
+                              type="checkbox"
+                            />
+                            <button
+                              onClick={saveProduct}
+                              className="btn btn-dark"
+                            >
+                              제품 올리기
+                            </button>
+                          </div>
+                        ) : (
+                          <div>
+                            {productList.length > 0 && (
                               <div
                                 style={{ width: "100%", margin: "10px 20px" }}
                               >
@@ -397,52 +440,62 @@ export default function ChatRoom(props) {
                               </div>
                             )}
 
-                          {productList.length > 0 &&
-                            !!productList[productList.length - 1].auction && (
-                              <div style={{ width: "100%", marginTop: "10px" }}>
-                                <button
-                                  style={{ margin: "10px 20px", width: "50%" }}
-                                  onClick={changeAuctionState}
-                                  className="btn btn-dark"
+                            {productList.length > 0 &&
+                              !!productList[productList.length - 1].auction && (
+                                <div
+                                  style={{ width: "100%", marginTop: "10px" }}
                                 >
+                                  <button
+                                    style={{
+                                      margin: "10px 20px",
+                                      width: "50%",
+                                    }}
+                                    onClick={changeAuctionState}
+                                    className="btn btn-dark"
+                                  >
+                                    {productList[productList.length - 1]
+                                      .auctionState ? (
+                                      <label>경매중지</label>
+                                    ) : (
+                                      <label>경매시작</label>
+                                    )}
+                                  </button>
+
                                   {productList[productList.length - 1]
                                     .auctionState ? (
-                                    <label>경매중지</label>
+                                    <p
+                                      style={{
+                                        margin: "10px 20px",
+                                        color: "red",
+                                      }}
+                                    >
+                                      경매가 진행중입니다.
+                                    </p>
                                   ) : (
-                                    <label>경매시작</label>
+                                    <p
+                                      style={{
+                                        margin: "10px 20px",
+                                        color: "red",
+                                      }}
+                                    >
+                                      경매가 중지 됐습니다.
+                                    </p>
                                   )}
-                                </button>
+                                  <p
+                                    style={{
+                                      margin: "10px 20px",
+                                      color: "red",
+                                    }}
+                                  >
+                                    경매 중지를 누르시고 <br />
+                                    다음제품을 추가시키면 <br />
+                                    경매가 자동적으로 종료됩니다.
+                                  </p>
+                                </div>
+                              )}
+                          </div>
+                        )}
 
-                                {productList[productList.length - 1]
-                                  .auctionState ? (
-                                  <p
-                                    style={{
-                                      margin: "10px 20px",
-                                      color: "red",
-                                    }}
-                                  >
-                                    경매가 진행중입니다.
-                                  </p>
-                                ) : (
-                                  <p
-                                    style={{
-                                      margin: "10px 20px",
-                                      color: "red",
-                                    }}
-                                  >
-                                    경매가 중지 됐습니다.
-                                  </p>
-                                )}
-                                <p
-                                  style={{ margin: "10px 20px", color: "red" }}
-                                >
-                                  경매 중지를 누르시고 <br />
-                                  다음제품을 추가시키면 <br />
-                                  경매가 자동적으로 종료됩니다.
-                                </p>
-                              </div>
-                            )}
-                        </div>
                         <div className="product-list-div">
                           <p>물건 리스트</p>
                           {productList.length > 0 &&
