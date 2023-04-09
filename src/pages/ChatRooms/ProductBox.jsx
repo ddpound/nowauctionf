@@ -72,15 +72,19 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
   };
 
   const saveOrder = () => {
-    requestPostHaveToken("/auction-chat/user/order/save", props, order).then(
-      (res) => {
-        setOrder({
-          ...order,
-          quantity: 0,
-        });
-        console.log(res);
-      }
-    );
+    if (order.quantity <= 0) {
+      alert("수량은 한개 이상 해주세요");
+    } else {
+      requestPostHaveToken("/auction-chat/user/order/save", props, order).then(
+        (res) => {
+          setOrder({
+            ...order,
+            quantity: 0,
+          });
+          console.log(res);
+        }
+      );
+    }
   };
 
   useEffect(() => {
@@ -108,7 +112,7 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
           {product.auction && <p> 최고 입찰자 : {product.finalBuyer}</p>}
           {!product.auction && (
             <p>
-              <label htmlFor="input-quantity">수량 : </label>
+              <label htmlFor="input-quantity">구매수량 : </label>
               <input
                 id="input-quantity"
                 onChange={onChangeQuantity}
