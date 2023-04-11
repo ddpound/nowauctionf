@@ -43,19 +43,19 @@ const PurchaseDetailsMain = () => {
   return (
     <div className="container">
       구매내역 메인 페이지
-      <div>
-        <h3>쇼핑몰 구매내역</h3>
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">제품이름</th>
-              <th scope="col">구매가격</th>
-              <th scope="col">구매개수</th>
-            </tr>
-          </thead>
-          {reservationList.length > 0 &&
-            reservationList.map((list) => {
+      {reservationList.length > 0 ? (
+        <div>
+          <h3>쇼핑몰 구매내역</h3>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">제품이름</th>
+                <th scope="col">구매가격</th>
+                <th scope="col">구매개수</th>
+              </tr>
+            </thead>
+            {reservationList.map((list) => {
               return (
                 <tbody>
                   <tr>
@@ -67,21 +67,26 @@ const PurchaseDetailsMain = () => {
                 </tbody>
               );
             })}
-        </table>
-      </div>
-      <div>
-        <h3>실시간 구매 예약 내역</h3>
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">제품이름</th>
-              <th scope="col">구매가격</th>
-              <th scope="col">구매개수</th>
-            </tr>
-          </thead>
-          {!!liveOrderList &&
-            liveOrderList.map((data) => {
+          </table>
+        </div>
+      ) : (
+        <div>
+          <h3>구매 내역이 없습니다.</h3>
+        </div>
+      )}
+      {liveOrderList.length > 0 ? (
+        <div className="real-time-purchase">
+          <h3>실시간 구매 예약 내역</h3>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">제품이름</th>
+                <th scope="col">구매가격</th>
+                <th scope="col">구매개수</th>
+              </tr>
+            </thead>
+            {liveOrderList.map((data) => {
               return (
                 <tbody>
                   <tr>
@@ -93,8 +98,13 @@ const PurchaseDetailsMain = () => {
                 </tbody>
               );
             })}
-        </table>
-      </div>
+          </table>
+        </div>
+      ) : (
+        <div>
+          <h3>구매 내역이 없습니다.</h3>
+        </div>
+      )}
       <div>페이지 네이션 버튼</div>
     </div>
   );
