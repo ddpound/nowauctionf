@@ -14,6 +14,8 @@ import ShoppingMallExplanation from "./ShoppingMallExplanation";
 // 판매자의 게시글 페이지
 import SellerBoardListPage from "../SellerBoard/SellerBoardListPage";
 
+import "./UserShowShoppingMall.scss";
+
 /**
  * 해당 컴포넌트는 Page용도입니다.
  * 모든 사용자가 접근 가능합니다. public

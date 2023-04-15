@@ -18,11 +18,17 @@ export default function ShoppingMallExplanation({ shoppingmall }) {
           />
         </div>
         <div className="col-6">
-          <span className="input-group-text" id="inputGroup-sizing-default">
+          <span
+            className="input-group-text bg-white"
+            id="inputGroup-sizing-default"
+          >
             쇼핑몰이름
           </span>
           <p className="h2 ms-4 mt-3">{shoppingmall.shoppingMallName}</p>
-          <span className="input-group-text" id="inputGroup-sizing-default">
+          <span
+            className="input-group-text bg-white"
+            id="inputGroup-sizing-default"
+          >
             설명
           </span>
           <p className="h2 ms-4 mt-3">{shoppingmall.shoppingMallExplanation}</p>

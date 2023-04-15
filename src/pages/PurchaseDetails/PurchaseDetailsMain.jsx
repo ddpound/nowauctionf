@@ -43,9 +43,9 @@ const PurchaseDetailsMain = () => {
   return (
     <div className="container">
       구매내역 메인 페이지
+      <h3>쇼핑몰 구매 예약 내역</h3>
       {reservationList.length > 0 ? (
         <div>
-          <h3>쇼핑몰 구매내역</h3>
           <table className="table">
             <thead>
               <tr>
@@ -74,9 +74,9 @@ const PurchaseDetailsMain = () => {
           <h3>구매 내역이 없습니다.</h3>
         </div>
       )}
+      <h3>실시간 구매 예약 내역</h3>
       {liveOrderList.length > 0 ? (
         <div className="real-time-purchase">
-          <h3>실시간 구매 예약 내역</h3>
           <table className="table">
             <thead>
               <tr>
