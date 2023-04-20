@@ -175,10 +175,6 @@ export default function UserInfoPage(props) {
   const insertPostDiv = {};
 
   const onCompletePost = (data) => {
-    console.log(data);
-    console.log(data.address);
-    console.log(data.zonecode);
-
     setAddressData(data.address);
   }; // onCompletePost 함수
 

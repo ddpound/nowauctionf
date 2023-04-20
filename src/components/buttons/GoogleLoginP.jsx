@@ -11,6 +11,8 @@ import {
 } from "../../commonFuntions/makeCookiesToken";
 import { setUserStore } from "../../reduxstore/actions";
 
+import { Cookies } from "react-cookie";
+
 import { requestGetHaveToken } from "../../commonFuntions/requestHaveToken";
 
 // 현재 어플리케이션 api 2번 아이디를 따르고있음
@@ -62,6 +64,7 @@ function GoogleLoginP({ set, props }) {
 
           axios
             .get("/auction-user/login/token/google", {
+              withCredentials: true,
               headers: {
                 Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
               },
@@ -72,26 +75,27 @@ function GoogleLoginP({ set, props }) {
               //console.log(responese);
               //console.log(responese.headers);
 
-              const retrunAuthHeaders = responese.headers.authorization;
-              const retrunAuthRefreshHeaders = responese.headers.refreshtoken;
-              console.log(responese);
-              console.log(responese.headers.authorization);
-              console.log(responese.headers.refreshtoken);
+              if (responese.data != null) {
+                const cookies = new Cookies();
 
-              if (
-                retrunAuthHeaders != null &&
-                retrunAuthRefreshHeaders != null
-              ) {
-                makeCookie(7, retrunAuthHeaders);
+                const cookieValue = cookies.get("jjwt");
+                const refreshValue = cookies.get("rjjwt");
 
-                makeLocalStorageToken(
-                  "google-login-success",
-                  retrunAuthHeaders
-                );
+                console.log("쿠키값");
+                console.log(cookieValue);
+                console.log(refreshValue);
+
+                cookies.set("test", "haha", {
+                  path: "/",
+                  secure: false,
+                  httpOnly: true,
+                });
+
+                makeLocalStorageToken("google-login-success", cookieValue);
 
                 makeLocalStorageReToken(
                   "google-login-success-re",
-                  retrunAuthRefreshHeaders
+                  refreshValue
                 );
 
                 set(
@@ -127,82 +131,79 @@ function GoogleLoginP({ set, props }) {
               }
             })
             .catch((Error) => {
-              if (Error.response.status == "500") {
-                alert("서버에 문제 발생했습니다 죄송합니다!");
-              }
-              if (
-                Error.response.status == "401" ||
-                Error.response.status == "403"
-              ) {
-                console.log("로그인 실패 회원가입시도");
-                // 주의 Post 요청일때는 반드시 중간에 null넣어줘야함
-                // 요청 url, body, header 이렇게 되기 때문!!!
-                axios
-                  .post("/auction-user/join/googletoken", null, {
-                    headers: {
-                      Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
-                    },
-                  })
-                  .then((responese) => {
-                    console.log(responese);
-                    axios
-                      .get("/auction-user/login/token/google", {
-                        headers: {
-                          Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
-                        },
-                      })
-                      .then((responese) => {
-                        console.log(responese);
-                        const retrunAuthHeaders =
-                          responese.headers.authorization;
-                        const retrunAuthRefreshHeaders =
-                          responese.headers.refreshtoken;
+              console.log(Error);
+              console.log("로그인 실패 회원가입시도");
+              // 주의 Post 요청일때는 반드시 중간에 null넣어줘야함
+              // 요청 url, body, header 이렇게 되기 때문!!!
+              axios
+                .post("/auction-user/join/googletoken", null, {
+                  headers: {
+                    Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
+                  },
+                })
+                .then((responese) => {
+                  console.log(responese);
+                  axios
+                    .get("/auction-user/login/token/google", {
+                      withCredentials: true,
+                      headers: {
+                        Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
+                      },
+                    })
+                    .then((responese) => {
+                      console.log(responese);
 
-                        if (
-                          retrunAuthHeaders != null &&
-                          retrunAuthRefreshHeaders != null
-                        ) {
-                          makeCookie(7, retrunAuthHeaders);
+                      if (responese.data != null) {
+                        const cookies = new Cookies();
+                        const cookieValue = cookies.get("jjwt");
+                        const refreshValue = cookies.get("rjjwt");
 
-                          makeLocalStorageToken(
-                            "google-login-success",
-                            retrunAuthHeaders
-                          );
+                        console.log("쿠키값");
+                        console.log(cookieValue);
+                        console.log(refreshValue);
+                        cookies.set("test", "haha", {
+                          path: "/",
+                          secure: false,
+                          httpOnly: true,
+                        });
+                        makeLocalStorageToken(
+                          "google-login-success",
+                          cookieValue
+                        );
 
-                          makeLocalStorageReToken(
-                            "google-login-success-re",
-                            retrunAuthRefreshHeaders
-                          );
+                        makeLocalStorageReToken(
+                          "google-login-success-re",
+                          refreshValue
+                        );
 
-                          localStorage.setItem(
-                            "userdata",
-                            JSON.stringify(
-                              setUserModel(
-                                responese.data.id,
-                                responese.data.userName,
-                                responese.data.role,
-                                responese.data.nickName,
-                                responese.data.picture
-                              )
+                        localStorage.setItem(
+                          "userdata",
+                          JSON.stringify(
+                            setUserModel(
+                              responese.data.id,
+                              responese.data.userName,
+                              responese.data.role,
+                              responese.data.nickName,
+                              responese.data.picture
                             )
-                          );
+                          )
+                        );
 
-                          // 로그인 완료 권한을 다시 주는것이 중요 로그아웃시에 다삭제
-                          giveRole();
-                          alert("회원가입및 로그인 완료.");
-                          props.history.push("/");
-                        } else {
-                          alert("로그인 실패");
-                        }
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                      });
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              }
+                        // 로그인 완료 권한을 다시 주는것이 중요 로그아웃시에 다삭제
+                        giveRole();
+                        alert("회원가입및 로그인 완료.");
+                        props.history.push("/");
+                      } else {
+                        alert("로그인 실패");
+                      }
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
             });
         }}
         onError={() => {

@@ -23,7 +23,8 @@ import "./UserShowShoppingMall.scss";
  * */
 export default function UserShowShoppingMall(props) {
   const mallId = props.match.params.id;
-  // 쇼핑몰 설명
+
+  const userdata = JSON.parse(localStorage.getItem("userdata"));
 
   const [shoppingMall, setShoppingMall] = useState("");
 
@@ -49,50 +50,74 @@ export default function UserShowShoppingMall(props) {
         {shoppingMall.shoppingMallName}
       </p>
       <div
-        className="btn-group"
+        className="btn-group title-under-div"
         role="group"
         aria-label="Basic radio toggle button group"
       >
-        <input
-          type="radio"
-          className="btn-check"
-          name="btnradio"
-          id="btnradio1"
-          autoComplete="off"
-          onClick={() => {
-            setViewNumber(1);
-          }}
-        />
-        <label className="btn btn-outline-warning btn-dark" htmlFor="btnradio1">
-          제품,쇼핑몰설명
-        </label>
+        <div>
+          <input
+            type="radio"
+            className="btn-check"
+            name="btnradio"
+            id="btnradio1"
+            autoComplete="off"
+            onClick={() => {
+              setViewNumber(1);
+            }}
+          />
+          <label
+            className="btn btn-outline-warning btn-dark"
+            htmlFor="btnradio1"
+          >
+            제품,쇼핑몰설명
+          </label>
 
-        <input
-          type="radio"
-          className="btn-check"
-          name="btnradio"
-          id="btnradio2"
-          autoComplete="off"
-          onClick={() => {
-            setViewNumber(2);
-          }}
-        />
-        <label className="btn btn-outline-warning btn-dark" htmlFor="btnradio2">
-          게시판보기
-        </label>
-        <input
-          type="radio"
-          className="btn-check"
-          name="btnradio"
-          id="btnradio3"
-          autoComplete="off"
-          onClick={() => {
-            setViewNumber(3);
-          }}
-        />
-        <label className="btn btn-outline-warning btn-dark" htmlFor="btnradio3">
-          모두 보기
-        </label>
+          <input
+            type="radio"
+            className="btn-check"
+            name="btnradio"
+            id="btnradio2"
+            autoComplete="off"
+            onClick={() => {
+              setViewNumber(2);
+            }}
+          />
+          <label
+            className="btn btn-outline-warning btn-dark"
+            htmlFor="btnradio2"
+          >
+            게시판보기
+          </label>
+          <input
+            type="radio"
+            className="btn-check"
+            name="btnradio"
+            id="btnradio3"
+            autoComplete="off"
+            onClick={() => {
+              setViewNumber(3);
+            }}
+          />
+          <label
+            className="btn btn-outline-warning btn-dark"
+            htmlFor="btnradio3"
+          >
+            모두 보기
+          </label>
+        </div>
+
+        {userdata.role === "USER" && (
+          <div>
+            <button
+              className="sub-button"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#SubscriberModalLabel"
+            >
+              회원 신청하기
+            </button>
+          </div>
+        )}
       </div>
 
       {(viewNumber == 1 || viewNumber == 3) && (
@@ -109,6 +134,61 @@ export default function UserShowShoppingMall(props) {
       {(viewNumber == 2 || viewNumber == 3) && (
         <SellerBoardListPage onePagePostNumber={9} mallId={mallId} />
       )}
+
+      <div
+        className="modal fade"
+        id="SubscriberModalLabel"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                회원 등록 신청 메세지 보내기
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div className="input-group input-group-sm mb-3">
+              <span className="input-group-text" id="inputGroup-sizing-sm">
+                비고
+              </span>
+              <input
+                id="inputCode"
+                type="text"
+                placeholder="빈칸으로 보내셔도 상관없습니다. 하고싶은말을 적어주세요"
+                className="form-control"
+                aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm"
+              />
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                닫기
+              </button>
+              <button
+                onClick={() => {}}
+                type="button"
+                className="btn btn-primary"
+                data-bs-dismiss="modal"
+              >
+                등록하기
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

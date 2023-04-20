@@ -4,6 +4,7 @@ import { resetTokens } from "./TokenRelatedFunctions";
 
 export function requestGetHaveToken(url,props){
     return axios.get(url,{
+      withCredentials: true,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("google-login-success"),
           Refreshtoken:
@@ -35,6 +36,7 @@ export function requestGetHaveToken(url,props){
 
 export function requestPostHaveToken(url,props,body){
     return axios.post(url,body,{
+      withCredentials: true,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("google-login-success"),
           Refreshtoken:
@@ -65,6 +67,7 @@ export function requestPostHaveToken(url,props,body){
 export function requestDeleteHaveToken(url,props){
   
   return axios.delete(url,{
+    withCredentials: true,
     headers: {
       Authorization: "Bearer " + localStorage.getItem("google-login-success"),
       Refreshtoken:
@@ -95,6 +98,7 @@ export function requestDeleteHaveToken(url,props){
 
 export function requestDeleteHaveTokenBody(url,props,data){
   return axios.delete(url,{
+    withCredentials: true,
     data: data,
     headers: {
       Authorization: "Bearer " + localStorage.getItem("google-login-success"),
@@ -126,6 +130,7 @@ export function requestDeleteHaveTokenBody(url,props,data){
 
 export function requestPutHaveToken(url,props,body){
   return axios.put(url,body,{
+    withCredentials: true,
       headers: {
         Authorization: "Bearer " + localStorage.getItem("google-login-success"),
         Refreshtoken:

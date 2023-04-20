@@ -53,14 +53,16 @@ const PurchaseDetailsMain = () => {
                 <th scope="col">제품이름</th>
                 <th scope="col">구매가격</th>
                 <th scope="col">구매개수</th>
+                <th scope="col">상태</th>
               </tr>
             </thead>
             {reservationList.map((list) => {
               return (
-                <tbody>
+                <tbody key={list.id}>
                   <tr>
                     <th scope="row">1</th>
                     <td>{list.productId.productName}</td>
+                    <td>{list.productId.productPrice}</td>
                     <td>{list.quantity}</td>
                     <td>{list.reservationStatus}</td>
                   </tr>
@@ -88,7 +90,7 @@ const PurchaseDetailsMain = () => {
             </thead>
             {liveOrderList.map((data) => {
               return (
-                <tbody>
+                <tbody key={data.id}>
                   <tr>
                     <th scope="row">1</th>
                     <td>{data.body.productModel.name}</td>

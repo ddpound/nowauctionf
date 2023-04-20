@@ -8,6 +8,7 @@ import store from './reduxstore/store'
 import axios from 'axios';
 
 import { Provider } from 'react-redux';
+import { CookiesProvider } from 'react-cookie';
 
 // <React.StrictMode> 사용하는 이유는 개발자 모드에서의 생명주기 체크등의
 // 다양한 에러방지를 사전방지를위해 두었습니다.
@@ -20,9 +21,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   //<React.StrictMode>
-  <Provider store={store}>
-    <App/>
-  </Provider>
+  <CookiesProvider> 
+    <Provider store={store}>
+      <App/>
+      </Provider>
+  </CookiesProvider>
   //</React.StrictMode>
   
 );
