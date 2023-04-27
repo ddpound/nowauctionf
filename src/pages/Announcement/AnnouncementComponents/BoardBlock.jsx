@@ -17,7 +17,7 @@ export default function BoardBlock(announcement) {
         </div>
         <div className="card-body">
           <p className="card-text text-truncate">
-            {announcement.announcement.Content}
+            {announcement.announcement.content}
           </p>
         </div>
         <div className="card-footer">

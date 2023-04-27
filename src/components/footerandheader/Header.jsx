@@ -30,6 +30,7 @@ export default function Header(props) {
         console.log(res);
         if (res.data !== 1) {
           localStorage.removeItem("userdata");
+
           return setUserModel(JSON.parse(localStorage.getItem("userdata")));
         }
       })

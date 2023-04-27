@@ -22,6 +22,7 @@ function saveBoard(title, boardContent, props) {
         "/auction-user/admin/save-announcement-board/false",
         JSON.stringify(formData),
         {
+          withCredentials: true,
           headers: {
             Authorization:
               "Bearer " + localStorage.getItem("google-login-success"),

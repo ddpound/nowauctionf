@@ -27,6 +27,7 @@ function modifyBoard(title, boardContent, boardid, props) {
         "/auction-user/admin/save-announcement-board/true",
         JSON.stringify(formData),
         {
+          withCredentials: true,
           headers: {
             Authorization:
               "Bearer " + localStorage.getItem("google-login-success"),
@@ -89,9 +90,12 @@ export default function AnnouncementRead(props) {
   const [modifyDeclare, setModifyDeclare] = useState(false);
   useEffect(() => {
     axios
-      .get("/auction-user/auth/find-announcement-board/" + boardid)
+      .get("/auction-user/auth/find-announcement-board/" + boardid, {
+        withCredentials: true,
+      })
       .then((res) => {
-        setboard(res.data.value);
+        console.log(res);
+        setboard(res.data);
       });
   }, []);
 
@@ -118,21 +122,21 @@ export default function AnnouncementRead(props) {
           글 삭제하기
         </button>
       )}
-      {!!board.Content && !modifyDeclare && (
+      {!!board.content && !modifyDeclare && (
         <div>
           <div className="card mb-3">
             <div className="card-header bg-transparent ">
               <h2 style={{ fontWeight: "bold" }}>{board.title}</h2>
             </div>
             <div className="card-body text-dark">
-              <Viewer initialValue={board.Content}></Viewer>
+              <Viewer initialValue={board.content}></Viewer>
             </div>
             <div className="card-footer bg-transparent">{board.createDate}</div>
           </div>
         </div>
       )}
 
-      {!!board.Content && modifyDeclare && !!adminIn && (
+      {!!board.content && modifyDeclare && !!adminIn && (
         <div>
           <div>
             <div className="input-group mb-3">
@@ -153,7 +157,7 @@ export default function AnnouncementRead(props) {
           <Editor
             ref={EditorRef}
             previewStyle="vertical"
-            initialValue={board.Content}
+            initialValue={board.content}
             height="1000px"
             initialEditType="markdown"
             useCommandShortcut={true}
