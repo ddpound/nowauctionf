@@ -2,6 +2,8 @@ import "./GoogleLogoutButton.scss";
 import cookies from "react-cookies";
 import { Link } from "react-router-dom";
 
+import { requestGetHaveToken } from "../../commonFuntions/requestHaveToken";
+
 // 여기다가 그냥 재랜더링 시키되
 // 로그인시 로그아웃시 if문이 들어가 return 하는 값을 다르게 넣어주면 될듯
 
@@ -12,6 +14,11 @@ function googleTokenClear(props) {
   localStorage.removeItem("adminSuccess");
   localStorage.removeItem("sellerSuccess");
   cookies.remove("login-check");
+
+  requestGetHaveToken("/auction-user/logout/googletoken").then((res) => {
+    console.log(res);
+  });
+
   props.history.push("/");
   //localStorage.clear();
 }
@@ -19,7 +26,7 @@ function googleTokenClear(props) {
 export default function LogInOut(props) {
   const test = false;
 
-  if (localStorage.getItem("google-login-success") == null) {
+  if (localStorage.getItem("userdata") == null) {
     return (
       <li className="nav-item">
         <Link className="nav-link active" aria-current="page" to="/login-page">

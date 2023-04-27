@@ -39,10 +39,9 @@ function giveRole() {
   });
 }
 
-function setUserModel(id, userName, role, nickName, picture) {
+function setUserModel(id, role, nickName, picture) {
   return {
     id: id,
-    userName: userName,
     role: role,
     nickName: nickName,
     picture: picture,
@@ -72,36 +71,13 @@ function GoogleLoginP({ set, props }) {
             .then((responese) => {
               // 자동로그인인데 만약 해당 쿠키가 없다면 값받아서 쿠키에 추가
               // 이미 있는 쿠키값이라면 문제없음
-              //console.log(responese);
+              console.log(responese);
               //console.log(responese.headers);
 
               if (responese.data != null) {
-                const cookies = new Cookies();
-
-                const cookieValue = cookies.get("jjwt");
-                const refreshValue = cookies.get("rjjwt");
-
-                console.log("쿠키값");
-                console.log(cookieValue);
-                console.log(refreshValue);
-
-                cookies.set("test", "haha", {
-                  path: "/",
-                  secure: false,
-                  httpOnly: true,
-                });
-
-                makeLocalStorageToken("google-login-success", cookieValue);
-
-                makeLocalStorageReToken(
-                  "google-login-success-re",
-                  refreshValue
-                );
-
                 set(
                   setUserModel(
                     responese.data.id,
-                    responese.data.userName,
                     responese.data.role,
                     responese.data.nickName,
                     responese.data.picture
@@ -113,7 +89,6 @@ function GoogleLoginP({ set, props }) {
                   JSON.stringify(
                     setUserModel(
                       responese.data.id,
-                      responese.data.userName,
                       responese.data.role,
                       responese.data.nickName,
                       responese.data.picture
@@ -137,6 +112,7 @@ function GoogleLoginP({ set, props }) {
               // 요청 url, body, header 이렇게 되기 때문!!!
               axios
                 .post("/auction-user/join/googletoken", null, {
+                  withCredentials: true,
                   headers: {
                     Authorization: "Bearer " + SuccessToken, //the token is a variable which holds the token
                   },
@@ -154,34 +130,11 @@ function GoogleLoginP({ set, props }) {
                       console.log(responese);
 
                       if (responese.data != null) {
-                        const cookies = new Cookies();
-                        const cookieValue = cookies.get("jjwt");
-                        const refreshValue = cookies.get("rjjwt");
-
-                        console.log("쿠키값");
-                        console.log(cookieValue);
-                        console.log(refreshValue);
-                        cookies.set("test", "haha", {
-                          path: "/",
-                          secure: false,
-                          httpOnly: true,
-                        });
-                        makeLocalStorageToken(
-                          "google-login-success",
-                          cookieValue
-                        );
-
-                        makeLocalStorageReToken(
-                          "google-login-success-re",
-                          refreshValue
-                        );
-
                         localStorage.setItem(
                           "userdata",
                           JSON.stringify(
                             setUserModel(
                               responese.data.id,
-                              responese.data.userName,
                               responese.data.role,
                               responese.data.nickName,
                               responese.data.picture
@@ -202,6 +155,7 @@ function GoogleLoginP({ set, props }) {
                     });
                 })
                 .catch((error) => {
+                  alert("로그인 및 회원가입 실패");
                   console.log(error);
                 });
             });

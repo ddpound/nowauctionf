@@ -18,6 +18,7 @@ function makeCouponRequest(couponnum) {
 
   axios
     .post(requestcouponurl, null, {
+      withCredentials: true,
       headers: {
         Authorization: "Bearer " + localStorage.getItem("google-login-success"),
         Refreshtoken:

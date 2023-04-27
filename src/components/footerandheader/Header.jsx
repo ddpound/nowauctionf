@@ -5,13 +5,60 @@ import "bootstrap/dist/js/bootstrap.bundle";
 import GoogleLogoutButton from "../buttons/GoogleLogInOutButton";
 import { Link } from "react-router-dom";
 import "../../custom/custom.scss";
-// 여기서 로컬 정보 찾기
-function checkUserName() {
-  const userModel = JSON.parse(localStorage.getItem("userdata"));
-  return userModel;
-}
+import { useEffect, useState } from "react";
+import {
+  requestGetHaveToken,
+  requestPostHaveToken,
+  requestDeleteHaveToken,
+} from "../../commonFuntions/requestHaveToken";
+import { useHistory } from "react-router-dom";
 
 export default function Header(props) {
+  const history = useHistory();
+  const [locationKeys, setLocationKeys] = useState([]);
+
+  const [userModel, setUserModel] = useState();
+
+  useEffect(() => {
+    setUserModel(JSON.parse(localStorage.getItem("userdata")));
+  }, []);
+
+  useEffect(() => {
+    requestGetHaveToken("/auction-user/auth/check-cookie-token")
+      .then((res) => {
+        console.log("정상작동");
+        console.log(res);
+        if (res.data !== 1) {
+          localStorage.removeItem("userdata");
+          return setUserModel(JSON.parse(localStorage.getItem("userdata")));
+        }
+      })
+      .catch((Error) => {
+        localStorage.removeItem("userdata");
+        return setUserModel(JSON.parse(localStorage.getItem("userdata")));
+      });
+
+    return history.listen((location) => {
+      if (history.action === "PUSH") {
+        setLocationKeys([location.key]);
+
+        setUserModel(JSON.parse(localStorage.getItem("userdata")));
+      }
+
+      if (history.action === "POP") {
+        if (locationKeys[1] === location.key) {
+          setLocationKeys(([_, ...keys]) => keys);
+
+          setUserModel(JSON.parse(localStorage.getItem("userdata")));
+        } else {
+          setLocationKeys((keys) => [location.key, ...keys]);
+
+          setUserModel(JSON.parse(localStorage.getItem("userdata")));
+        }
+      }
+    });
+  }, [locationKeys, history]);
+
   return (
     <header>
       <nav className="navbar navbar-expand-lg">
@@ -43,7 +90,7 @@ export default function Header(props) {
                 </Link>
               </li>
 
-              {localStorage.getItem("google-login-success") != null && (
+              {localStorage.getItem("userdata") != null && (
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"
@@ -53,8 +100,8 @@ export default function Header(props) {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    {checkUserName() != null && checkUserName().nickName}
-                    {checkUserName() == null && "공지"}
+                    {userModel != null && userModel.nickName}
+                    {userModel == null && "공지"}
                   </a>
                   <ul
                     className="dropdown-menu"

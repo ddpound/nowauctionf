@@ -1,7 +1,7 @@
 const isAdmin = () =>{
     
     //로그인과 어드민이 동시에 되어있어야함
-    if( !!localStorage.getItem('google-login-success') && !! localStorage.getItem("adminSuccess")){
+    if( !!localStorage.getItem('userdata') && !! localStorage.getItem("adminSuccess")){
         return true
     }
     

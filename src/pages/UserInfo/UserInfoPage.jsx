@@ -159,8 +159,10 @@ export default function UserInfoPage(props) {
         }
       })
       .catch((Error) => {
+        console.log(Error);
         console.log(Error.responese);
         console.log("에러");
+        alert("알수없는 에러가 발생했습니다. 다시 로그인해주세요");
       });
   }, []);
 
@@ -180,75 +182,81 @@ export default function UserInfoPage(props) {
 
   return (
     <div className="container mt-5 ">
-      <div className="card" style={{ width: "28rem", margin: "auto" }}>
-        <img className="card-img-top" src={userobject.picture} alt="" />
-        <div className="card-body">
-          <h5 className="card-title">{userobject.userName}</h5>
-          <p className="card-text">{userobject.nickName}</p>
-          {!!userobject.address ? (
-            <p>{userobject.address}</p>
-          ) : (
-            <p>등록된 주소가 없습니다.</p>
-          )}
-          <p className="card-text">
-            {userobject.role == "USER" && "회원등급 : 일반유저"}
-            {userobject.role == "SELLER" && "회원등급 : 판매자 "}
-            {userobject.role == "ADMIN" && "회원등급 : 관리자 "}
-          </p>
-          {userobject.role == "ADMIN" && (
-            <p>
-              <Link to="/admin-page" className="btn btn-dark">
-                어드민 페이지
-              </Link>
+      {!!userobject.userName ? (
+        <div className="card" style={{ width: "28rem", margin: "auto" }}>
+          <img className="card-img-top" src={userobject.picture} alt="" />
+          <div className="card-body">
+            <h5 className="card-title">{userobject.userName}</h5>
+            <p className="card-text">{userobject.nickName}</p>
+            {!!userobject.address ? (
+              <p>{userobject.address}</p>
+            ) : (
+              <p>등록된 주소가 없습니다.</p>
+            )}
+            <p className="card-text">
+              {userobject.role == "USER" && "회원등급 : 일반유저"}
+              {userobject.role == "SELLER" && "회원등급 : 판매자 "}
+              {userobject.role == "ADMIN" && "회원등급 : 관리자 "}
             </p>
-          )}
+            {userobject.role == "ADMIN" && (
+              <p>
+                <Link to="/admin-page" className="btn btn-dark">
+                  어드민 페이지
+                </Link>
+              </p>
+            )}
 
-          {userobject.role == "USER" && (
+            {userobject.role == "USER" && (
+              <p>
+                <button
+                  type="button"
+                  className="btn btn-dark"
+                  data-bs-toggle="modal"
+                  data-bs-target="#sellerModalLabel"
+                >
+                  판매자 등록하기
+                </button>
+              </p>
+            )}
+
+            {userobject.role == "SELLER" && (
+              <p>
+                <Link className="btn btn-dark" to="/my-shoppingmall-page">
+                  내 간이 쇼핑몰
+                </Link>
+              </p>
+            )}
+
+            {!!userobject && (
+              <p>
+                <button
+                  type="button"
+                  className="btn btn-dark"
+                  data-bs-toggle="modal"
+                  data-bs-target="#adressModal"
+                >
+                  주소 등록하기
+                </button>
+              </p>
+            )}
+
             <p>
               <button
                 type="button"
-                className="btn btn-dark"
+                className="btn btn-danger"
                 data-bs-toggle="modal"
-                data-bs-target="#sellerModalLabel"
+                data-bs-target="#exampleModal"
               >
-                판매자 등록하기
+                탈퇴하기
               </button>
             </p>
-          )}
-
-          {userobject.role == "SELLER" && (
-            <p>
-              <Link className="btn btn-dark" to="/my-shoppingmall-page">
-                내 간이 쇼핑몰
-              </Link>
-            </p>
-          )}
-
-          {!!userobject && (
-            <p>
-              <button
-                type="button"
-                className="btn btn-dark"
-                data-bs-toggle="modal"
-                data-bs-target="#adressModal"
-              >
-                주소 등록하기
-              </button>
-            </p>
-          )}
-
-          <p>
-            <button
-              type="button"
-              className="btn btn-danger"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
-              탈퇴하기
-            </button>
-          </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div>
+          <h3>죄송합니다. 에러가 발생했습니다. 다시 로그인해주세요</h3>
+        </div>
+      )}
 
       <div
         className="modal fade"
