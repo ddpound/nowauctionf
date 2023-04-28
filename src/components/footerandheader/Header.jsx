@@ -13,6 +13,12 @@ import {
 } from "../../commonFuntions/requestHaveToken";
 import { useHistory } from "react-router-dom";
 
+import { returnDATA } from "../../commonFuntions/CommonEncryption";
+
+const localUserDataName = process.env.REACT_APP_local_userdata_KEY;
+const localadminDataName = process.env.REACT_APP_local_admin_success_KEY;
+const localsellerDataName = process.env.REACT_APP_local_seller_success_KEY;
+
 export default function Header(props) {
   const history = useHistory();
   const [locationKeys, setLocationKeys] = useState([]);
@@ -20,7 +26,7 @@ export default function Header(props) {
   const [userModel, setUserModel] = useState();
 
   useEffect(() => {
-    setUserModel(JSON.parse(localStorage.getItem("userdata")));
+    setUserModel(returnDATA(localUserDataName));
   }, []);
 
   useEffect(() => {
@@ -29,32 +35,32 @@ export default function Header(props) {
         console.log("정상작동");
         console.log(res);
         if (res.data !== 1) {
-          localStorage.removeItem("userdata");
+          localStorage.removeItem(localUserDataName);
 
-          return setUserModel(JSON.parse(localStorage.getItem("userdata")));
+          return setUserModel(returnDATA(localUserDataName));
         }
       })
       .catch((Error) => {
-        localStorage.removeItem("userdata");
-        return setUserModel(JSON.parse(localStorage.getItem("userdata")));
+        localStorage.removeItem(localUserDataName);
+        return setUserModel(returnDATA(localUserDataName));
       });
 
     return history.listen((location) => {
       if (history.action === "PUSH") {
         setLocationKeys([location.key]);
 
-        setUserModel(JSON.parse(localStorage.getItem("userdata")));
+        setUserModel(returnDATA(localUserDataName));
       }
 
       if (history.action === "POP") {
         if (locationKeys[1] === location.key) {
           setLocationKeys(([_, ...keys]) => keys);
 
-          setUserModel(JSON.parse(localStorage.getItem("userdata")));
+          setUserModel(returnDATA(localUserDataName));
         } else {
           setLocationKeys((keys) => [location.key, ...keys]);
 
-          setUserModel(JSON.parse(localStorage.getItem("userdata")));
+          setUserModel(returnDATA(localUserDataName));
         }
       }
     });
