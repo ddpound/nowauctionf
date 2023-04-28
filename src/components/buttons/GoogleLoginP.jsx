@@ -11,7 +11,10 @@ import {
 } from "../../commonFuntions/makeCookiesToken";
 import { setUserStore } from "../../reduxstore/actions";
 
-import { Cookies } from "react-cookie";
+import {
+  creationData,
+  returnDATA,
+} from "../../commonFuntions/CommonEncryption";
 
 import { requestGetHaveToken } from "../../commonFuntions/requestHaveToken";
 
@@ -21,6 +24,10 @@ import { requestGetHaveToken } from "../../commonFuntions/requestHaveToken";
 
 const login_key = process.env.REACT_APP_google_login_API_KEY;
 
+const localUserDataName = process.env.REACT_APP_local_userdata_KEY;
+const localadminDataName = process.env.REACT_APP_local_admin_success_KEY;
+const localsellerDataName = process.env.REACT_APP_local_seller_success_KEY;
+
 // 로그인상태 유지를 위한 부울 값 , 로그인 성공시 로그인을 유지하겠다는 true를 넣어주면됨
 
 function giveRole() {
@@ -29,11 +36,11 @@ function giveRole() {
   returnResponse.then((res) => {
     if (!!res) {
       if (res.data.role == "ADMIN") {
-        localStorage.setItem("adminSuccess", res.data.userName);
+        localStorage.setItem(localadminDataName, res.data.userName);
       }
 
       if (res.data.role == "SELLER") {
-        localStorage.setItem("sellerSuccess", res.data.id);
+        localStorage.setItem(localsellerDataName, res.data.id);
       }
     }
   });
@@ -84,16 +91,16 @@ function GoogleLoginP({ set, props }) {
                   )
                 );
 
-                localStorage.setItem(
-                  "userdata",
-                  JSON.stringify(
-                    setUserModel(
-                      responese.data.id,
-                      responese.data.role,
-                      responese.data.nickName,
-                      responese.data.picture
-                    )
-                  )
+                console.log(login_key);
+                console.log(localUserDataName);
+                creationData(
+                  setUserModel(
+                    responese.data.id,
+                    responese.data.role,
+                    responese.data.nickName,
+                    responese.data.picture
+                  ),
+                  localUserDataName
                 );
 
                 // 로그인 완료 권한을 다시 주는것이 중요 로그아웃시에 다삭제
@@ -130,16 +137,14 @@ function GoogleLoginP({ set, props }) {
                       console.log(responese);
 
                       if (responese.data != null) {
-                        localStorage.setItem(
-                          "userdata",
-                          JSON.stringify(
-                            setUserModel(
-                              responese.data.id,
-                              responese.data.role,
-                              responese.data.nickName,
-                              responese.data.picture
-                            )
-                          )
+                        creationData(
+                          setUserModel(
+                            responese.data.id,
+                            responese.data.role,
+                            responese.data.nickName,
+                            responese.data.picture
+                          ),
+                          localUserDataName
                         );
 
                         // 로그인 완료 권한을 다시 주는것이 중요 로그아웃시에 다삭제
