@@ -15,6 +15,15 @@ import {
   requestDeleteHaveToken,
 } from "../../../commonFuntions/requestHaveToken";
 
+import {
+  creationData,
+  returnDATA,
+} from "../../../commonFuntions/CommonEncryption";
+
+const localUserDataName = process.env.REACT_APP_local_userdata_KEY;
+const localadminDataName = process.env.REACT_APP_local_admin_success_KEY;
+const localsellerDataName = process.env.REACT_APP_local_seller_success_KEY;
+
 /**
  * 판매자가 작성한 글을 볼수있는 show page
  * 이미 완성된 제품 객체를 받으니 수정 onSubmit만 있으면될듯
@@ -32,9 +41,9 @@ export default function SellerBoardShowPage(props) {
    */
   const [modifyDeclare, setModifyDeclare] = useState(false);
 
-  const sellerIn = localStorage.getItem("sellerSuccess");
-  const adminIn = localStorage.getItem("adminSuccess");
-  const userdata = localStorage.getItem("userdata");
+  const sellerIn = returnDATA(localsellerDataName);
+  const adminIn = returnDATA(localadminDataName);
+  const userdata = returnDATA(localUserDataName);
 
   useEffect(() => {
     axios

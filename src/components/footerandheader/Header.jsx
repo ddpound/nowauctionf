@@ -32,8 +32,6 @@ export default function Header(props) {
   useEffect(() => {
     requestGetHaveToken("/auction-user/auth/check-cookie-token")
       .then((res) => {
-        console.log("정상작동");
-        console.log(res);
         if (res.data !== 1) {
           localStorage.removeItem(localUserDataName);
 

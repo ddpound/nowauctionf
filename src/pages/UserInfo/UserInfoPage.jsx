@@ -17,6 +17,15 @@ import {
   resetTokens,
 } from "../../commonFuntions/TokenRelatedFunctions";
 
+import {
+  returnDATA,
+  creationData,
+} from "../../commonFuntions/CommonEncryption";
+
+const localUserDataName = process.env.REACT_APP_local_userdata_KEY;
+const localadminDataName = process.env.REACT_APP_local_admin_success_KEY;
+const localsellerDataName = process.env.REACT_APP_local_seller_success_KEY;
+
 function deleteUser(props) {
   const userdata = JSON.parse(localStorage.getItem("userdata"));
 
@@ -46,7 +55,8 @@ function giveSeller(props, inputid, inputcode, userobject) {
 
     giveSellerRe
       .then((res) => {
-        localStorage.setItem("sellerSuccess", userobject.id);
+        creationData(userobject.id, localsellerDataName);
+
         alert("등록에 성공하셨습니다.");
         props.history.push("/");
       })
@@ -136,7 +146,7 @@ export default function UserInfoPage(props) {
         console.log(responese.data);
         if (!!responese) {
           if (responese.data.role == "SELLER") {
-            localStorage.setItem("sellerSuccess", responese.data.id);
+            creationData(responese.data.id, localsellerDataName);
           }
           //let [userData, userDataFuntion] = responese.data;
           // this.setState({
