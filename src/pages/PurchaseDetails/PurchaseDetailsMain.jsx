@@ -8,9 +8,13 @@ import {
   requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
+import { returnDATA, DataNames } from "../../commonFuntions/CommonEncryption";
+
 const PurchaseDetailsMain = () => {
+  const dn = new DataNames();
+
   // 유저데이터가 있는지 체크
-  const userdata = JSON.parse(localStorage.getItem("userdata"));
+  const userdata = returnDATA(dn.getLocalUserDataName());
 
   const [liveOrderList, setLiveOrderList] = useState([]);
 
@@ -21,6 +25,7 @@ const PurchaseDetailsMain = () => {
       requestGetHaveToken(
         "/auction-seller/user/find-my-reservation/" + userdata.id
       ).then((res) => {
+        console.log(res);
         setReservationList(res.data);
       });
 

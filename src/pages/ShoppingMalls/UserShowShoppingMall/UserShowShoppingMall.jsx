@@ -16,6 +16,12 @@ import SellerBoardListPage from "../SellerBoard/SellerBoardListPage";
 
 import "./UserShowShoppingMall.scss";
 
+import {
+  DataNames,
+  DNReturn,
+  returnDATA,
+} from "../../../commonFuntions/CommonEncryption";
+
 /**
  * 해당 컴포넌트는 Page용도입니다.
  * 모든 사용자가 접근 가능합니다. public
@@ -24,7 +30,9 @@ import "./UserShowShoppingMall.scss";
 export default function UserShowShoppingMall(props) {
   const mallId = props.match.params.id;
 
-  const userdata = JSON.parse(localStorage.getItem("userdata"));
+  const dn = new DataNames();
+
+  const userdata = returnDATA(dn.getLocalUserDataName());
 
   const [shoppingMall, setShoppingMall] = useState("");
 

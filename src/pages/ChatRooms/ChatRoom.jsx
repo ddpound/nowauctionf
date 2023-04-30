@@ -16,6 +16,8 @@ import ProductBox from "./ProductBox";
 
 import "./ChatRoom.scss";
 
+import { returnDATA, DataNames } from "../../commonFuntions/CommonEncryption";
+
 export default function ChatRoom(props) {
   // 방 ID
   const id = props.match.params.id;
@@ -129,8 +131,10 @@ export default function ChatRoom(props) {
     setInputMessage(e.target.value);
   };
 
+  const dn = new DataNames();
+
   // 유저데이터가 있는지 체크
-  const userdata = JSON.parse(localStorage.getItem("userdata"));
+  const userdata = returnDATA(dn.getLocalUserDataName());
 
   // 판매자이면, 방 만든사람과 판매자를 구별해내서 검사해야함
   const sellerRight = localStorage.getItem("sellerSuccess");

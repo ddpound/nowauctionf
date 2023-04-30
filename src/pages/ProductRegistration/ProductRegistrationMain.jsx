@@ -5,6 +5,12 @@ import "bootstrap/dist/js/bootstrap.bundle";
 import { requestPostHaveToken } from "../../commonFuntions/requestHaveToken";
 import { Link, useHistory } from "react-router-dom";
 
+import {
+  creationData,
+  returnDATA,
+  DataNames,
+} from "../../commonFuntions/CommonEncryption";
+
 function registerProduct(props) {
   var formData = new FormData(); // 객체 생성
 
@@ -32,7 +38,10 @@ function registerProduct(props) {
 }
 
 export default function ProductRegistrationMain({ props, inData }) {
-  const userdata = JSON.parse(localStorage.getItem("userdata"));
+  const dn = new DataNames();
+
+  const userdata = returnDATA(dn.getLocalUserDataName());
+
   const goChatRoom = useHistory();
 
   const registerChatRoom = (props) => {

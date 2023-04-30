@@ -7,6 +7,8 @@ import {
   requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
+import { returnDATA, DataNames } from "../../commonFuntions/CommonEncryption";
+
 /**
  * 대댓글이 안에있음
  *
@@ -14,7 +16,10 @@ import {
  */
 const ReplyBlock = ({ reply, userdata }) => {
   const [replyOfReply, setReplyOfReply] = useState([]);
-  const userdataParse = JSON.parse(userdata);
+
+  const dn = new DataNames();
+
+  const userdataParse = returnDATA(dn.getLocalUserDataName());
 
   useEffect(() => {
     setReplyOfReply(reply.commonReplyOfReplyModels);
@@ -28,14 +33,6 @@ const ReplyBlock = ({ reply, userdata }) => {
     boardId
   ) => {
     const formData = new FormData();
-
-    console.log(content);
-    console.log(id);
-    console.log(nickName);
-    console.log(reply.commonModelId);
-    console.log("요기요기");
-    console.log(reply);
-    console.log(reply.id);
 
     formData.append("content", content);
     formData.append("userId", id);

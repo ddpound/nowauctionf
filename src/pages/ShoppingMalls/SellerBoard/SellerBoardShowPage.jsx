@@ -55,12 +55,6 @@ export default function SellerBoardShowPage(props) {
       });
   }, []);
 
-  console.log("댓글 확인을 위한 보드 log확인");
-  console.log(sellerBoard);
-  if (!!sellerBoard) {
-    console.log();
-  }
-
   const onClickBoardWriteEvent = (
     content,
     id,

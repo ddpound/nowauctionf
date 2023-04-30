@@ -59,12 +59,6 @@ export default function ReplyWriteContainer({
     }
   };
 
-  //console.log(userdata);
-
-  const userdataParse = JSON.parse(userdata);
-
-  //console.log(userdataParse);
-
   return (
     <div className="container">
       <div className="row border-bottom border-dark">
@@ -78,10 +72,10 @@ export default function ReplyWriteContainer({
           >
             <img
               className="img-fluid rounded-circle w-25"
-              src={userdataParse.picture}
+              src={userdata.picture}
               alt=""
             />
-            <label className="fs-6 ms-3">{userdataParse.nickName}</label>
+            <label className="fs-6 ms-3">{userdata.nickName}</label>
           </span>
         </div>
         <div className="col-8">
@@ -108,9 +102,9 @@ export default function ReplyWriteContainer({
 
               onclickEvent(
                 content,
-                userdataParse.id,
-                userdataParse.nickName,
-                userdataParse.picture,
+                userdata.id,
+                userdata.nickName,
+                userdata.picture,
                 boardId,
                 replyId
               );

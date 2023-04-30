@@ -15,6 +15,8 @@ import {
   requestDeleteHaveToken,
 } from "../../commonFuntions/requestHaveToken";
 
+import { returnDATA, DataNames } from "../../commonFuntions/CommonEncryption";
+
 /**
  * 유저와 관리자등 모두가 볼수있는 제품 뷰 페이지
  * 이미 완성된 제품 객체를 받으니 수정 onSubmit만 있으면될듯
@@ -22,9 +24,11 @@ import {
 export default function ProductShowPage(props) {
   const productId = props.match.params.id;
 
-  const [product, setProduct] = useState(...[]);
+  const dn = new DataNames();
 
-  const userdata = localStorage.getItem("userdata");
+  const userdata = returnDATA(dn.getLocalUserDataName());
+
+  const [product, setProduct] = useState(...[]);
 
   const [optionchoiceList, setOptionchoiceList] = useState([]);
 
@@ -59,14 +63,12 @@ export default function ProductShowPage(props) {
     addressData,
     addAddress
   ) => {
-    const jsonUserData = JSON.parse(userData);
-
     const reservationDetails = {
       productId: product.id,
       quantity: quantity.buyerQuantity,
       shoppingMallId: product.shoppingMall.id,
-      buyerId: jsonUserData.id,
-      buyerNickName: jsonUserData.nickName,
+      buyerId: userData.id,
+      buyerNickName: userData.nickName,
       optionList: optionList,
       address: addressData + "," + addAddress,
     };
@@ -133,8 +135,7 @@ export default function ProductShowPage(props) {
   const changeAddAddress = (e) => {
     setAddAddress(e.target.value);
   };
-  console.log("추가 어드레스");
-  console.log(addAddress);
+
   return (
     <div className="container mt-5">
       {!sellerIn && !!userdata && (
