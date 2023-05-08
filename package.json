@@ -13,6 +13,7 @@
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
     "crypto-js": "^4.1.1",
+    "env-cmd": "^10.1.0",
     "http-proxy-middleware": "^2.0.6",
     "node-sass": "^7.0.1",
     "query-string": "^7.1.1",
@@ -31,13 +32,14 @@
     "react-scripts": "5.0.1",
     "redux": "^4.1.2",
     "redux-persist": "^6.0.0",
+    "serve": "^14.2.0",
     "suneditor": "^2.43.14",
     "suneditor-react": "^3.4.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "env-cmd -f .env.production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
