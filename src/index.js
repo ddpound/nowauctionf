@@ -15,7 +15,7 @@ import { CookiesProvider } from 'react-cookie';
 // 덕분에 모든 프로그램을 실행할때 두번씩 실행합니다
 //개발이아닌 배포때는 없어질 예정
 
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = "https://nowauctiontest.shop";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

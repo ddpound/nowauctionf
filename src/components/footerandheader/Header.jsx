@@ -14,6 +14,7 @@ import {
 import { useHistory } from "react-router-dom";
 
 import { returnDATA } from "../../commonFuntions/CommonEncryption";
+import axios from "axios";
 
 const localUserDataName = process.env.REACT_APP_local_userdata_KEY;
 const localadminDataName = process.env.REACT_APP_local_admin_success_KEY;
@@ -30,7 +31,8 @@ export default function Header(props) {
   }, []);
 
   useEffect(() => {
-    requestGetHaveToken("/auction-user/auth/check-cookie-token")
+    axios
+      .get("/auction-user/auth/check-cookie-token", { withCredentials: true })
       .then((res) => {
         if (res.data !== 1) {
           localStorage.removeItem(localUserDataName);

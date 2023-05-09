@@ -113,8 +113,7 @@ export default function UserShowShoppingMall(props) {
             모두 보기
           </label>
         </div>
-
-        {userdata.role === "USER" && (
+        {!!userdata && userdata.role === "USER" && (
           <div>
             <button
               className="sub-button"

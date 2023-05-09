@@ -104,13 +104,13 @@ export default function AdminWritePageAnnouncement(props) {
             // 1. 첨부된 이미지 파일을 서버로 전송후, 이미지 경로 url을 받아온다.
             // const imgUrl = await .... 서버 전송 / 경로 수신 코드 ...
 
-            requestPostHaveToken(
-              "/auction-user/admin/temporary-image-save",
-              null,
-              formData
-            ).then((res) => {
-              callback(res.data.url, res.data.responseCode, props);
-            });
+            axios
+              .post("/auction-user/admin/temporary-image-save", formData, {
+                withCredentials: true,
+              })
+              .then((res) => {
+                callback(res.data.url, res.data.responseCode, props);
+              });
 
             // 2. 첨부된 이미지를 화면에 표시(경로는 임의로 넣었다.)
             //callback("http://localhost:5000/img/카레유.png", "카레유");

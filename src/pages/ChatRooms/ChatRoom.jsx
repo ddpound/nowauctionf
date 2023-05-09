@@ -198,7 +198,7 @@ export default function ChatRoom(props) {
     }
 
     requestGetHaveToken(
-      "http://localhost:8000/auction-chat/auth/find-room/" +
+      "https://nowauctiontest.shop/auction-chat/auth/find-room/" +
         id +
         "/check-video-url",
       props
@@ -241,12 +241,12 @@ export default function ChatRoom(props) {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      "http://localhost:8000/auction-chat/auth/find-room/" + id
+      "https://nowauctiontest.shop/auction-chat/auth/find-room/" + id
     );
 
     // 제품 SSE 부분
     const eventSourceProductCheck = new EventSource(
-      "http://localhost:8000/auction-chat/auth/find-product/" + id
+      "https://nowauctiontest.shop/auction-chat/auth/find-product/" + id
     );
 
     eventSource.onmessage = (event) => {
