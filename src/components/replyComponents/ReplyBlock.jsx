@@ -95,7 +95,7 @@ const ReplyBlock = ({ reply, userdata }) => {
           <div className="col mt-3 mb-3">
             <p className="card-text">{reply.content}</p>
           </div>
-          {userdataParse.id == reply.userId && (
+          {!!userdataParse.id && userdataParse.id == reply.userId && (
             <div className="col d-flex justify-content-end">
               <button className="btn btn-dark btn-sm">수정하기</button>
               <button
@@ -153,25 +153,26 @@ const ReplyBlock = ({ reply, userdata }) => {
                         </small>
                       </p>
                     </div>
-                    {userdataParse.id == replyOfReply.userId && (
-                      <div className="col d-flex justify-content-end">
-                        <button className="btn btn-dark btn-sm">
-                          수정하기
-                        </button>
-                        <button
-                          id={replyOfReply.id}
-                          className="btn btn-danger btn-sm"
-                          onClick={(e) => {
-                            onClickDelteReply(
-                              "/auction-user/user/delete-reply/of-reply/",
-                              replyOfReply.id
-                            );
-                          }}
-                        >
-                          삭제
-                        </button>
-                      </div>
-                    )}
+                    {!!userdataParse.id &&
+                      userdataParse.id == replyOfReply.userId && (
+                        <div className="col d-flex justify-content-end">
+                          <button className="btn btn-dark btn-sm">
+                            수정하기
+                          </button>
+                          <button
+                            id={replyOfReply.id}
+                            className="btn btn-danger btn-sm"
+                            onClick={(e) => {
+                              onClickDelteReply(
+                                "/auction-user/user/delete-reply/of-reply/",
+                                replyOfReply.id
+                              );
+                            }}
+                          >
+                            삭제
+                          </button>
+                        </div>
+                      )}
                   </div>
                   <div className="mb-4 text-dark">
                     <p className="card-text">{replyOfReply.content}</p>

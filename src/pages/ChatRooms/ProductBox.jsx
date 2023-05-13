@@ -66,9 +66,13 @@ const ProductBox = ({ roomNum, productList, userdata, props }) => {
       product: product,
       raisePrice: raisePrice,
       userdata: userdata,
-    }).then((res) => {
-      console.log(res);
-    });
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((Error) => {
+        alert("죄송합니다 에러가 발생했습니다. 관리자에게 문의해주세요");
+      });
   };
 
   const saveOrder = () => {

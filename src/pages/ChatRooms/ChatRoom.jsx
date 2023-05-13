@@ -241,12 +241,12 @@ export default function ChatRoom(props) {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      "https://nowauctiontest.shop/auction-chat/auth/find-room/" + id
+      "https://nowauctiontest.shop/auction-chat/auth/live/find-room/" + id
     );
 
     // 제품 SSE 부분
     const eventSourceProductCheck = new EventSource(
-      "https://nowauctiontest.shop/auction-chat/auth/find-product/" + id
+      "https://nowauctiontest.shop/auction-chat/auth/live/find-product/" + id
     );
 
     eventSource.onmessage = (event) => {

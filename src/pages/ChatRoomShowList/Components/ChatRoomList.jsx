@@ -18,11 +18,15 @@ export default function ChatRoomList({ props, onePagePostNumber }) {
   useEffect(() => {
     // 무조건 딱 한번 리스트를 받아와서 페이징해줌
     const requestList = axios.get("/auction-chat/auth/find-all-chat-room");
-    requestList.then((res) => {
-      console.log(res);
-      console.log(res.data);
-      setChatRoomList(res.data);
-    });
+    requestList
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        setChatRoomList(res.data);
+      })
+      .catch(() => {
+        setChatRoomList([]);
+      });
   }, []);
 
   return (
