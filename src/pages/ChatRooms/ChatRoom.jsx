@@ -19,6 +19,20 @@ import "./ChatRoom.scss";
 import { returnDATA, DataNames } from "../../commonFuntions/CommonEncryption";
 
 export default function ChatRoom(props) {
+  const userAgent = window.navigator.userAgent;
+  const isWindows = userAgent.indexOf("Win") !== -1;
+  const isWindows64 = isWindows && userAgent.indexOf("Win64") !== -1;
+  const isWindows32 = isWindows && !isWindows64;
+  const isLinux = userAgent.indexOf("Linux") !== -1;
+
+  const liveUrl = isWindows64
+    ? "http://localhost:8000"
+    : isWindows32
+    ? "http://localhost:8000"
+    : isLinux
+    ? "https://nowauctiontest.shop"
+    : "http://localhost:8000";
+
   // 방 ID
   const id = props.match.params.id;
 
@@ -99,11 +113,15 @@ export default function ChatRoom(props) {
       props,
       product
     ).then((res) => {
-      setProduct({
-        ...product,
-        auction: false,
-        auctionState: false,
-      });
+      if (res.data == null) {
+        alert("저장실패");
+      } else {
+        setProduct({
+          ...product,
+          auction: false,
+          auctionState: false,
+        });
+      }
     });
   };
 
@@ -198,9 +216,7 @@ export default function ChatRoom(props) {
     }
 
     requestGetHaveToken(
-      "https://nowauctiontest.shop/auction-chat/auth/find-room/" +
-        id +
-        "/check-video-url",
+      liveUrl + "/auction-chat/auth/find-room/" + id + "/check-video-url",
       props
     ).then((res) => {
       console.log("방 체크, 방 url검사를 위해서");
@@ -241,12 +257,12 @@ export default function ChatRoom(props) {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      "https://nowauctiontest.shop/auction-chat/auth/live/find-room/" + id
+      liveUrl + "/auction-chat/auth/live/find-room/" + id
     );
 
     // 제품 SSE 부분
     const eventSourceProductCheck = new EventSource(
-      "https://nowauctiontest.shop/auction-chat/auth/live/find-product/" + id
+      liveUrl + "/auction-chat/auth/live/find-product/" + id
     );
 
     eventSource.onmessage = (event) => {

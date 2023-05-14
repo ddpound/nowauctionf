@@ -15,7 +15,14 @@ import { CookiesProvider } from 'react-cookie';
 // 덕분에 모든 프로그램을 실행할때 두번씩 실행합니다
 //개발이아닌 배포때는 없어질 예정
 
-axios.defaults.baseURL = "https://nowauctiontest.shop";
+const userAgent = window.navigator.userAgent;
+const isWindows = userAgent.indexOf('Win') !== -1;
+const isWindows64 = isWindows && userAgent.indexOf('Win64') !== -1;
+const isWindows32 = isWindows && !isWindows64;
+const isLinux = userAgent.indexOf('Linux') !== -1;
+
+axios.defaults.baseURL = isWindows64 ? "http://localhost:8000" : isWindows32 ? "http://localhost:8000" : isLinux ? 'https://nowauctiontest.shop' : 'http://localhost:8000';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

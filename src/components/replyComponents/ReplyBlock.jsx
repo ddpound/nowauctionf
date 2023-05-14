@@ -95,7 +95,7 @@ const ReplyBlock = ({ reply, userdata }) => {
           <div className="col mt-3 mb-3">
             <p className="card-text">{reply.content}</p>
           </div>
-          {!!userdataParse.id && userdataParse.id == reply.userId && (
+          {!!userdataParse && userdataParse.id == reply.userId && (
             <div className="col d-flex justify-content-end">
               <button className="btn btn-dark btn-sm">수정하기</button>
               <button
@@ -113,16 +113,19 @@ const ReplyBlock = ({ reply, userdata }) => {
             </div>
           )}
         </div>
-        <div className="card-footer bg-transparent">
-          <ReplyWriteContainer
-            boardId={reply.commonModelId}
-            userdata={userdata}
-            replyId={reply.id}
-            onclickEvent={onClickReplyOfReplyWriteEvent}
-            setReplyAreaId={"replyOfReply" + reply.id}
-          />
-        </div>
+        {!!userdata && !!reply && (
+          <div className="card-footer bg-transparent">
+            <ReplyWriteContainer
+              boardId={reply.commonModelId}
+              userdata={userdata}
+              replyId={reply.id}
+              onclickEvent={onClickReplyOfReplyWriteEvent}
+              setReplyAreaId={"replyOfReply" + reply.id}
+            />
+          </div>
+        )}
         {!!replyOfReply &&
+          replyOfReply.length > 0 &&
           replyOfReply.reverse().map((replyOfReply) => {
             return (
               <Fragment key={replyOfReply.id}>
@@ -153,7 +156,7 @@ const ReplyBlock = ({ reply, userdata }) => {
                         </small>
                       </p>
                     </div>
-                    {!!userdataParse.id &&
+                    {!!userdataParse &&
                       userdataParse.id == replyOfReply.userId && (
                         <div className="col d-flex justify-content-end">
                           <button className="btn btn-dark btn-sm">

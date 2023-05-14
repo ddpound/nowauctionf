@@ -91,6 +91,7 @@ export default function ProductRegistrationMain({ props, inData }) {
         <Link className="btn btn-dark" to={"/product-write"}>
           제품 등록하러 가기
         </Link>
+
         <Link className="btn btn-dark ms-3" to={"/seller-write"}>
           글 작성하기
         </Link>

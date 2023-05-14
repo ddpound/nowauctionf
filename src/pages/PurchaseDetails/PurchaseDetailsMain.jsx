@@ -100,7 +100,7 @@ const PurchaseDetailsMain = () => {
                     <th scope="row">1</th>
                     <td>{data.body.productModel.name}</td>
                     <td>{data.body.productModel.price}</td>
-                    <td>{data.body.productModel.quantity}</td>
+                    <td>{data.body.quantity}</td>
                   </tr>
                 </tbody>
               );
